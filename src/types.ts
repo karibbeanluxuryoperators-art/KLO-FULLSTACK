@@ -21,6 +21,9 @@ export interface BaseAsset {
   pricePerUnit: string;
   capacity: number;
   image?: string;
+  videoUrl?: string;
+  description?: string;
+  contactName?: string;
   bookedDates?: string[]; // YYYY-MM-DD
 }
 

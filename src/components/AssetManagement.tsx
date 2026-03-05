@@ -55,7 +55,13 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       type: 'Type',
       role: 'Role',
       armored: 'Armored',
-      availability: 'Availability'
+      availability: 'Availability',
+      description: 'Full Description',
+      contactName: 'Contact Name',
+      image: 'Asset Image',
+      video: 'Asset Video',
+      uploadImage: 'Upload Image',
+      uploadVideo: 'Upload Video'
     },
     ES: {
       title: 'Orquestación de Activos',
@@ -83,7 +89,13 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       type: 'Tipo',
       role: 'Rol',
       armored: 'Blindado',
-      availability: 'Disponibilidad'
+      availability: 'Disponibilidad',
+      description: 'Descripción Completa',
+      contactName: 'Nombre de Contacto',
+      image: 'Imagen del Activo',
+      video: 'Video del Activo',
+      uploadImage: 'Subir Imagen',
+      uploadVideo: 'Subir Video'
     },
     PT: {
       title: 'Orquestração de Ativos',
@@ -111,7 +123,13 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       type: 'Tipo',
       role: 'Função',
       armored: 'Blindado',
-      availability: 'Disponibilidade'
+      availability: 'Disponibilidade',
+      description: 'Descrição Completa',
+      contactName: 'Nome do Contato',
+      image: 'Imagem do Ativo',
+      video: 'Vídeo do Ativo',
+      uploadImage: 'Carregar Imagem',
+      uploadVideo: 'Carregar Vídeo'
     }
   }[lang];
 
@@ -130,7 +148,11 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       location: '',
       name: '',
       pricePerUnit: '',
-      capacity: 1
+      capacity: 1,
+      description: '',
+      contactName: '',
+      image: '',
+      videoUrl: ''
     });
   };
 
@@ -221,7 +243,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg bg-luxury-slate border border-white/10 rounded-[40px] p-8 shadow-2xl overflow-hidden"
+              className="relative w-full max-w-2xl bg-luxury-slate border border-white/10 rounded-[40px] p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
             >
               <div className="absolute top-0 right-0 p-8 opacity-5">
                 <Plus size={120} />
@@ -292,6 +314,79 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
                     />
                   </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.contactName}</label>
+                    <input 
+                      required
+                      type="text"
+                      value={newAsset.contactName || ''}
+                      onChange={(e) => setNewAsset({...newAsset, contactName: e.target.value})}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                      placeholder="Registrar Name"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.description}</label>
+                  <textarea 
+                    required
+                    rows={4}
+                    value={newAsset.description || ''}
+                    onChange={(e) => setNewAsset({...newAsset, description: e.target.value})}
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm resize-none"
+                    placeholder="Provide a detailed description of the asset..."
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.uploadImage}</label>
+                    <div className="relative group">
+                      <input 
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            // In a real app, we'd upload to S3/Cloudinary
+                            // For demo, we'll use a placeholder or local URL
+                            setNewAsset({...newAsset, image: URL.createObjectURL(file)});
+                          }
+                        }}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
+                        <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">
+                          {newAsset.image ? 'Image Selected' : 'Click to Upload'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.uploadVideo}</label>
+                    <div className="relative group">
+                      <input 
+                        type="file"
+                        accept="video/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setNewAsset({...newAsset, videoUrl: URL.createObjectURL(file)});
+                          }
+                        }}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
+                        <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">
+                          {newAsset.videoUrl ? 'Video Selected' : 'Click to Upload'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.status}</label>
                     <select 

@@ -15,6 +15,7 @@ import { OperationalCommandCenter } from './components/OperationalCommandCenter'
 import { AssetManagement } from './components/AssetManagement';
 import { Marketplace } from './components/Marketplace';
 import { GeospatialTracker } from './components/GeospatialTracker';
+import { ClientManagement } from './components/ClientManagement';
 import { AgentialRuleEngine } from './components/AgentialRuleEngine';
 import { PredictiveAnalytics } from './components/PredictiveAnalytics';
 import { FinancialEngine } from './components/FinancialEngine';
@@ -93,12 +94,100 @@ const MOCK_MESSAGES: ChatMessage[] = [
 ];
 
 const MOCK_ASSETS: Asset[] = [
-  { id: 'S1', name: 'Capt. Marco Rossi', type: 'STAFF', status: 'AVAILABLE', location: 'Cartagena', providerId: 'P1', pricePerUnit: '$1,200/day', capacity: 1, role: 'CAPTAIN', rating: 4.9, languages: ['EN', 'IT', 'ES'], bookedDates: ['2026-03-10', '2026-03-11', '2026-03-12'] },
-  { id: 'S2', name: 'Chef Elena Vance', type: 'STAFF', status: 'BOOKED', location: 'St. Barths', providerId: 'P1', pricePerUnit: '$800/day', capacity: 1, role: 'CHEF', rating: 5.0, languages: ['EN', 'FR'], bookedDates: ['2026-03-05', '2026-03-06'] },
-  { id: 'A1', name: 'Gulfstream G650', type: 'AIRCRAFT', status: 'AVAILABLE', location: 'Miami', providerId: 'P2', pricePerUnit: '$8,500/hr', capacity: 14, model: 'G650ER', range: '7,500nm', tailNumber: 'N123KL', bookedDates: ['2026-03-15', '2026-03-16'] },
-  { id: 'V1', name: 'Serenity Yacht', type: 'VESSEL', status: 'BOOKED', location: 'Antigua', providerId: 'P3', pricePerUnit: '$15,000/day', capacity: 12, length: '150ft', crewCount: 8, vesselType: 'YACHT', bookedDates: ['2026-03-05', '2026-03-06', '2026-03-07'] },
-  { id: 'C1', name: 'Escalade ESV (Armored)', type: 'VEHICLE', status: 'AVAILABLE', location: 'Bogotá', providerId: 'P4', pricePerUnit: '$950/day', capacity: 6, model: '2024 Platinum', isArmored: true, bookedDates: ['2026-03-20'] },
-  { id: 'L1', name: 'Villa del Mar', type: 'LODGING', status: 'AVAILABLE', location: 'Anguilla', providerId: 'P5', pricePerUnit: '$5,500/nt', capacity: 10, rooms: 5, amenities: ['Infinity Pool', 'Private Beach', 'Gym'], bookedDates: ['2026-03-25', '2026-03-26', '2026-03-27'] },
+  { 
+    id: 'S1', 
+    name: 'Capt. Marco Rossi', 
+    type: 'STAFF', 
+    status: 'AVAILABLE', 
+    location: 'Cartagena', 
+    providerId: 'P1', 
+    pricePerUnit: '$1,200/day', 
+    capacity: 1, 
+    role: 'CAPTAIN', 
+    rating: 4.9, 
+    languages: ['EN', 'IT', 'ES'], 
+    bookedDates: ['2026-03-10', '2026-03-11', '2026-03-12'],
+    description: 'Expert maritime captain with over 20 years of experience navigating the Caribbean and Mediterranean. Specialized in luxury yacht management and guest safety.',
+    contactName: 'Marco Rossi'
+  },
+  { 
+    id: 'S2', 
+    name: 'Chef Elena Vance', 
+    type: 'STAFF', 
+    status: 'BOOKED', 
+    location: 'St. Barths', 
+    providerId: 'P1', 
+    pricePerUnit: '$800/day', 
+    capacity: 1, 
+    role: 'CHEF', 
+    rating: 5.0, 
+    languages: ['EN', 'FR'], 
+    bookedDates: ['2026-03-05', '2026-03-06'],
+    description: 'Michelin-starred chef specializing in fusion cuisine. Expert in sourcing local Caribbean ingredients to create bespoke dining experiences.',
+    contactName: 'Elena Vance'
+  },
+  { 
+    id: 'A1', 
+    name: 'Gulfstream G650', 
+    type: 'AIRCRAFT', 
+    status: 'AVAILABLE', 
+    location: 'Miami', 
+    providerId: 'P2', 
+    pricePerUnit: '$8,500/hr', 
+    capacity: 14, 
+    model: 'G650ER', 
+    range: '7,500nm', 
+    tailNumber: 'N123KL', 
+    bookedDates: ['2026-03-15', '2026-03-16'],
+    description: 'The pinnacle of business aviation. This G650ER offers unmatched range and speed, paired with a bespoke interior designed for ultimate comfort.',
+    contactName: 'Aviation Ops Team'
+  },
+  { 
+    id: 'V1', 
+    name: 'Serenity Yacht', 
+    type: 'VESSEL', 
+    status: 'BOOKED', 
+    location: 'Antigua', 
+    providerId: 'P3', 
+    pricePerUnit: '$15,000/day', 
+    capacity: 12, 
+    length: '150ft', 
+    crewCount: 8, 
+    vesselType: 'YACHT', 
+    bookedDates: ['2026-03-05', '2026-03-06', '2026-03-07'],
+    description: 'A masterpiece of maritime engineering. Serenity features a beach club, infinity pool, and a dedicated crew of 8 to cater to your every whim.',
+    contactName: 'Maritime Concierge'
+  },
+  { 
+    id: 'C1', 
+    name: 'Escalade ESV (Armored)', 
+    type: 'VEHICLE', 
+    status: 'AVAILABLE', 
+    location: 'Bogotá', 
+    providerId: 'P4', 
+    pricePerUnit: '$950/day', 
+    capacity: 6, 
+    model: '2024 Platinum', 
+    isArmored: true, 
+    bookedDates: ['2026-03-20'],
+    description: 'B6 level armored protection combined with the luxury of the Platinum trim. Features secure comms and a professional security driver.',
+    contactName: 'Vianco Security'
+  },
+  { 
+    id: 'L1', 
+    name: 'Villa del Mar', 
+    type: 'LODGING', 
+    status: 'AVAILABLE', 
+    location: 'Anguilla', 
+    providerId: 'P5', 
+    pricePerUnit: '$5,500/nt', 
+    capacity: 10, 
+    rooms: 5, 
+    amenities: ['Infinity Pool', 'Private Beach', 'Gym'], 
+    bookedDates: ['2026-03-25', '2026-03-26', '2026-03-27'],
+    description: 'An architectural marvel on the shores of Anguilla. This 5-bedroom villa offers total privacy, a private beach, and 24/7 butler service.',
+    contactName: 'Estate Manager'
+  },
 ];
 
 const MOCK_BOOKINGS: Booking[] = [
@@ -150,6 +239,7 @@ export default function App() {
   const [isMissionControl, setIsMissionControl] = useState(false);
   const [showMarketplace, setShowMarketplace] = useState(false);
   const [agentialRules, setAgentialRules] = useState<AgentialRule[]>(MOCK_RULES);
+  const [guestProfiles, setGuestProfiles] = useState<GuestProfile[]>(MOCK_GUEST_PROFILES);
   
   const chatEndRef = useRef<HTMLDivElement>(null);
   const brain = useRef<KLOBrain | null>(null);
@@ -352,9 +442,15 @@ export default function App() {
         <Marketplace 
           assets={assets} 
           lang={lang} 
-          onBookAsset={(asset) => {
+          onBookAssets={(selectedAssets) => {
             setChatOpen(true);
-            setMessage(lang === 'EN' ? `I'd like to book ${asset.name} in ${asset.location}.` : lang === 'ES' ? `Me gustaría reservar ${asset.name} en ${asset.location}.` : `Eu gostaria de reservar ${asset.name} em ${asset.location}.`);
+            const assetNames = selectedAssets.map(a => a.name).join(', ');
+            const locations = [...new Set(selectedAssets.map(a => a.location))].join(' & ');
+            setMessage(lang === 'EN' 
+              ? `I'd like to orchestrate a journey involving: ${assetNames} in ${locations}.` 
+              : lang === 'ES' 
+              ? `Me gustaría orquestar un viaje que incluya: ${assetNames} en ${locations}.` 
+              : `Eu gostaria de orquestrar uma jornada envolvendo: ${assetNames} em ${locations}.`);
           }} 
         />
       );
@@ -664,108 +760,19 @@ export default function App() {
               )}
               
               {adminActiveTab === 'Clients' && (
-                <div className="space-y-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {MOCK_GUEST_PROFILES.map((profile, i) => (
-                  <div key={i} className="glass-panel p-8 rounded-[40px] relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Users size={120} />
-                    </div>
-                    
-                    <div className="flex justify-between items-start mb-8">
-                      <div className="flex items-center gap-6">
-                        <div className="w-20 h-20 bg-gold rounded-3xl flex items-center justify-center text-luxury-black">
-                          <span className="text-3xl font-bold">{profile.name[0]}</span>
-                        </div>
-                        <div>
-                          <h4 className="text-3xl font-serif mb-1">{profile.name}</h4>
-                          <span className="px-3 py-1 bg-gold/10 text-gold text-[10px] uppercase tracking-widest rounded-full border border-gold/20 font-bold">
-                            {profile.tier}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-[10px] text-luxury-cream/30 uppercase block mb-1">
-                          {lang === 'EN' ? 'Total Lifetime Spend' : lang === 'ES' ? 'Gasto Total de por Vida' : 'Gasto Total Vitalício'}
-                        </span>
-                        <span className="text-2xl font-serif text-gold">{profile.totalSpend}</span>
-                      </div>
-                    </div>
+                <ClientManagement 
+                  clients={guestProfiles} 
+                  lang={lang} 
+                  onAddClient={(newClient) => setGuestProfiles(prev => [newClient, ...prev])}
+                />
+              )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div>
-                        <h5 className="text-[10px] uppercase tracking-widest text-gold mb-4 flex items-center gap-2">
-                          <Star size={12} /> {lang === 'EN' ? 'Guest Preferences' : lang === 'ES' ? 'Preferencias del Huésped' : 'Preferências do Hóspede'}
-                        </h5>
-                        <div className="space-y-4">
-                          <div>
-                            <span className="text-[10px] text-luxury-cream/30 uppercase block mb-1">
-                              {lang === 'EN' ? 'Dietary' : lang === 'ES' ? 'Dietético' : 'Dietético'}
-                            </span>
-                            <div className="flex flex-wrap gap-2">
-                              {profile.preferences.dietary.map((d, j) => (
-                                <span key={j} className="text-[10px] px-2 py-1 bg-white/5 rounded-md border border-white/10">{d}</span>
-                              ))}
-                            </div>
-                          </div>
-                          <div>
-                            <span className="text-[10px] text-luxury-cream/30 uppercase block mb-1">
-                              {lang === 'EN' ? 'Beverages' : lang === 'ES' ? 'Bebidas' : 'Bebidas'}
-                            </span>
-                            <div className="flex flex-wrap gap-2">
-                              {profile.preferences.beverages.map((b, j) => (
-                                <span key={j} className="text-[10px] px-2 py-1 bg-white/5 rounded-md border border-white/10">{b}</span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-6">
-                        <div>
-                          <h5 className="text-[10px] uppercase tracking-widest text-gold mb-4 flex items-center gap-2">
-                            <Activity size={12} /> {lang === 'EN' ? 'Intelligence' : lang === 'ES' ? 'Inteligencia' : 'Inteligência'}
-                          </h5>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                              <span className="text-[10px] text-luxury-cream/30 uppercase block">
-                                {lang === 'EN' ? 'Experiences' : lang === 'ES' ? 'Experiencias' : 'Experiências'}
-                              </span>
-                              <span className="text-xl font-serif">{profile.pastExperiences}</span>
-                            </div>
-                            <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                              <span className="text-[10px] text-luxury-cream/30 uppercase block">
-                                {lang === 'EN' ? 'Loyalty' : lang === 'ES' ? 'Lealtad' : 'Fidelidade'}
-                              </span>
-                              <span className="text-xl font-serif">{profile.loyaltyPoints}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="text-[10px] text-luxury-cream/30 uppercase block mb-2">
-                            {lang === 'EN' ? 'Interests' : lang === 'ES' ? 'Intereses' : 'Interesses'}
-                          </span>
-                          <div className="flex flex-wrap gap-2">
-                            {profile.preferences.interests.map((interest, j) => (
-                              <span key={j} className="text-[8px] uppercase tracking-widest px-3 py-1 bg-gold/5 text-gold rounded-full border border-gold/10">
-                                {interest}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </>
           )}
-        </>
-      )}
-    </div>
-  </div>
-);
-};
+        </div>
+      </div>
+    );
+  };
 
   const renderProviderView = () => (
     <div className="pt-24 px-6 max-w-7xl mx-auto pb-20">

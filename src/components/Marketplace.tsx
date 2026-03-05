@@ -4,7 +4,7 @@ import {
   Users, Plane, Ship, Car, Home, 
   Search, Filter, Star, MapPin, 
   ChevronRight, ArrowRight, Shield,
-  Calendar, Clock, DollarSign
+  Calendar, Clock, DollarSign, ShoppingBag, Trash2, X
 } from 'lucide-react';
 import { Asset, AssetType, Language } from '../types';
 import { MiniCalendar } from './MiniCalendar';
@@ -12,13 +12,15 @@ import { MiniCalendar } from './MiniCalendar';
 interface MarketplaceProps {
   assets: Asset[];
   lang: Language;
-  onBookAsset: (asset: Asset) => void;
+  onBookAssets: (assets: Asset[]) => void;
 }
 
-export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAsset }) => {
+export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAssets }) => {
   const [activeTab, setActiveTab] = useState<AssetType | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+  const [cart, setCart] = useState<Asset[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const t = {
     EN: {
@@ -32,13 +34,22 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       vehicles: 'Vehicles',
       lodging: 'Lodging',
       bookNow: 'Request Booking',
+      addToJourney: 'Add to Journey',
       viewDetails: 'View Details',
       availability: 'Availability',
       capacity: 'Capacity',
       location: 'Location',
       rate: 'Rate',
       back: 'Back to Marketplace',
-      features: 'Key Features'
+      features: 'Key Features',
+      description: 'Description',
+      video: 'Asset Video',
+      managedBy: 'Managed By',
+      cart: 'Your Journey',
+      emptyCart: 'Your journey is currently empty.',
+      checkout: 'Orchestrate Journey',
+      items: 'Items',
+      total: 'Est. Total'
     },
     ES: {
       title: 'Mercado de Lujo',
@@ -51,13 +62,22 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       vehicles: 'Vehículos',
       lodging: 'Alojamiento',
       bookNow: 'Solicitar Reserva',
+      addToJourney: 'Añadir al Viaje',
       viewDetails: 'Ver Detalles',
       availability: 'Disponibilidad',
       capacity: 'Capacidad',
       location: 'Ubicación',
       rate: 'Tarifa',
       back: 'Volver al Mercado',
-      features: 'Características Clave'
+      features: 'Características Clave',
+      description: 'Descripción',
+      video: 'Video del Activo',
+      managedBy: 'Gestionado Por',
+      cart: 'Tu Viaje',
+      emptyCart: 'Tu viaje está vacío actualmente.',
+      checkout: 'Orquestar Viaje',
+      items: 'Artículos',
+      total: 'Total Est.'
     },
     PT: {
       title: 'Mercado de Luxo',
@@ -70,13 +90,22 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       vehicles: 'Veículos',
       lodging: 'Hospedagem',
       bookNow: 'Solicitar Reserva',
+      addToJourney: 'Adicionar à Jornada',
       viewDetails: 'Ver Detalhes',
       availability: 'Disponibilidade',
       capacity: 'Capacidade',
       location: 'Localização',
       rate: 'Taxa',
       back: 'Voltar ao Mercado',
-      features: 'Principais Características'
+      features: 'Principais Características',
+      description: 'Descrição',
+      video: 'Vídeo do Ativo',
+      managedBy: 'Gerenciado Por',
+      cart: 'Sua Jornada',
+      emptyCart: 'Sua jornada está vazia no momento.',
+      checkout: 'Orquestrar Jornada',
+      items: 'Itens',
+      total: 'Total Est.'
     }
   }[lang];
 
@@ -96,6 +125,93 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       case 'LODGING': return <Home size={20} />;
     }
   };
+
+  const addToCart = (asset: Asset) => {
+    if (!cart.find(item => item.id === asset.id)) {
+      setCart([...cart, asset]);
+    }
+  };
+
+  const removeFromCart = (id: string) => {
+    setCart(cart.filter(item => item.id !== id));
+  };
+
+  const calculateTotal = () => {
+    return cart.reduce((acc, item) => {
+      const price = parseFloat(item.pricePerUnit.replace(/[^0-9.]/g, '')) || 0;
+      return acc + price;
+    }, 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  };
+
+  const renderCart = () => (
+    <motion.div
+      initial={{ x: '100%' }}
+      animate={{ x: 0 }}
+      exit={{ x: '100%' }}
+      className="fixed top-0 right-0 h-full w-full max-w-md bg-luxury-slate z-[150] shadow-2xl flex flex-col border-l border-white/10"
+    >
+      <div className="p-8 border-b border-white/10 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center text-luxury-black">
+            <ShoppingBag size={24} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-serif text-white uppercase tracking-widest">{t.cart}</h2>
+            <p className="text-[10px] text-gold uppercase tracking-widest font-bold">{cart.length} {t.items}</p>
+          </div>
+        </div>
+        <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+          <X size={24} className="text-luxury-cream/40" />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
+        {cart.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-center opacity-40">
+            <ShoppingBag size={64} className="mb-6" />
+            <p className="text-sm font-light">{t.emptyCart}</p>
+          </div>
+        ) : (
+          cart.map((item) => (
+            <div key={item.id} className="glass-panel p-4 rounded-2xl flex gap-4 group">
+              <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
+                <img src={`https://picsum.photos/seed/${item.id}/200/200`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-sm font-serif text-white truncate">{item.name}</h4>
+                <p className="text-[10px] text-luxury-cream/40 uppercase tracking-widest mb-2">{item.location}</p>
+                <span className="text-xs font-bold text-gold">{item.pricePerUnit}</span>
+              </div>
+              <button 
+                onClick={() => removeFromCart(item.id)}
+                className="p-2 self-start text-luxury-cream/20 hover:text-red-500 transition-colors"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+
+      {cart.length > 0 && (
+        <div className="p-8 border-t border-white/10 bg-black/20">
+          <div className="flex justify-between items-end mb-8">
+            <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">{t.total}</span>
+            <span className="text-2xl font-light text-gold">{calculateTotal()}</span>
+          </div>
+          <button 
+            onClick={() => {
+              onBookAssets(cart);
+              setIsCartOpen(false);
+            }}
+            className="w-full py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
+          >
+            {t.checkout} <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
+    </motion.div>
+  );
 
   const renderAssetDetails = (asset: Asset) => (
     <motion.div 
@@ -149,6 +265,28 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
             </div>
 
             <div className="space-y-8">
+              {asset.description && (
+                <div>
+                  <h3 className="text-xl font-serif mb-4">{t.description}</h3>
+                  <p className="text-sm text-luxury-cream/60 leading-relaxed bg-white/5 p-6 rounded-3xl border border-white/10">
+                    {asset.description}
+                  </p>
+                </div>
+              )}
+
+              {asset.videoUrl && (
+                <div>
+                  <h3 className="text-xl font-serif mb-4">{t.video}</h3>
+                  <div className="aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black">
+                    <video 
+                      src={asset.videoUrl} 
+                      controls 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div>
                 <h3 className="text-xl font-serif mb-4">{t.features}</h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -201,14 +339,27 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
               <MiniCalendar bookedDates={asset.bookedDates || []} lang={lang} />
               
               <button 
-                onClick={() => onBookAsset(asset)}
+                onClick={() => {
+                  addToCart(asset);
+                  setSelectedAsset(null);
+                }}
                 className="w-full mt-8 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
               >
-                {t.bookNow} <ArrowRight size={16} />
+                {t.addToJourney} <ArrowRight size={16} />
               </button>
             </div>
 
             <div className="glass-panel p-8 rounded-[40px] border-white/5">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-gold/10 text-gold rounded-2xl">
+                  <Users size={24} />
+                </div>
+                <div>
+                  <h4 className="font-serif text-lg">{t.managedBy}</h4>
+                  <p className="text-xs text-luxury-cream/40 uppercase tracking-widest">{asset.contactName || 'Elite Operations Team'}</p>
+                </div>
+              </div>
+
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-gold/10 text-gold rounded-2xl">
                   <Shield size={24} />
@@ -230,6 +381,34 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
 
   return (
     <div className="min-h-screen bg-luxury-black pt-32 pb-20 px-6">
+      {/* Floating Cart Button */}
+      <button 
+        onClick={() => setIsCartOpen(true)}
+        className="fixed bottom-8 right-8 z-[140] w-16 h-16 bg-gold text-luxury-black rounded-full shadow-2xl flex items-center justify-center group hover:scale-110 transition-all"
+      >
+        <ShoppingBag size={24} />
+        {cart.length > 0 && (
+          <span className="absolute -top-1 -right-1 w-6 h-6 bg-white text-luxury-black text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-luxury-black">
+            {cart.length}
+          </span>
+        )}
+      </button>
+
+      <AnimatePresence>
+        {isCartOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCartOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[145]"
+            />
+            {renderCart()}
+          </>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
           <motion.div 
