@@ -1,0 +1,7 @@
+{
+  "name": "Karibbean Luxury Operators",
+  "description": "An AI-powered ultra-luxury marketplace orchestrating 360° experiences across aviation, maritime, accommodation, and ground transportation.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

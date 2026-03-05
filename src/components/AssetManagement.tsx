@@ -1,0 +1,466 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  Users, Plane, Ship, Car, Home, 
+  Plus, Search, Filter, MoreVertical,
+  Star, MapPin, Shield, CheckCircle2,
+  AlertCircle, Settings
+} from 'lucide-react';
+import { Asset, AssetType, Language } from '../types';
+import { MiniCalendar } from './MiniCalendar';
+
+interface AssetManagementProps {
+  assets: Asset[];
+  lang: Language;
+  onAddAsset: (asset: Asset) => void;
+}
+
+export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, onAddAsset }) => {
+  const [activeType, setActiveType] = useState<AssetType | 'ALL'>('ALL');
+  const [search, setSearch] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newAsset, setNewAsset] = useState<Partial<Asset>>({
+    type: 'STAFF',
+    status: 'AVAILABLE',
+    location: '',
+    name: '',
+    pricePerUnit: '',
+    capacity: 1
+  });
+
+  const t = {
+    EN: {
+      title: 'Asset Orchestration',
+      subtitle: 'Manage Staff, Fleet, Vessels & Lodging',
+      addAsset: 'Add New Asset',
+      search: 'Search assets...',
+      filter: 'Filter',
+      all: 'All Assets',
+      staff: 'Staff',
+      aircraft: 'Aircraft',
+      vessels: 'Vessels',
+      vehicles: 'Vehicles',
+      lodging: 'Lodging',
+      status: 'Status',
+      location: 'Location',
+      capacity: 'Capacity',
+      available: 'Available',
+      booked: 'Booked',
+      maintenance: 'Maintenance',
+      offline: 'Offline',
+      name: 'Name',
+      price: 'Price/Rate',
+      save: 'Save Asset',
+      cancel: 'Cancel',
+      type: 'Type',
+      role: 'Role',
+      armored: 'Armored',
+      availability: 'Availability'
+    },
+    ES: {
+      title: 'Orquestación de Activos',
+      subtitle: 'Gestione Personal, Flota, Embarcaciones y Alojamiento',
+      addAsset: 'Agregar Nuevo Activo',
+      search: 'Buscar activos...',
+      filter: 'Filtrar',
+      all: 'Todos los Activos',
+      staff: 'Personal',
+      aircraft: 'Aeronaves',
+      vessels: 'Embarcaciones',
+      vehicles: 'Vehículos',
+      lodging: 'Alojamiento',
+      status: 'Estado',
+      location: 'Ubicación',
+      capacity: 'Capacidad',
+      available: 'Disponible',
+      booked: 'Reservado',
+      maintenance: 'Mantenimiento',
+      offline: 'Fuera de Línea',
+      name: 'Nombre',
+      price: 'Precio/Tarifa',
+      save: 'Guardar Activo',
+      cancel: 'Cancelar',
+      type: 'Tipo',
+      role: 'Rol',
+      armored: 'Blindado',
+      availability: 'Disponibilidad'
+    },
+    PT: {
+      title: 'Orquestração de Ativos',
+      subtitle: 'Gerencie Equipe, Frota, Embarcações e Hospedagem',
+      addAsset: 'Adicionar Novo Ativo',
+      search: 'Pesquisar ativos...',
+      filter: 'Filtrar',
+      all: 'Todos os Ativos',
+      staff: 'Equipe',
+      aircraft: 'Aeronaves',
+      vessels: 'Embarcações',
+      vehicles: 'Veículos',
+      lodging: 'Hospedagem',
+      status: 'Status',
+      location: 'Localização',
+      capacity: 'Capacidade',
+      available: 'Disponível',
+      booked: 'Reservado',
+      maintenance: 'Manutenção',
+      offline: 'Offline',
+      name: 'Nome',
+      price: 'Preço/Taxa',
+      save: 'Salvar Ativo',
+      cancel: 'Cancelar',
+      type: 'Tipo',
+      role: 'Função',
+      armored: 'Blindado',
+      availability: 'Disponibilidade'
+    }
+  }[lang];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const assetToAdd = {
+      ...newAsset,
+      id: Math.random().toString(36).substr(2, 9),
+      providerId: 'P_NEW'
+    } as Asset;
+    onAddAsset(assetToAdd);
+    setIsModalOpen(false);
+    setNewAsset({
+      type: 'STAFF',
+      status: 'AVAILABLE',
+      location: '',
+      name: '',
+      pricePerUnit: '',
+      capacity: 1
+    });
+  };
+
+  const filteredAssets = assets.filter(asset => {
+    const matchesType = activeType === 'ALL' || asset.type === activeType;
+    const matchesSearch = asset.name.toLowerCase().includes(search.toLowerCase()) || 
+                         asset.location.toLowerCase().includes(search.toLowerCase());
+    return matchesType && matchesSearch;
+  });
+
+  const getAssetIcon = (type: AssetType) => {
+    switch (type) {
+      case 'STAFF': return <Users size={20} />;
+      case 'AIRCRAFT': return <Plane size={20} />;
+      case 'VESSEL': return <Ship size={20} />;
+      case 'VEHICLE': return <Car size={20} />;
+      case 'LODGING': return <Home size={20} />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'AVAILABLE': return 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20';
+      case 'BOOKED': return 'bg-gold/10 text-gold border-gold/20';
+      case 'MAINTENANCE': return 'bg-amber-400/10 text-amber-400 border-amber-400/20';
+      case 'OFFLINE': return 'bg-red-400/10 text-red-400 border-red-400/20';
+      default: return 'bg-white/5 text-white/40 border-white/10';
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header & Controls */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div>
+          <h2 className="text-4xl font-serif">{t.title}</h2>
+          <p className="text-luxury-cream/40 font-light">{t.subtitle}</p>
+        </div>
+        <div className="flex items-center gap-8 mr-auto ml-12 hidden xl:flex">
+          <div className="text-center">
+            <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest block mb-1">Staff Readiness</span>
+            <span className="text-xl font-serif text-emerald-400">100%</span>
+          </div>
+          <div className="text-center">
+            <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest block mb-1">Fleet Status</span>
+            <span className="text-xl font-serif text-gold">Optimal</span>
+          </div>
+          <div className="text-center">
+            <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest block mb-1">Maintenance</span>
+            <span className="text-xl font-serif text-amber-400">2 Units</span>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-luxury-cream/30" size={18} />
+            <input 
+              type="text" 
+              placeholder={t.search}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-white/5 border border-white/10 rounded-full py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all w-full lg:w-64 text-sm"
+            />
+          </div>
+          <button className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-luxury-cream/60">
+            <Filter size={18} />
+          </button>
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="px-6 py-3 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-white transition-all"
+          >
+            <Plus size={16} /> {t.addAsset}
+          </button>
+        </div>
+      </div>
+
+      {/* Add Asset Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="absolute inset-0 bg-luxury-black/80 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-lg bg-luxury-slate border border-white/10 rounded-[40px] p-8 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-5">
+                <Plus size={120} />
+              </div>
+
+              <h3 className="text-3xl font-serif mb-6">{t.addAsset}</h3>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.name}</label>
+                    <input 
+                      required
+                      type="text"
+                      value={newAsset.name}
+                      onChange={(e) => setNewAsset({...newAsset, name: e.target.value})}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.type}</label>
+                    <select 
+                      value={newAsset.type}
+                      onChange={(e) => setNewAsset({...newAsset, type: e.target.value as AssetType})}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                    >
+                      <option value="STAFF">Staff</option>
+                      <option value="AIRCRAFT">Aircraft</option>
+                      <option value="VESSEL">Vessel</option>
+                      <option value="VEHICLE">Vehicle</option>
+                      <option value="LODGING">Lodging</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.location}</label>
+                    <input 
+                      required
+                      type="text"
+                      value={newAsset.location}
+                      onChange={(e) => setNewAsset({...newAsset, location: e.target.value})}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.price}</label>
+                    <input 
+                      required
+                      type="text"
+                      placeholder="$0.00"
+                      value={newAsset.pricePerUnit}
+                      onChange={(e) => setNewAsset({...newAsset, pricePerUnit: e.target.value})}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.capacity}</label>
+                    <input 
+                      required
+                      type="number"
+                      value={newAsset.capacity}
+                      onChange={(e) => setNewAsset({...newAsset, capacity: parseInt(e.target.value)})}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.status}</label>
+                    <select 
+                      value={newAsset.status}
+                      onChange={(e) => setNewAsset({...newAsset, status: e.target.value as any})}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                    >
+                      <option value="AVAILABLE">Available</option>
+                      <option value="BOOKED">Booked</option>
+                      <option value="MAINTENANCE">Maintenance</option>
+                      <option value="OFFLINE">Offline</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Type Specific Fields */}
+                {newAsset.type === 'STAFF' && (
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.role}</label>
+                    <select 
+                      value={(newAsset as any).role || 'CONCIERGE'}
+                      onChange={(e) => setNewAsset({...newAsset, role: e.target.value} as any)}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm"
+                    >
+                      <option value="PILOT">Pilot</option>
+                      <option value="CAPTAIN">Captain</option>
+                      <option value="CHEF">Chef</option>
+                      <option value="SECURITY">Security</option>
+                      <option value="BUTLER">Butler</option>
+                      <option value="CONCIERGE">Concierge</option>
+                    </select>
+                  </div>
+                )}
+
+                {newAsset.type === 'VEHICLE' && (
+                  <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                    <input 
+                      type="checkbox"
+                      id="isArmored"
+                      checked={(newAsset as any).isArmored || false}
+                      onChange={(e) => setNewAsset({...newAsset, isArmored: e.target.checked} as any)}
+                      className="w-4 h-4 rounded border-white/10 bg-white/5 text-gold focus:ring-gold"
+                    />
+                    <label htmlFor="isArmored" className="text-[10px] uppercase tracking-widest text-luxury-cream/40 cursor-pointer">{t.armored}</label>
+                  </div>
+                )}
+
+                <div className="flex gap-4 pt-4">
+                  <button 
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="flex-1 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white/10 transition-all"
+                  >
+                    {t.cancel}
+                  </button>
+                  <button 
+                    type="submit"
+                    className="flex-1 py-4 bg-gold text-luxury-black rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all"
+                  >
+                    {t.save}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Type Tabs */}
+      <div className="flex flex-wrap gap-4 border-b border-white/5 pb-6">
+        {[
+          { id: 'ALL', label: t.all, icon: <Settings size={16} /> },
+          { id: 'STAFF', label: t.staff, icon: <Users size={16} /> },
+          { id: 'AIRCRAFT', label: t.aircraft, icon: <Plane size={16} /> },
+          { id: 'VESSEL', label: t.vessels, icon: <Ship size={16} /> },
+          { id: 'VEHICLE', label: t.vehicles, icon: <Car size={16} /> },
+          { id: 'LODGING', label: t.lodging, icon: <Home size={16} /> },
+        ].map(tab => (
+          <button 
+            key={tab.id}
+            onClick={() => setActiveType(tab.id as any)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs uppercase tracking-widest transition-all border ${
+              activeType === tab.id ? 'bg-gold text-luxury-black font-bold border-gold' : 'bg-white/5 text-luxury-cream/40 border-white/10 hover:bg-white/10'
+            }`}
+          >
+            {tab.icon} {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Assets Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <AnimatePresence mode="popLayout">
+          {filteredAssets.map((asset) => (
+            <motion.div 
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              key={asset.id}
+              className="glass-panel p-6 rounded-3xl group hover:border-gold/30 transition-all relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                {getAssetIcon(asset.type)}
+              </div>
+
+              <div className="flex justify-between items-start mb-6">
+                <div className={`p-3 rounded-2xl bg-white/5 ${
+                  asset.type === 'STAFF' ? 'text-purple-400' : 
+                  asset.type === 'AIRCRAFT' ? 'text-blue-400' : 
+                  asset.type === 'VESSEL' ? 'text-cyan-400' : 
+                  asset.type === 'VEHICLE' ? 'text-emerald-400' : 'text-amber-400'
+                }`}>
+                  {getAssetIcon(asset.type)}
+                </div>
+                <button className="p-2 text-luxury-cream/20 hover:text-gold transition-colors">
+                  <MoreVertical size={18} />
+                </button>
+              </div>
+
+              <h3 className="text-xl font-serif mb-2 group-hover:text-gold transition-colors">{asset.name}</h3>
+              <div className="flex items-center gap-2 mb-4">
+                <MapPin size={12} className="text-luxury-cream/30" />
+                <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">{asset.location}</span>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest">{t.status}</span>
+                  <span className={`text-[8px] px-2 py-1 rounded-full border uppercase tracking-widest font-bold ${getStatusColor(asset.status)}`}>
+                    {asset.status}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest">{t.capacity}</span>
+                  <span className="text-xs font-medium">{asset.capacity} PAX</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest">Rate</span>
+                  <span className="text-xs font-bold text-gold">{asset.pricePerUnit}</span>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-white/5">
+                <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest block mb-4">{t.availability}</span>
+                <MiniCalendar bookedDates={asset.bookedDates || []} lang={lang} />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-white/5 flex gap-2">
+                {asset.type === 'STAFF' && (
+                  <div className="flex items-center gap-1 text-gold">
+                    <Star size={10} fill="currentColor" />
+                    <span className="text-[10px] font-bold">{(asset as any).rating}</span>
+                  </div>
+                )}
+                {asset.type === 'VEHICLE' && (asset as any).isArmored && (
+                  <div className="flex items-center gap-1 text-blue-400">
+                    <Shield size={10} />
+                    <span className="text-[10px] font-bold uppercase tracking-tighter">Armored</span>
+                  </div>
+                )}
+                {asset.type === 'VESSEL' && (
+                  <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tighter">{(asset as any).length}</span>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};

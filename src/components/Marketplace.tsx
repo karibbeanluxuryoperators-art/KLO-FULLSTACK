@@ -1,0 +1,342 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  Users, Plane, Ship, Car, Home, 
+  Search, Filter, Star, MapPin, 
+  ChevronRight, ArrowRight, Shield,
+  Calendar, Clock, DollarSign
+} from 'lucide-react';
+import { Asset, AssetType, Language } from '../types';
+import { MiniCalendar } from './MiniCalendar';
+
+interface MarketplaceProps {
+  assets: Asset[];
+  lang: Language;
+  onBookAsset: (asset: Asset) => void;
+}
+
+export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAsset }) => {
+  const [activeTab, setActiveTab] = useState<AssetType | 'ALL'>('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+
+  const t = {
+    EN: {
+      title: 'Luxury Marketplace',
+      subtitle: 'Direct Access to the World\'s Most Exclusive Assets',
+      search: 'Search assets, locations, or providers...',
+      all: 'All',
+      staff: 'Staff',
+      aircraft: 'Aircraft',
+      vessels: 'Vessels',
+      vehicles: 'Vehicles',
+      lodging: 'Lodging',
+      bookNow: 'Request Booking',
+      viewDetails: 'View Details',
+      availability: 'Availability',
+      capacity: 'Capacity',
+      location: 'Location',
+      rate: 'Rate',
+      back: 'Back to Marketplace',
+      features: 'Key Features'
+    },
+    ES: {
+      title: 'Mercado de Lujo',
+      subtitle: 'Acceso Directo a los Activos más Exclusivos del Mundo',
+      search: 'Buscar activos, ubicaciones o proveedores...',
+      all: 'Todos',
+      staff: 'Personal',
+      aircraft: 'Aeronaves',
+      vessels: 'Embarcaciones',
+      vehicles: 'Vehículos',
+      lodging: 'Alojamiento',
+      bookNow: 'Solicitar Reserva',
+      viewDetails: 'Ver Detalles',
+      availability: 'Disponibilidad',
+      capacity: 'Capacidad',
+      location: 'Ubicación',
+      rate: 'Tarifa',
+      back: 'Volver al Mercado',
+      features: 'Características Clave'
+    },
+    PT: {
+      title: 'Mercado de Luxo',
+      subtitle: 'Acesso Direto aos Ativos mais Exclusivos do Mundo',
+      search: 'Pesquisar ativos, locais ou provedores...',
+      all: 'Todos',
+      staff: 'Equipe',
+      aircraft: 'Aeronaves',
+      vessels: 'Embarcações',
+      vehicles: 'Veículos',
+      lodging: 'Hospedagem',
+      bookNow: 'Solicitar Reserva',
+      viewDetails: 'Ver Detalhes',
+      availability: 'Disponibilidade',
+      capacity: 'Capacidade',
+      location: 'Localização',
+      rate: 'Taxa',
+      back: 'Voltar ao Mercado',
+      features: 'Principais Características'
+    }
+  }[lang];
+
+  const filteredAssets = assets.filter(asset => {
+    const matchesTab = activeTab === 'ALL' || asset.type === activeTab;
+    const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                         asset.location.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
+
+  const getAssetIcon = (type: AssetType) => {
+    switch (type) {
+      case 'STAFF': return <Users size={20} />;
+      case 'AIRCRAFT': return <Plane size={20} />;
+      case 'VESSEL': return <Ship size={20} />;
+      case 'VEHICLE': return <Car size={20} />;
+      case 'LODGING': return <Home size={20} />;
+    }
+  };
+
+  const renderAssetDetails = (asset: Asset) => (
+    <motion.div 
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 50 }}
+      className="fixed inset-0 z-[100] bg-luxury-black overflow-y-auto custom-scrollbar"
+    >
+      <div className="max-w-7xl mx-auto px-6 py-20">
+        <button 
+          onClick={() => setSelectedAsset(null)}
+          className="flex items-center gap-2 text-luxury-cream/40 hover:text-gold transition-colors mb-12 uppercase tracking-widest text-xs font-bold"
+        >
+          <ChevronRight className="rotate-180" size={16} /> {t.back}
+        </button>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div>
+            <div className="relative aspect-video rounded-[40px] overflow-hidden mb-8 group">
+              <img 
+                src={`https://picsum.photos/seed/${asset.id}/1200/800`} 
+                alt={asset.name}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-transparent to-transparent opacity-60" />
+              <div className="absolute bottom-8 left-8">
+                <span className="px-4 py-2 bg-gold text-luxury-black rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">
+                  {asset.type}
+                </span>
+                <h2 className="text-5xl font-serif text-white">{asset.name}</h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 mb-12">
+              <div className="glass-panel p-6 rounded-3xl text-center">
+                <MapPin size={20} className="text-gold mx-auto mb-2" />
+                <span className="text-[10px] text-luxury-cream/40 uppercase block mb-1">{t.location}</span>
+                <span className="text-sm font-medium">{asset.location}</span>
+              </div>
+              <div className="glass-panel p-6 rounded-3xl text-center">
+                <Users size={20} className="text-gold mx-auto mb-2" />
+                <span className="text-[10px] text-luxury-cream/40 uppercase block mb-1">{t.capacity}</span>
+                <span className="text-sm font-medium">{asset.capacity} PAX</span>
+              </div>
+              <div className="glass-panel p-6 rounded-3xl text-center">
+                <DollarSign size={20} className="text-gold mx-auto mb-2" />
+                <span className="text-[10px] text-luxury-cream/40 uppercase block mb-1">{t.rate}</span>
+                <span className="text-sm font-bold text-gold">{asset.pricePerUnit}</span>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-serif mb-4">{t.features}</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {asset.type === 'STAFF' && (
+                    <>
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                        <Star size={16} className="text-gold" />
+                        <span className="text-sm text-luxury-cream/70">Rating: {(asset as any).rating}/5.0</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                        <Users size={16} className="text-gold" />
+                        <span className="text-sm text-luxury-cream/70">{(asset as any).languages.join(', ')}</span>
+                      </div>
+                    </>
+                  )}
+                  {asset.type === 'AIRCRAFT' && (
+                    <>
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                        <Plane size={16} className="text-gold" />
+                        <span className="text-sm text-luxury-cream/70">Range: {(asset as any).range}</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                        <Shield size={16} className="text-gold" />
+                        <span className="text-sm text-luxury-cream/70">Tail: {(asset as any).tailNumber}</span>
+                      </div>
+                    </>
+                  )}
+                  {asset.type === 'VESSEL' && (
+                    <>
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                        <Ship size={16} className="text-gold" />
+                        <span className="text-sm text-luxury-cream/70">Length: {(asset as any).length}</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                        <Users size={16} className="text-gold" />
+                        <span className="text-sm text-luxury-cream/70">Crew: {(asset as any).crewCount}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            <div className="glass-panel p-8 rounded-[40px] border-gold/20">
+              <h3 className="text-2xl font-serif mb-6 flex items-center gap-3">
+                <Calendar size={24} className="text-gold" /> {t.availability}
+              </h3>
+              <MiniCalendar bookedDates={asset.bookedDates || []} lang={lang} />
+              
+              <button 
+                onClick={() => onBookAsset(asset)}
+                className="w-full mt-8 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
+              >
+                {t.bookNow} <ArrowRight size={16} />
+              </button>
+            </div>
+
+            <div className="glass-panel p-8 rounded-[40px] border-white/5">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-gold/10 text-gold rounded-2xl">
+                  <Shield size={24} />
+                </div>
+                <div>
+                  <h4 className="font-serif text-lg">Elite Protection</h4>
+                  <p className="text-xs text-luxury-cream/40 uppercase tracking-widest">Standard Protocol Active</p>
+                </div>
+              </div>
+              <p className="text-sm text-luxury-cream/60 leading-relaxed">
+                All marketplace transactions are secured via agential middleware. Real-time background checks and insurance verification are performed automatically for every request.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  return (
+    <div className="min-h-screen bg-luxury-black pt-32 pb-20 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col md:flex-row justify-between items-end gap-8"
+          >
+            <div>
+              <span className="text-gold uppercase tracking-[0.3em] text-[10px] mb-4 block">{t.subtitle}</span>
+              <h1 className="text-5xl md:text-7xl font-serif uppercase leading-tight">{t.title}</h1>
+            </div>
+            
+            <div className="w-full md:w-96 relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-luxury-cream/30" size={18} />
+              <input 
+                type="text"
+                placeholder={t.search}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-sm font-light"
+              />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Categories */}
+        <div className="flex flex-wrap gap-4 mb-12">
+          {[
+            { id: 'ALL', label: t.all, icon: <Filter size={16} /> },
+            { id: 'STAFF', label: t.staff, icon: <Users size={16} /> },
+            { id: 'AIRCRAFT', label: t.aircraft, icon: <Plane size={16} /> },
+            { id: 'VESSEL', label: t.vessels, icon: <Ship size={16} /> },
+            { id: 'VEHICLE', label: t.vehicles, icon: <Car size={16} /> },
+            { id: 'LODGING', label: t.lodging, icon: <Home size={16} /> },
+          ].map(tab => (
+            <button 
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center gap-2 px-8 py-4 rounded-full text-[10px] uppercase tracking-widest transition-all border ${
+                activeTab === tab.id ? 'bg-gold text-luxury-black font-bold border-gold' : 'bg-white/5 text-luxury-cream/40 border-white/10 hover:bg-white/10'
+              }`}
+            >
+              {tab.icon} {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <AnimatePresence mode="popLayout">
+            {filteredAssets.map((asset) => (
+              <motion.div 
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                key={asset.id}
+                className="glass-panel rounded-[40px] overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
+                onClick={() => setSelectedAsset(asset)}
+              >
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img 
+                    src={`https://picsum.photos/seed/${asset.id}/800/600`} 
+                    alt={asset.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-transparent to-transparent opacity-60" />
+                  <div className="absolute top-4 right-4 px-3 py-1 bg-luxury-black/60 backdrop-blur-md rounded-full text-[8px] uppercase tracking-widest border border-white/10">
+                    {asset.type}
+                  </div>
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-2xl font-serif text-white mb-1">{asset.name}</h3>
+                    <div className="flex items-center gap-2 text-luxury-cream/60">
+                      <MapPin size={12} />
+                      <span className="text-[10px] uppercase tracking-widest">{asset.location}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-8">
+                  <div className="flex justify-between items-center mb-6">
+                    <div className="flex items-center gap-4">
+                      <div className="flex flex-col">
+                        <span className="text-[8px] text-luxury-cream/30 uppercase tracking-widest mb-1">{t.capacity}</span>
+                        <span className="text-xs font-medium">{asset.capacity} PAX</span>
+                      </div>
+                      <div className="w-[1px] h-6 bg-white/10" />
+                      <div className="flex flex-col">
+                        <span className="text-[8px] text-luxury-cream/30 uppercase tracking-widest mb-1">{t.rate}</span>
+                        <span className="text-xs font-bold text-gold">{asset.pricePerUnit}</span>
+                      </div>
+                    </div>
+                    <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-gold group-hover:text-luxury-black transition-all">
+                      <ArrowRight size={18} />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {selectedAsset && renderAssetDetails(selectedAsset)}
+      </AnimatePresence>
+    </div>
+  );
+};
