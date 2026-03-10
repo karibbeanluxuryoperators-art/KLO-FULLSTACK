@@ -295,7 +295,7 @@ export default function App() {
   };
 
   const renderAuth = () => (
-    <div className="min-h-screen flex items-center justify-center bg-luxury-black px-6 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-luxury-paper px-6 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20">
         <img src={LUXURY_IMAGES[4]} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-black via-transparent to-luxury-black" />
@@ -313,7 +313,7 @@ export default function App() {
           <h2 className="text-3xl font-serif mb-2 uppercase tracking-widest">
             {lang === 'EN' ? 'Access KLO' : lang === 'ES' ? 'Acceder a KLO' : 'Acessar KLO'}
           </h2>
-          <p className="text-luxury-cream/40 text-sm font-light">
+          <p className="text-luxury-black/40 text-sm font-light">
             {lang === 'EN' 
               ? 'Enter your credentials to access the orchestration core' 
               : lang === 'ES' 
@@ -359,7 +359,7 @@ export default function App() {
         </form>
 
         <div className="mt-8 pt-8 border-t border-white/5 text-center">
-          <p className="text-[10px] text-luxury-cream/20 uppercase tracking-widest">
+          <p className="text-[10px] text-luxury-black/20 uppercase tracking-widest">
             {lang === 'EN' ? 'Demo Credentials' : lang === 'ES' ? 'Credenciales de Demostración' : 'Credenciais de Demonstração'}:<br />
             admin@klo.com | provider@klo.com | client@klo.com
           </p>
@@ -472,7 +472,7 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-b from-luxury-black/80 via-transparent to-luxury-black" />
         </div>
 
-        <div className="relative z-10 text-center max-w-4xl px-6">
+        <div className="relative z-10 text-center max-w-4xl px-6 text-white">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -485,7 +485,7 @@ export default function App() {
               Karibbean Luxury <br />
               <span className="italic font-light">Operators</span>
             </h1>
-            <p className="text-luxury-cream/60 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed">
               {lang === 'EN' 
                 ? 'Agential AI Middleware for UHNWI. Zero friction journeys across Aviation, Maritime, Stay, and Ground.'
                 : lang === 'ES'
@@ -537,7 +537,7 @@ export default function App() {
                 <h2 className="text-4xl md:text-5xl font-serif">{plannedExperience.title}</h2>
               </div>
               <div className="text-right">
-                <span className="text-luxury-cream/40 text-sm block mb-1">
+                <span className="text-luxury-black/40 text-sm block mb-1">
                   {lang === 'EN' ? 'Total Investment' : lang === 'ES' ? 'Inversión Total' : 'Investimento Total'} (incl. {plannedExperience.managementFee} {lang === 'EN' ? 'fee' : lang === 'ES' ? 'tarifa' : 'taxa'})
                 </span>
                 <span className="text-3xl font-light text-gold">{plannedExperience.estimatedTotal}</span>
@@ -562,7 +562,7 @@ export default function App() {
                           {lang === 'EN' ? key : lang === 'ES' ? (key === 'stay' ? 'estancia' : key === 'ground' ? 'tierra' : key) : (key === 'stay' ? 'estadia' : key === 'ground' ? 'terra' : key)}
                         </h3>
                       </div>
-                      <p className="text-luxury-cream/70 font-light leading-relaxed">{value}</p>
+                      <p className="text-luxury-black/70 font-light leading-relaxed">{value}</p>
                     </motion.div>
                   );
                 })}
@@ -575,10 +575,10 @@ export default function App() {
                     </h3>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">Level</span>
+                        <span className="text-[10px] text-luxury-black/40 uppercase tracking-widest">Level</span>
                         <span className="text-xs font-bold text-gold">{plannedExperience.securityBrief.level}</span>
                       </div>
-                      <p className="text-xs text-luxury-cream/60 italic leading-relaxed">
+                      <p className="text-xs text-luxury-black/60 italic leading-relaxed">
                         "{plannedExperience.securityBrief.riskAssessment}"
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -629,11 +629,11 @@ export default function App() {
                           {lang === 'EN' ? item.status : lang === 'ES' ? (item.status === 'Auto-Scheduled' ? 'Auto-Programado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendiente') : (item.status === 'Auto-Scheduled' ? 'Auto-Agendado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendente')}
                         </span>
                       </div>
-                      <p className="text-sm font-light text-luxury-cream/90">{item.activity}</p>
+                      <p className="text-sm font-light text-luxury-black/90">{item.activity}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] text-luxury-cream/30 uppercase tracking-tighter">{item.pillar}</span>
-                        <span className="text-[10px] text-luxury-cream/20">•</span>
-                        <span className="text-[10px] text-luxury-cream/30 uppercase tracking-tighter">{item.location}</span>
+                        <span className="text-[10px] text-luxury-black/30 uppercase tracking-tighter">{item.pillar}</span>
+                        <span className="text-[10px] text-luxury-black/20">•</span>
+                        <span className="text-[10px] text-luxury-black/30 uppercase tracking-tighter">{item.location}</span>
                       </div>
                     </div>
                   ))}
@@ -668,7 +668,7 @@ export default function App() {
     ];
 
     return (
-      <div className={`pt-20 flex min-h-screen ${isMissionControl ? 'bg-luxury-black' : ''}`}>
+      <div className={`pt-20 flex min-h-screen ${isMissionControl ? 'bg-luxury-paper' : ''}`}>
         {/* Admin Sidebar */}
         {!isMissionControl && (
           <aside className="w-64 border-r border-white/5 bg-luxury-slate/50 backdrop-blur-md hidden lg:block">
@@ -679,7 +679,7 @@ export default function App() {
                     key={tab.id}
                     onClick={() => setAdminActiveTab(tab.id)}
                     className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all ${
-                      adminActiveTab === tab.id ? 'bg-gold text-luxury-black font-bold' : 'text-luxury-cream/40 hover:bg-white/5'
+                      adminActiveTab === tab.id ? 'bg-gold text-luxury-black font-bold' : 'text-luxury-black/40 hover:bg-black/5'
                     }`}
                   >
                     <tab.icon size={18} />
@@ -706,7 +706,7 @@ export default function App() {
         {/* Admin Content */}
         <div className={`flex-1 overflow-y-auto p-8 lg:p-12 custom-scrollbar ${isMissionControl ? 'max-w-none' : ''}`}>
           {isMissionControl && (
-            <div className="fixed inset-0 z-[200] bg-luxury-black p-8 overflow-y-auto custom-scrollbar">
+            <div className="fixed inset-0 z-[200] bg-luxury-paper p-8 overflow-y-auto custom-scrollbar text-luxury-black">
               <div className="flex justify-between items-center mb-12">
                 <div className="flex items-center gap-6">
                   <div className="p-4 bg-red-500/10 text-red-500 rounded-3xl border border-red-500/20">
@@ -776,16 +776,21 @@ export default function App() {
 
   const renderProviderView = () => (
     <div className="pt-24 px-6 max-w-7xl mx-auto pb-20">
-      <AssetManagement assets={MOCK_ASSETS.filter(a => a.providerId === 'P1')} lang={lang} />
+      <AssetManagement 
+        assets={assets.filter(a => a.providerId === 'P1')} 
+        lang={lang} 
+        onAddAsset={(newAsset) => setAssets(prev => [newAsset, ...prev])}
+        isProvider={true}
+      />
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-luxury-black selection:bg-gold/30">
+    <div className="min-h-screen bg-luxury-paper text-luxury-black selection:bg-gold/30">
       {!user ? renderAuth() : (
         <>
           {/* Navigation */}
-          <nav className="fixed top-0 w-full z-50 glass-panel border-none bg-black/20">
+          <nav className="fixed top-0 w-full z-50 glass-panel border-none">
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
@@ -888,7 +893,7 @@ export default function App() {
                   <div className="flex justify-start">
                     <div className="glass-panel p-5 rounded-3xl rounded-tl-none flex items-center gap-3">
                       <Loader2 size={16} className="animate-spin text-gold" />
-                      <span className="text-xs text-luxury-cream/50 italic">
+                      <span className="text-xs text-luxury-black/50 italic">
                         {lang === 'EN' ? 'Orchestrating 360° pillars...' : lang === 'ES' ? 'Orquestando pilares 360°...' : 'Orquestrando pilares 360°...'}
                       </span>
                     </div>
@@ -932,7 +937,7 @@ export default function App() {
               </div>
               <span className="font-serif text-xl tracking-widest uppercase">Karibbean Luxury Operators</span>
             </div>
-            <p className="text-luxury-cream/40 font-light max-w-sm leading-relaxed">
+            <p className="text-luxury-black/40 font-light max-w-sm leading-relaxed">
               {lang === 'EN' 
                 ? "The world's first AI-driven marketplace for UHNWI. Redefining luxury through agential orchestration."
                 : lang === 'ES'
@@ -944,7 +949,7 @@ export default function App() {
             <h4 className="font-serif text-lg mb-6">
               {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
             </h4>
-            <ul className="space-y-4 text-sm text-luxury-cream/40 font-light">
+            <ul className="space-y-4 text-sm text-luxury-black/40 font-light">
               <li><button onClick={() => setViewMode('CLIENT')} className="hover:text-gold">
                 {lang === 'EN' ? 'Client Panel' : lang === 'ES' ? 'Panel de Cliente' : 'Painel do Cliente'}
               </button></li>
@@ -960,7 +965,7 @@ export default function App() {
             <h4 className="font-serif text-lg mb-6">
               {lang === 'EN' ? 'Legal' : lang === 'ES' ? 'Legal' : 'Legal'}
             </h4>
-            <ul className="space-y-4 text-sm text-luxury-cream/40 font-light">
+            <ul className="space-y-4 text-sm text-luxury-black/40 font-light">
               <li><a href="#" className="hover:text-gold">
                 {lang === 'EN' ? 'Privacy Policy' : lang === 'ES' ? 'Política de Privacidad' : 'Política de Privacidade'}
               </a></li>
@@ -974,7 +979,7 @@ export default function App() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-xs text-luxury-cream/20 uppercase tracking-widest">
+          <span className="text-xs text-luxury-black/20 uppercase tracking-widest">
             © 2026 Karibbean Luxury Operators. {lang === 'EN' ? 'All rights reserved.' : lang === 'ES' ? 'Todos los derechos reservados.' : 'Todos os direitos reservados.'}
           </span>
         </div>

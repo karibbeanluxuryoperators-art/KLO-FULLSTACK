@@ -21,6 +21,7 @@ export interface BaseAsset {
   pricePerUnit: string;
   capacity: number;
   image?: string;
+  gallery?: string[];
   videoUrl?: string;
   description?: string;
   contactName?: string;
