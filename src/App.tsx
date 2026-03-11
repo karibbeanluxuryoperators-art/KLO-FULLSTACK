@@ -20,6 +20,8 @@ import { AgentialRuleEngine } from './components/AgentialRuleEngine';
 import { PredictiveAnalytics } from './components/PredictiveAnalytics';
 import { FinancialEngine } from './components/FinancialEngine';
 import { CommunicationHub } from './components/CommunicationHub';
+import { LeadCaptureForm } from './components/LeadCaptureForm';
+import { LeadsManagement } from './components/LeadsManagement';
 import { Asset, Booking, AdminStats, ViewMode, Language, Incident, GuestProfile, AgentialRule, MaintenanceAlert, FinancialDeepDive, ChatMessage } from './types';
 
 // Mock Data for expanded operations
@@ -240,6 +242,7 @@ export default function App() {
   const [showMarketplace, setShowMarketplace] = useState(false);
   const [agentialRules, setAgentialRules] = useState<AgentialRule[]>(MOCK_RULES);
   const [guestProfiles, setGuestProfiles] = useState<GuestProfile[]>(MOCK_GUEST_PROFILES);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
   
   const chatEndRef = useRef<HTMLDivElement>(null);
   const brain = useRef<KLOBrain | null>(null);
@@ -261,6 +264,14 @@ export default function App() {
       fetch('/api/admin/stats')
         .then(res => res.json())
         .then(data => setAdminStats(data));
+    }
+
+    // Check for booking success in URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('booking') === 'success') {
+      setBookingSuccess(true);
+      setShowMarketplace(true);
+      window.history.replaceState({}, '', window.location.pathname);
     }
   }, [viewMode, lang, user]);
 
@@ -442,6 +453,7 @@ export default function App() {
         <Marketplace 
           assets={assets} 
           lang={lang} 
+          initialSuccess={bookingSuccess}
           onBookAssets={(selectedAssets) => {
             setChatOpen(true);
             const assetNames = selectedAssets.map(a => a.name).join(', ');
@@ -665,6 +677,7 @@ export default function App() {
       { id: 'Comms', icon: MessageSquare, label: lang === 'EN' ? 'Secure Hub' : 'Hub Seguro' },
       { id: 'Assets', icon: Package, label: lang === 'EN' ? 'Assets' : lang === 'ES' ? 'Activos' : 'Ativos' },
       { id: 'Clients', icon: Briefcase, label: lang === 'EN' ? 'Clients' : lang === 'ES' ? 'Clientes' : 'Clientes' },
+      { id: 'Leads', icon: Users, label: lang === 'EN' ? 'Leads' : lang === 'ES' ? 'Leads' : 'Leads' },
     ];
 
     return (
@@ -775,6 +788,10 @@ export default function App() {
                 />
               )}
 
+              {adminActiveTab === 'Leads' && (
+                <LeadsManagement lang={lang} />
+              )}
+
             </>
           )}
         </div>
@@ -877,6 +894,7 @@ export default function App() {
       )}
 
       {/* AI Concierge Drawer */}
+      <LeadCaptureForm lang={lang} />
       <AnimatePresence>
         {chatOpen && (
           <>

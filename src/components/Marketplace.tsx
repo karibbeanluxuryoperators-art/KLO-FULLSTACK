@@ -12,10 +12,11 @@ import { MiniCalendar } from './MiniCalendar';
 interface MarketplaceProps {
   assets: Asset[];
   lang: Language;
+  initialSuccess?: boolean;
   onBookAssets: (assets: Asset[]) => void;
 }
 
-export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAssets }) => {
+export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, initialSuccess, onBookAssets }) => {
   const [activeTab, setActiveTab] = useState<AssetType | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
@@ -32,6 +33,13 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
     specialRequests: '',
     pax: 1
   });
+
+  React.useEffect(() => {
+    if (initialSuccess) {
+      setIsBookingModalOpen(true);
+      setBookingStep(3);
+    }
+  }, [initialSuccess]);
 
   const t = {
     EN: {

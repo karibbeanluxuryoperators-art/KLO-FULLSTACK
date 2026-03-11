@@ -173,3 +173,14 @@ export interface AdminStats {
   maintenanceAlerts: MaintenanceAlert[];
   financials: FinancialDeepDive;
 }
+
+export interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  status: 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'LOST';
+  timestamp: string;
+  source: 'WHATSAPP' | 'MARKETPLACE' | 'CONCIERGE';
+}

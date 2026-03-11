@@ -44,6 +44,35 @@ async function startServer() {
     }
   });
 
+  // Mock Leads
+  let MOCK_LEADS: any[] = [
+    { id: 'L1', name: 'Julian Casablancas', email: 'julian@thestrokes.com', phone: '+1 212 555 0192', message: 'Interested in a private villa in Anguilla for April.', status: 'NEW', timestamp: '1h ago', source: 'WHATSAPP' },
+    { id: 'L2', name: 'Sofia Coppola', email: 'sofia@lostintranslation.com', phone: '+1 310 555 0183', message: 'Need a Gulfstream G650 for a trip to Tokyo.', status: 'CONTACTED', timestamp: '3h ago', source: 'CONCIERGE' },
+  ];
+
+  // Leads API
+  app.get("/api/leads", (req, res) => {
+    res.json(MOCK_LEADS);
+  });
+
+  app.post("/api/leads", (req, res) => {
+    const lead = {
+      ...req.body,
+      id: 'L' + (MOCK_LEADS.length + 1),
+      timestamp: 'Just now',
+      status: 'NEW'
+    };
+    MOCK_LEADS = [lead, ...MOCK_LEADS];
+    res.json({ success: true, lead });
+  });
+
+  app.patch("/api/leads/:id", (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+    MOCK_LEADS = MOCK_LEADS.map(l => l.id === id ? { ...l, ...updates } : l);
+    res.json({ success: true });
+  });
+
   // API Routes
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
@@ -97,7 +126,11 @@ async function startServer() {
   // Stripe Connect: Create Account
   app.post("/api/stripe/connect", async (req, res) => {
     const stripeClient = getStripe();
-    if (!stripeClient) return res.status(503).json({ error: "Stripe not configured" });
+    if (!stripeClient) {
+      // Simulation mode
+      console.log("Stripe not configured. Returning simulated Connect URL.");
+      return res.json({ url: `${req.headers.origin}/provider/stripe-return`, accountId: "acct_simulated_" + Math.random().toString(36).substring(7) });
+    }
 
     try {
       const account = await stripeClient.accounts.create({ type: 'express' });
@@ -116,7 +149,11 @@ async function startServer() {
   // Stripe Checkout Session
   app.post("/api/stripe/create-checkout-session", async (req, res) => {
     const stripeClient = getStripe();
-    if (!stripeClient) return res.status(503).json({ error: "Stripe not configured" });
+    if (!stripeClient) {
+      // Simulation mode
+      console.log("Stripe not configured. Returning simulated Checkout URL.");
+      return res.json({ id: "cs_simulated_" + Math.random().toString(36).substring(7), url: `${req.headers.origin}?booking=success` });
+    }
 
     const { items, successUrl, cancelUrl } = req.body;
 

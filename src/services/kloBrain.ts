@@ -22,6 +22,8 @@ LÓGICA OPERATIVA Y FINANCIERA:
 
 TONO: Sofisticado, extremadamente eficiente, proactivo y centrado en la privacidad absoluta del cliente.`;
 
+const FALLBACK_RESPONSE = "Thank you for your interest in KLO. A concierge will contact you via WhatsApp within 2 hours to orchestrate your experience.";
+
 export interface KLOExperience {
   title: string;
   description: string;
@@ -55,94 +57,116 @@ export class KLOBrain {
   private ai: GoogleGenAI;
 
   constructor() {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) throw new Error("GEMINI_API_KEY is missing");
-    this.ai = new GoogleGenAI({ apiKey });
+    this.ai = new GoogleGenAI({});
   }
 
   async planExperience(prompt: string, lang: 'EN' | 'ES' | 'PT' = 'EN'): Promise<KLOExperience> {
-    const response = await this.ai.models.generateContent({
-      model: "gemini-3.1-pro-preview",
-      contents: `[Language: ${lang}] ${prompt}`,
-      config: {
-        systemInstruction: `${SYSTEM_INSTRUCTION} 
-        ADDITIONAL OPERATIONAL DIRECTIVES:
-        1. Calculate "Time To Execute" (TTE) for every logistics leg (e.g., "45m for ground transfer", "2h for pre-flight prep").
-        2. Generate a comprehensive "Security Brief" based on the client's profile and destination.
-        3. Ensure all 5 pillars are considered: Staffing, Planes, Boats, Cars, Lodging.`,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            title: { type: Type.STRING },
-            description: { type: Type.STRING },
-            pillars: {
-              type: Type.OBJECT,
-              properties: {
-                air: { type: Type.STRING },
-                sea: { type: Type.STRING },
-                stay: { type: Type.STRING },
-                land: { type: Type.STRING },
-                staff: { type: Type.STRING },
-              }
-            },
-            estimatedTotal: { type: Type.STRING },
-            managementFee: { type: Type.STRING },
-            legalRequirements: { 
-              type: Type.ARRAY, 
-              items: { type: Type.STRING } 
-            },
-            securityBrief: {
-              type: Type.OBJECT,
-              properties: {
-                level: { type: Type.STRING, enum: ['STANDARD', 'HIGH', 'ELITE'] },
-                riskAssessment: { type: Type.STRING },
-                protocols: { type: Type.ARRAY, items: { type: Type.STRING } },
-                emergencyContacts: {
-                  type: Type.ARRAY,
-                  items: {
-                    type: Type.OBJECT,
-                    properties: {
-                      name: { type: Type.STRING },
-                      phone: { type: Type.STRING },
-                      role: { type: Type.STRING }
+    try {
+      const response = await this.ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: `[Language: ${lang}] ${prompt}`,
+        config: {
+          systemInstruction: `${SYSTEM_INSTRUCTION} 
+          ADDITIONAL OPERATIONAL DIRECTIVES:
+          1. Calculate "Time To Execute" (TTE) for every logistics leg (e.g., "45m for ground transfer", "2h for pre-flight prep").
+          2. Generate a comprehensive "Security Brief" based on the client's profile and destination.
+          3. Ensure all 5 pillars are considered: Staffing, Planes, Boats, Cars, Lodging.`,
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              title: { type: Type.STRING },
+              description: { type: Type.STRING },
+              pillars: {
+                type: Type.OBJECT,
+                properties: {
+                  air: { type: Type.STRING },
+                  sea: { type: Type.STRING },
+                  stay: { type: Type.STRING },
+                  land: { type: Type.STRING },
+                  staff: { type: Type.STRING },
+                }
+              },
+              estimatedTotal: { type: Type.STRING },
+              managementFee: { type: Type.STRING },
+              legalRequirements: { 
+                type: Type.ARRAY, 
+                items: { type: Type.STRING } 
+              },
+              securityBrief: {
+                type: Type.OBJECT,
+                properties: {
+                  level: { type: Type.STRING, enum: ['STANDARD', 'HIGH', 'ELITE'] },
+                  riskAssessment: { type: Type.STRING },
+                  protocols: { type: Type.ARRAY, items: { type: Type.STRING } },
+                  emergencyContacts: {
+                    type: Type.ARRAY,
+                    items: {
+                      type: Type.OBJECT,
+                      properties: {
+                        name: { type: Type.STRING },
+                        phone: { type: Type.STRING },
+                        role: { type: Type.STRING }
+                      }
                     }
                   }
                 }
+              },
+              itinerary: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    time: { type: Type.STRING },
+                    activity: { type: Type.STRING },
+                    pillar: { type: Type.STRING, enum: ['AIR', 'SEA', 'STAY', 'LAND', 'STAFF'] },
+                    status: { type: Type.STRING, enum: ['Confirmed', 'Pending', 'Auto-Scheduled'] },
+                    tte: { type: Type.STRING },
+                    location: { type: Type.STRING }
+                  },
+                  required: ["time", "activity", "pillar", "status", "tte", "location"]
+                }
               }
             },
-            itinerary: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  time: { type: Type.STRING },
-                  activity: { type: Type.STRING },
-                  pillar: { type: Type.STRING, enum: ['AIR', 'SEA', 'STAY', 'LAND', 'STAFF'] },
-                  status: { type: Type.STRING, enum: ['Confirmed', 'Pending', 'Auto-Scheduled'] },
-                  tte: { type: Type.STRING },
-                  location: { type: Type.STRING }
-                },
-                required: ["time", "activity", "pillar", "status", "tte", "location"]
-              }
-            }
-          },
-          required: ["title", "description", "pillars", "estimatedTotal", "managementFee", "legalRequirements", "securityBrief", "itinerary"]
+            required: ["title", "description", "pillars", "estimatedTotal", "managementFee", "legalRequirements", "securityBrief", "itinerary"]
+          }
         }
-      }
-    });
+      });
 
-    return JSON.parse(response.text || "{}");
+      return JSON.parse(response.text || "{}");
+    } catch (error) {
+      console.error("AI planExperience failed:", error);
+      return {
+        title: "Concierge Orchestration",
+        description: FALLBACK_RESPONSE,
+        pillars: {},
+        estimatedTotal: "TBD",
+        managementFee: "TBD",
+        legalRequirements: ["Manual review required"],
+        securityBrief: {
+          level: 'STANDARD',
+          riskAssessment: "Manual assessment required due to system offline.",
+          protocols: ["Direct communication with concierge"],
+          emergencyContacts: []
+        },
+        itinerary: []
+      };
+    }
   }
 
   async chat(message: string, lang: 'EN' | 'ES' | 'PT' = 'EN', history: any[] = []) {
-    const chat = this.ai.chats.create({
-      model: "gemini-3.1-pro-preview",
-      config: {
-        systemInstruction: `${SYSTEM_INSTRUCTION} [Current Language: ${lang}]`,
-      }
-    });
+    try {
+      const chat = this.ai.chats.create({
+        model: "gemini-2.0-flash",
+        config: {
+          systemInstruction: `${SYSTEM_INSTRUCTION} [Current Language: ${lang}]`,
+        }
+      });
 
-    return await chat.sendMessage({ message });
+      return await chat.sendMessage({ message });
+    } catch (error) {
+      console.error("AI chat failed:", error);
+      return { text: FALLBACK_RESPONSE };
+    }
   }
 }
