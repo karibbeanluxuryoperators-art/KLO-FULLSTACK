@@ -57,7 +57,7 @@ export class KLOBrain {
   private ai: GoogleGenAI;
 
   constructor() {
-    this.ai = new GoogleGenAI({});
+    this.ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   }
 
   async planExperience(prompt: string, lang: 'EN' | 'ES' | 'PT' = 'EN'): Promise<KLOExperience> {

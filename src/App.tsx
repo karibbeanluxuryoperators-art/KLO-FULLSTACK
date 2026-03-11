@@ -22,6 +22,8 @@ import { FinancialEngine } from './components/FinancialEngine';
 import { CommunicationHub } from './components/CommunicationHub';
 import { LeadCaptureForm } from './components/LeadCaptureForm';
 import { LeadsManagement } from './components/LeadsManagement';
+import { SuppliersManagement } from './components/SuppliersManagement';
+import { SupplierPortal } from './components/SupplierPortal';
 import { Asset, Booking, AdminStats, ViewMode, Language, Incident, GuestProfile, AgentialRule, MaintenanceAlert, FinancialDeepDive, ChatMessage } from './types';
 
 // Mock Data for expanded operations
@@ -248,6 +250,9 @@ export default function App() {
   const brain = useRef<KLOBrain | null>(null);
 
   useEffect(() => {
+    if (window.location.pathname === '/supplier') {
+      setViewMode('SUPPLIER');
+    }
     brain.current = new KLOBrain();
     // Initial greeting
     setChatHistory([{
@@ -258,6 +263,16 @@ export default function App() {
         ? 'Bienvenido a KLO. Soy su Núcleo de Orquestación. ¿Cómo puedo organizar su próxima experiencia de ultra-lujo 360°?'
         : 'Bem-vindo à KLO. Sou o seu Núcleo de Orquestração. Como posso organizar sua próxima experiência de ultra-luxo 360°?'
     }]);
+
+    // Fetch Assets from API
+    fetch('/api/assets')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          setAssets(data);
+        }
+      })
+      .catch(err => console.error('Failed to fetch assets', err));
 
     // Fetch Admin Stats if in admin mode and logged in
     if (viewMode === 'ADMIN' && user?.role === 'ADMIN') {
@@ -678,6 +693,7 @@ export default function App() {
       { id: 'Assets', icon: Package, label: lang === 'EN' ? 'Assets' : lang === 'ES' ? 'Activos' : 'Ativos' },
       { id: 'Clients', icon: Briefcase, label: lang === 'EN' ? 'Clients' : lang === 'ES' ? 'Clientes' : 'Clientes' },
       { id: 'Leads', icon: Users, label: lang === 'EN' ? 'Leads' : lang === 'ES' ? 'Leads' : 'Leads' },
+      { id: 'Suppliers', icon: UserCheck, label: lang === 'EN' ? 'Suppliers' : lang === 'ES' ? 'Proveedores' : 'Fornecedores' },
     ];
 
     return (
@@ -792,6 +808,16 @@ export default function App() {
                 <LeadsManagement lang={lang} />
               )}
 
+              {adminActiveTab === 'Suppliers' && (
+                <SuppliersManagement 
+                  lang={lang} 
+                  onViewAssets={(supplierId) => {
+                    setAdminActiveTab('Assets');
+                    // We could filter assets here if AssetManagement supported it
+                  }} 
+                />
+              )}
+
             </>
           )}
         </div>
@@ -818,9 +844,13 @@ export default function App() {
     </div>
   );
 
+  const renderSupplierView = () => (
+    <SupplierPortal />
+  );
+
   return (
     <div className="min-h-screen bg-luxury-paper text-luxury-black selection:bg-gold/30">
-      {!user ? renderAuth() : (
+      {viewMode === 'SUPPLIER' ? renderSupplierView() : !user ? renderAuth() : (
         <>
           {/* Navigation */}
           <nav className="fixed top-0 w-full z-50 glass-panel border-none">
@@ -859,6 +889,16 @@ export default function App() {
                   {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
                 </button>
                 
+                <button 
+                  onClick={() => {
+                    window.history.pushState({}, '', '/supplier');
+                    setViewMode('SUPPLIER');
+                  }} 
+                  className="hover:text-gold transition-colors text-luxury-black/60"
+                >
+                  {lang === 'EN' ? 'Become a Partner' : lang === 'ES' ? 'Ser Socio' : 'Ser Parceiro'}
+                </button>
+
                 <div className="w-[1px] h-4 bg-white/20 mx-2" />
                 <button 
                   onClick={() => {
@@ -889,6 +929,7 @@ export default function App() {
             {viewMode === 'CLIENT' && renderClientView()}
             {viewMode === 'ADMIN' && renderAdminView()}
             {viewMode === 'PROVIDER' && renderProviderView()}
+            {viewMode === 'SUPPLIER' && renderSupplierView()}
           </main>
         </>
       )}
@@ -992,6 +1033,12 @@ export default function App() {
               </button></li>
               <li><button onClick={() => setViewMode('PROVIDER')} className="hover:text-gold">
                 {lang === 'EN' ? 'Partner Portal' : lang === 'ES' ? 'Portal de Socios' : 'Portal de Parceiros'}
+              </button></li>
+              <li><button onClick={() => {
+                window.history.pushState({}, '', '/supplier');
+                setViewMode('SUPPLIER');
+              }} className="hover:text-gold">
+                {lang === 'EN' ? 'Supplier Portal' : lang === 'ES' ? 'Portal de Proveedores' : 'Portal do Fornecedor'}
               </button></li>
             </ul>
           </div>

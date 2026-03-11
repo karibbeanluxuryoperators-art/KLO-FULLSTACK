@@ -1,5 +1,5 @@
 
-export type ViewMode = 'CLIENT' | 'ADMIN' | 'PROVIDER';
+export type ViewMode = 'CLIENT' | 'ADMIN' | 'PROVIDER' | 'SUPPLIER';
 export type Language = 'EN' | 'ES' | 'PT';
 
 export interface User {

@@ -6,7 +6,7 @@ import {
   Star, MapPin, Shield, CheckCircle2,
   AlertCircle, Settings, Image as ImageIcon,
   Video as VideoIcon, Trash2, Zap, Loader2,
-  TrendingUp, X, Sparkles, ArrowRight, DollarSign
+  TrendingUp, X, Sparkles, ArrowRight, DollarSign, Calendar
 } from 'lucide-react';
 import { Asset, AssetType, Language } from '../types';
 import { MiniCalendar } from './MiniCalendar';
@@ -25,6 +25,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
   const [showCrossSell, setShowCrossSell] = useState(false);
   const [dispatchingId, setDispatchingId] = useState<string | null>(null);
+  const [syncingId, setSyncingId] = useState<string | null>(null);
   const [newAsset, setNewAsset] = useState<Partial<Asset>>({
     type: 'STAFF',
     status: 'AVAILABLE',
@@ -241,6 +242,23 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       setDispatchingId(null);
       alert(lang === 'EN' ? 'Vianco Autonomous Dispatch Initiated' : 'Despacho Autónomo Vianco Iniciado');
     }, 2000);
+  };
+
+  const handleSyncCalendar = async (id: string) => {
+    setSyncingId(id);
+    try {
+      const res = await fetch(`/api/calendar/sync/${id}`);
+      const data = await res.json();
+      if (data.success) {
+        alert(lang === 'EN' ? `Synced ${data.count} dates from Google Calendar` : `Sincronizadas ${data.count} fechas de Google Calendar`);
+      } else {
+        alert(lang === 'EN' ? 'Calendar sync failed' : 'Sincronización de calendario fallida');
+      }
+    } catch (error) {
+      console.error('Sync failed', error);
+    } finally {
+      setSyncingId(null);
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -646,6 +664,12 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   <span className="text-[10px] text-white/30 uppercase tracking-widest">Rate</span>
                   <span className="text-xs font-bold text-gold">{asset.pricePerUnit}</span>
                 </div>
+                {(asset as any).supplier_name && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-white/30 uppercase tracking-widest">Partner</span>
+                    <span className="text-[10px] font-medium text-white/60">{(asset as any).supplier_name}</span>
+                  </div>
+                )}
               </div>
 
               <div className="mt-6 pt-6 border-t border-white/5">
@@ -690,6 +714,15 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-2xl text-[10px] uppercase tracking-widest font-bold hover:bg-white/10 transition-all"
                 >
                   {t.edit}
+                </button>
+
+                <button 
+                  onClick={() => handleSyncCalendar(asset.id)}
+                  disabled={syncingId === asset.id}
+                  className="w-full py-3 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[10px] uppercase tracking-widest font-bold hover:bg-gold hover:text-luxury-black transition-all flex items-center justify-center gap-2"
+                >
+                  {syncingId === asset.id ? <Loader2 className="animate-spin" size={12} /> : <Calendar size={12} />}
+                  Sync Calendar
                 </button>
               </div>
             </motion.div>

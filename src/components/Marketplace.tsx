@@ -16,10 +16,12 @@ interface MarketplaceProps {
   onBookAssets: (assets: Asset[]) => void;
 }
 
-export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, initialSuccess, onBookAssets }) => {
+export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets, lang, initialSuccess, onBookAssets }) => {
+  const [assets, setAssets] = useState<Asset[]>(initialAssets);
   const [activeTab, setActiveTab] = useState<AssetType | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+  const [assetAvailability, setAssetAvailability] = useState<string[]>([]);
   const [cart, setCart] = useState<Asset[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -33,6 +35,33 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, initialS
     specialRequests: '',
     pax: 1
   });
+
+  React.useEffect(() => {
+    fetch('/api/assets?status=ACTIVE')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          setAssets(data);
+        }
+      })
+      .catch(err => console.error('Failed to fetch active assets', err));
+  }, []);
+
+  React.useEffect(() => {
+    if (selectedAsset) {
+      fetch(`/api/assets/${selectedAsset.id}/availability`)
+        .then(res => res.json())
+        .then(data => {
+          const blockedDates = data
+            .filter((a: any) => a.status === 'BLOCKED')
+            .map((a: any) => a.date);
+          setAssetAvailability(blockedDates);
+        })
+        .catch(err => console.error('Failed to fetch availability', err));
+    } else {
+      setAssetAvailability([]);
+    }
+  }, [selectedAsset]);
 
   React.useEffect(() => {
     if (initialSuccess) {
@@ -605,7 +634,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, initialS
               <h3 className="text-2xl font-serif mb-6 flex items-center gap-3 text-white">
                 <Calendar size={24} className="text-gold" /> {t.availability}
               </h3>
-              <MiniCalendar bookedDates={asset.bookedDates || []} lang={lang} />
+              <MiniCalendar bookedDates={assetAvailability.length > 0 ? assetAvailability : (asset.bookedDates || [])} lang={lang} />
               
               <button 
                 onClick={() => {
