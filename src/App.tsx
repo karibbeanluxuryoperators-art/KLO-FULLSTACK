@@ -8,7 +8,7 @@ import {
   TrendingUp, Activity, Package, ExternalLink, Timer, AlertTriangle,
   Zap, DollarSign
 } from 'lucide-react';
-import { KLOBrain, KLOExperience } from './services/kloBrain';
+import { KLOExperience } from './services/kloBrain';
 import { PILLARS, LUXURY_IMAGES } from './constants';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { OperationalCommandCenter } from './components/OperationalCommandCenter';
@@ -245,15 +245,14 @@ export default function App() {
   const [agentialRules, setAgentialRules] = useState<AgentialRule[]>(MOCK_RULES);
   const [guestProfiles, setGuestProfiles] = useState<GuestProfile[]>(MOCK_GUEST_PROFILES);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const brain = useRef<KLOBrain | null>(null);
 
   useEffect(() => {
     if (window.location.pathname === '/supplier') {
       setViewMode('SUPPLIER');
     }
-    brain.current = new KLOBrain();
     // Initial greeting
     setChatHistory([{
       role: 'assistant',
@@ -307,6 +306,7 @@ export default function App() {
       if (data.success) {
         setUser(data.user);
         setViewMode(data.user.role);
+        setShowAuth(false);
       } else {
         setAuthError(data.message);
       }
@@ -396,7 +396,7 @@ export default function App() {
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!message.trim() || !brain.current) return;
+    if (!message.trim()) return;
 
     const userMsg = message;
     setMessage('');
@@ -404,22 +404,33 @@ export default function App() {
     setIsPlanning(true);
 
     try {
-      if (userMsg.toLowerCase().includes('plan') || userMsg.toLowerCase().includes('quiero') || userMsg.toLowerCase().includes('necesito')) {
-        const plan = await brain.current.planExperience(userMsg, lang);
-        setPlannedExperience(plan);
+      const isPlanRequest = userMsg.toLowerCase().includes('plan') || userMsg.toLowerCase().includes('quiero') || userMsg.toLowerCase().includes('necesito');
+      
+      const res = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message: userMsg, 
+          lang, 
+          mode: isPlanRequest ? 'plan' : 'chat' 
+        })
+      });
+      const data = await res.json();
+
+      if (isPlanRequest && data.plan) {
+        setPlannedExperience(data.plan);
         setChatHistory(prev => [...prev, { 
           role: 'assistant', 
           content: lang === 'EN' 
-            ? `I have orchestrated a bespoke 360° experience: "${plan.title}". Management fee of ${plan.managementFee} has been calculated to protect unit economics.`
+            ? `I have orchestrated a bespoke 360° experience: "${data.plan.title}". Management fee of ${data.plan.managementFee} has been calculated to protect unit economics.`
             : lang === 'ES'
-            ? `He orquestado una experiencia 360° a medida: "${plan.title}". Se ha calculado una tarifa de gestión de ${plan.managementFee} para proteger la economía de la unidad.`
-            : `Orquestrei uma experiência 360° sob medida: "${plan.title}". A taxa de gerenciamento de ${plan.managementFee} foi calculada para proteger a economia da unidade.`
+            ? `He orquestado una experiencia 360° a medida: "${data.plan.title}". Se ha calculado una tarifa de gestión de ${data.plan.managementFee} para proteger la economía de la unidad.`
+            : `Orquestrei uma experiência 360° sob medida: "${data.plan.title}". A taxa de gerenciamento de ${data.plan.managementFee} foi calculada para proteger a economia da unidade.`
         }]);
       } else {
-        const response = await brain.current.chat(userMsg, lang);
         setChatHistory(prev => [...prev, { 
           role: 'assistant', 
-          content: response.text || (lang === 'EN' ? "I'm processing your request." : lang === 'ES' ? "Estoy procesando su solicitud." : "Estou processando sua solicitação.") 
+          content: data.text || (lang === 'EN' ? "I'm processing your request." : lang === 'ES' ? "Estoy procesando su solicitud." : "Estou processando sua solicitação.") 
         }]);
       }
     } catch (error) {
@@ -850,7 +861,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-luxury-paper text-luxury-black selection:bg-gold/30">
-      {viewMode === 'SUPPLIER' ? renderSupplierView() : !user ? renderAuth() : (
+      {viewMode === 'SUPPLIER' ? renderSupplierView() : (showAuth && !user) ? renderAuth() : (
         <>
           {/* Navigation */}
           <nav className="fixed top-0 w-full z-50 glass-panel border-none">
@@ -866,12 +877,12 @@ export default function App() {
               </div>
               
               <div className="hidden md:flex items-center gap-8 text-[10px] uppercase tracking-[0.2em] font-light">
-                {user.role === 'ADMIN' && (
+                {user?.role === 'ADMIN' && (
                   <button onClick={() => setViewMode('ADMIN')} className={`hover:text-gold transition-colors ${viewMode === 'ADMIN' ? 'text-gold' : ''}`}>
                     {lang === 'EN' ? 'Admin Portal' : lang === 'ES' ? 'Portal Admin' : 'Portal Admin'}
                   </button>
                 )}
-                {user.role === 'PROVIDER' && (
+                {user?.role === 'PROVIDER' && (
                   <button onClick={() => setViewMode('PROVIDER')} className={`hover:text-gold transition-colors ${viewMode === 'PROVIDER' ? 'text-gold' : ''}`}>
                     {lang === 'EN' ? 'Provider Portal' : lang === 'ES' ? 'Portal Proveedor' : 'Portal do Provedor'}
                   </button>
@@ -900,6 +911,13 @@ export default function App() {
                 </button>
 
                 <div className="w-[1px] h-4 bg-white/20 mx-2" />
+                
+                {!user && (
+                  <button onClick={() => setShowAuth(true)} className="hover:text-gold transition-colors">
+                    {lang === 'EN' ? 'Sign In' : lang === 'ES' ? 'Iniciar Sesión' : 'Entrar'}
+                  </button>
+                )}
+
                 <button 
                   onClick={() => {
                     if (lang === 'EN') setLang('ES');
@@ -910,9 +928,11 @@ export default function App() {
                 >
                   {lang}
                 </button>
-                <button onClick={handleLogout} className="hover:text-red-400 transition-colors">
-                  {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
-                </button>
+                {user && (
+                  <button onClick={handleLogout} className="hover:text-red-400 transition-colors">
+                    {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
+                  </button>
+                )}
                 <button onClick={() => setChatOpen(true)} className="px-6 py-2 border border-gold/50 rounded-full hover:bg-gold hover:text-luxury-black transition-all duration-300">
                   {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
                 </button>

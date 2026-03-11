@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 import Database from "better-sqlite3";
 import crypto from "crypto";
+import { KLOBrain } from './src/services/kloBrain.ts';
 
 dotenv.config();
 
@@ -163,10 +164,10 @@ async function startServer() {
   app.get("/api/suppliers/:id", (req, res) => {
     const { id } = req.params;
     try {
-      const supplier = db.prepare("SELECT * FROM suppliers WHERE id = ?").get() as any;
+      const supplier = db.prepare("SELECT * FROM suppliers WHERE id = ?").get(id) as any;
       if (!supplier) return res.status(404).json({ error: "Supplier not found" });
       
-      const assets = db.prepare("SELECT * FROM assets WHERE supplier_id = ?").all();
+      const assets = db.prepare("SELECT * FROM assets WHERE supplier_id = ?").all(id);
       res.json({ ...supplier, assets });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -363,10 +364,10 @@ async function startServer() {
   }
 
   async function syncSupplierCalendar(supplier_id: string) {
-    const supplier = db.prepare("SELECT * FROM suppliers WHERE id = ?").get() as any;
+    const supplier = db.prepare("SELECT * FROM suppliers WHERE id = ?").get(supplier_id) as any;
     if (!supplier || (!supplier.google_access_token && !GOOGLE_CLIENT_ID)) return 0;
 
-    const assets = db.prepare("SELECT * FROM assets WHERE supplier_id = ?").all() as any[];
+    const assets = db.prepare("SELECT * FROM assets WHERE supplier_id = ?").all(supplier_id) as any[];
     let totalSynced = 0;
 
     for (const asset of assets) {
@@ -432,9 +433,9 @@ async function startServer() {
   app.get("/api/calendar/sync/:asset_id", async (req, res) => {
     const { asset_id } = req.params;
     try {
-      const asset = db.prepare("SELECT * FROM assets WHERE id = ?").get() as any;
+      const asset = db.prepare("SELECT * FROM assets WHERE id = ?").get(asset_id) as any;
       if (!asset) return res.status(404).json({ error: "Asset not found" });
-      const supplier = db.prepare("SELECT * FROM suppliers WHERE id = ?").get() as any;
+      const supplier = db.prepare("SELECT * FROM suppliers WHERE id = ?").get(asset.supplier_id) as any;
       const synced = await syncAssetCalendar(asset, supplier);
       res.json({ synced });
     } catch (error: any) {
@@ -557,6 +558,29 @@ async function startServer() {
       res.json({ id: session.id, url: session.url });
     } catch (error: any) {
       res.status(400).json({ error: error.message });
+    }
+  });
+
+  // AI Brain Setup
+  const brain = new KLOBrain();
+
+  app.post("/api/ai/chat", async (req, res) => {
+    const { message, lang, mode } = req.body;
+    try {
+      let result;
+      if (mode === 'plan') {
+        result = await brain.planExperience(message, lang || 'EN');
+        res.json({ success: true, plan: result });
+      } else {
+        const response = await brain.chat(message, lang || 'EN');
+        res.json({ success: true, text: response.text });
+      }
+    } catch (error: any) {
+      res.json({ 
+        success: true, 
+        text: "Thank you for your interest in KLO. A concierge from Maria Fernanda's team will contact you via WhatsApp within 2 hours.",
+        plan: null
+      });
     }
   });
 

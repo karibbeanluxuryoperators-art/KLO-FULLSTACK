@@ -54,16 +54,24 @@ export interface KLOExperience {
 }
 
 export class KLOBrain {
-  private ai: GoogleGenAI;
+  private ai: GoogleGenAI | null = null;
 
-  constructor() {
-    this.ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  private getAI(): GoogleGenAI {
+    if (!this.ai) {
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        throw new Error("GEMINI_API_KEY is not defined. Please configure it in the environment.");
+      }
+      this.ai = new GoogleGenAI({ apiKey });
+    }
+    return this.ai;
   }
 
   async planExperience(prompt: string, lang: 'EN' | 'ES' | 'PT' = 'EN'): Promise<KLOExperience> {
     try {
-      const response = await this.ai.models.generateContent({
-        model: "gemini-2.0-flash",
+      const ai = this.getAI();
+      const response = await ai.models.generateContent({
+        model: "gemini-3.1-pro-preview",
         contents: `[Language: ${lang}] ${prompt}`,
         config: {
           systemInstruction: `${SYSTEM_INSTRUCTION} 
@@ -156,8 +164,9 @@ export class KLOBrain {
 
   async chat(message: string, lang: 'EN' | 'ES' | 'PT' = 'EN', history: any[] = []) {
     try {
-      const chat = this.ai.chats.create({
-        model: "gemini-2.0-flash",
+      const ai = this.getAI();
+      const chat = ai.chats.create({
+        model: "gemini-3-flash-preview",
         config: {
           systemInstruction: `${SYSTEM_INSTRUCTION} [Current Language: ${lang}]`,
         }
