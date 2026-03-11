@@ -755,7 +755,15 @@ export default function App() {
                 <AssetManagement 
                   assets={assets} 
                   lang={lang} 
-                  onAddAsset={(newAsset) => setAssets(prev => [newAsset, ...prev])}
+                  onSaveAsset={(updatedAsset) => {
+                    setAssets(prev => {
+                      const exists = prev.find(a => a.id === updatedAsset.id);
+                      if (exists) {
+                        return prev.map(a => a.id === updatedAsset.id ? updatedAsset : a);
+                      }
+                      return [updatedAsset, ...prev];
+                    });
+                  }}
                 />
               )}
               
@@ -779,7 +787,15 @@ export default function App() {
       <AssetManagement 
         assets={assets.filter(a => a.providerId === 'P1')} 
         lang={lang} 
-        onAddAsset={(newAsset) => setAssets(prev => [newAsset, ...prev])}
+        onSaveAsset={(updatedAsset) => {
+          setAssets(prev => {
+            const exists = prev.find(a => a.id === updatedAsset.id);
+            if (exists) {
+              return prev.map(a => a.id === updatedAsset.id ? updatedAsset : a);
+            }
+            return [updatedAsset, ...prev];
+          });
+        }}
         isProvider={true}
       />
     </div>

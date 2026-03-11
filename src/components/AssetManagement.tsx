@@ -6,7 +6,7 @@ import {
   Star, MapPin, Shield, CheckCircle2,
   AlertCircle, Settings, Image as ImageIcon,
   Video as VideoIcon, Trash2, Zap, Loader2,
-  TrendingUp, X, Sparkles, ArrowRight
+  TrendingUp, X, Sparkles, ArrowRight, DollarSign
 } from 'lucide-react';
 import { Asset, AssetType, Language } from '../types';
 import { MiniCalendar } from './MiniCalendar';
@@ -14,14 +14,15 @@ import { MiniCalendar } from './MiniCalendar';
 interface AssetManagementProps {
   assets: Asset[];
   lang: Language;
-  onAddAsset: (asset: Asset) => void;
+  onSaveAsset: (asset: Asset) => void;
   isProvider?: boolean;
 }
 
-export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, onAddAsset, isProvider }) => {
+export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, onSaveAsset, isProvider }) => {
   const [activeType, setActiveType] = useState<AssetType | 'ALL'>('ALL');
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
   const [showCrossSell, setShowCrossSell] = useState(false);
   const [dispatchingId, setDispatchingId] = useState<string | null>(null);
   const [newAsset, setNewAsset] = useState<Partial<Asset>>({
@@ -167,13 +168,41 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const assetToAdd = {
+    const assetToSave = {
       ...newAsset,
-      id: Math.random().toString(36).substr(2, 9),
-      providerId: 'P_NEW'
+      id: selectedAssetId || Math.random().toString(36).substr(2, 9),
+      providerId: newAsset.providerId || 'P_NEW'
     } as Asset;
-    onAddAsset(assetToAdd);
+    onSaveAsset(assetToSave);
+    closeModal();
+  };
+
+  const openModal = (asset?: Asset) => {
+    if (asset) {
+      setNewAsset(asset);
+      setSelectedAssetId(asset.id);
+    } else {
+      setNewAsset({
+        type: 'STAFF',
+        status: 'AVAILABLE',
+        location: '',
+        name: '',
+        pricePerUnit: '',
+        capacity: 1,
+        description: '',
+        contactName: '',
+        image: '',
+        gallery: [],
+        videoUrl: ''
+      });
+      setSelectedAssetId(null);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
     setIsModalOpen(false);
+    setSelectedAssetId(null);
     setNewAsset({
       type: 'STAFF',
       status: 'AVAILABLE',
@@ -266,8 +295,24 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
           <button className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-white/60">
             <Filter size={18} />
           </button>
+          {isProvider && (
+            <button 
+              onClick={async () => {
+                try {
+                  const res = await fetch('/api/stripe/connect', { method: 'POST' });
+                  const data = await res.json();
+                  if (data.url) window.open(data.url, '_blank');
+                } catch (err) {
+                  console.error('Stripe Connect error:', err);
+                }
+              }}
+              className="px-6 py-3 bg-blue-600 text-white rounded-full font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20"
+            >
+              <DollarSign size={16} /> Connect Stripe
+            </button>
+          )}
           <button 
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => openModal()}
             className="px-6 py-3 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-white transition-all shadow-lg shadow-gold/20"
           >
             <Plus size={16} /> {t.addAsset}
@@ -283,7 +328,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
+              onClick={closeModal}
               className="absolute inset-0 bg-luxury-black/80 backdrop-blur-sm"
             />
             <motion.div 
@@ -293,10 +338,10 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-[40px] p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
             >
               <div className="absolute top-0 right-0 p-8 opacity-5 text-white">
-                <Plus size={120} />
+                {selectedAssetId ? <Settings size={120} /> : <Plus size={120} />}
               </div>
 
-              <h3 className="text-3xl font-serif mb-6 text-white">{t.addAsset}</h3>
+              <h3 className="text-3xl font-serif mb-6 text-white">{selectedAssetId ? t.edit : t.addAsset}</h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
@@ -510,7 +555,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 <div className="flex gap-4 pt-4">
                   <button 
                     type="button"
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={closeModal}
                     className="flex-1 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white/10 transition-all text-white"
                   >
                     {t.cancel}
@@ -640,7 +685,10 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   </button>
                 )}
 
-                <button className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-2xl text-[10px] uppercase tracking-widest font-bold hover:bg-white/10 transition-all">
+                <button 
+                  onClick={() => openModal(asset)}
+                  className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-2xl text-[10px] uppercase tracking-widest font-bold hover:bg-white/10 transition-all"
+                >
                   {t.edit}
                 </button>
               </div>

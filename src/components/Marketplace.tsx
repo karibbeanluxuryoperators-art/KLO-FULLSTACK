@@ -4,7 +4,7 @@ import {
   Users, Plane, Ship, Car, Home, 
   Search, Filter, Star, MapPin, 
   ChevronRight, ArrowRight, Shield,
-  Calendar, Clock, DollarSign, ShoppingBag, Trash2, X
+  Calendar, Clock, DollarSign, ShoppingBag, Trash2, X, Loader2
 } from 'lucide-react';
 import { Asset, AssetType, Language } from '../types';
 import { MiniCalendar } from './MiniCalendar';
@@ -21,6 +21,17 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [cart, setCart] = useState<Asset[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [bookingStep, setBookingStep] = useState(1);
+  const [bookingData, setBookingData] = useState({
+    guestName: '',
+    guestEmail: '',
+    startDate: '',
+    endDate: '',
+    specialRequests: '',
+    pax: 1
+  });
 
   const t = {
     EN: {
@@ -50,7 +61,18 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       emptyCart: 'Your journey is currently empty.',
       checkout: 'Orchestrate Journey',
       items: 'Items',
-      total: 'Est. Total'
+      total: 'Est. Total',
+      guestInfo: 'Guest Information',
+      confirmBooking: 'Confirm Booking',
+      next: 'Next Step',
+      prev: 'Previous Step',
+      fullName: 'Full Name',
+      email: 'Email Address',
+      dates: 'Journey Dates',
+      requests: 'Special Requests',
+      pax: 'Number of Guests',
+      success: 'Booking Confirmed',
+      successSub: 'Your luxury journey is being orchestrated.'
     },
     ES: {
       title: 'Mercado de Lujo',
@@ -79,7 +101,18 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       emptyCart: 'Tu viaje está vacío actualmente.',
       checkout: 'Orquestar Viaje',
       items: 'Artículos',
-      total: 'Total Est.'
+      total: 'Total Est.',
+      guestInfo: 'Información del Huésped',
+      confirmBooking: 'Confirmar Reserva',
+      next: 'Siguiente Paso',
+      prev: 'Paso Anterior',
+      fullName: 'Nombre Completo',
+      email: 'Correo Electrónico',
+      dates: 'Fechas del Viaje',
+      requests: 'Solicitudes Especiales',
+      pax: 'Número de Huéspedes',
+      success: 'Reserva Confirmada',
+      successSub: 'Su viaje de lujo está siendo orquestado.'
     },
     PT: {
       title: 'Mercado de Luxo',
@@ -108,7 +141,18 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       emptyCart: 'Sua jornada está vazia no momento.',
       checkout: 'Orquestrar Jornada',
       items: 'Itens',
-      total: 'Total Est.'
+      total: 'Total Est.',
+      guestInfo: 'Informações do Hóspede',
+      confirmBooking: 'Confirmar Reserva',
+      next: 'Próximo Passo',
+      prev: 'Passo Anterior',
+      fullName: 'Nome Completo',
+      email: 'E-mail',
+      dates: 'Datas da Jornada',
+      requests: 'Pedidos Especiais',
+      pax: 'Número de Hóspedes',
+      success: 'Reserva Confirmada',
+      successSub: 'Sua jornada de luxo está sendo orquestrada.'
     }
   }[lang];
 
@@ -145,6 +189,210 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
       return acc + price;
     }, 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   };
+
+  const handleCheckout = () => {
+    setIsCartOpen(false);
+    setIsBookingModalOpen(true);
+    setBookingStep(1);
+  };
+
+  const handleConfirmBooking = async () => {
+    setIsProcessing(true);
+    try {
+      const res = await fetch('/api/stripe/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cart,
+          successUrl: `${window.location.origin}?booking=success`,
+          cancelUrl: `${window.location.origin}?booking=cancel`,
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        // Fallback for mock/no-key
+        onBookAssets(cart);
+        setBookingStep(3);
+        setCart([]);
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      // Fallback
+      onBookAssets(cart);
+      setBookingStep(3);
+      setCart([]);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const renderBookingModal = () => (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={() => bookingStep !== 3 && setIsBookingModalOpen(false)}
+        className="absolute inset-0 bg-luxury-black/90 backdrop-blur-md"
+      />
+      
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-[40px] p-10 shadow-2xl overflow-hidden"
+      >
+        <div className="absolute top-0 right-0 p-10 opacity-5 text-white">
+          <Shield size={160} />
+        </div>
+
+        {bookingStep === 1 && (
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-3xl font-serif text-white mb-2">{t.guestInfo}</h3>
+              <p className="text-xs text-white/40 uppercase tracking-widest">Step 1 of 2: Personal Details</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.fullName}</label>
+                <input 
+                  type="text"
+                  value={bookingData.guestName}
+                  onChange={(e) => setBookingData({...bookingData, guestName: e.target.value})}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  placeholder="John Doe"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.email}</label>
+                <input 
+                  type="email"
+                  value={bookingData.guestEmail}
+                  onChange={(e) => setBookingData({...bookingData, guestEmail: e.target.value})}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  placeholder="john@example.com"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.pax}</label>
+                <input 
+                  type="number"
+                  value={bookingData.pax}
+                  onChange={(e) => setBookingData({...bookingData, pax: parseInt(e.target.value)})}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  min="1"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.dates}</label>
+                <div className="grid grid-cols-2 gap-2">
+                  <input 
+                    type="date"
+                    value={bookingData.startDate}
+                    onChange={(e) => setBookingData({...bookingData, startDate: e.target.value})}
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
+                  />
+                  <input 
+                    type="date"
+                    value={bookingData.endDate}
+                    onChange={(e) => setBookingData({...bookingData, endDate: e.target.value})}
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] uppercase tracking-widest text-white/40">{t.requests}</label>
+              <textarea 
+                value={bookingData.specialRequests}
+                onChange={(e) => setBookingData({...bookingData, specialRequests: e.target.value})}
+                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light h-32 resize-none"
+                placeholder="Any special preferences or security requirements..."
+              />
+            </div>
+
+            <div className="flex gap-4 pt-4">
+              <button 
+                onClick={() => setIsBookingModalOpen(false)}
+                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
+              >
+                {t.back}
+              </button>
+              <button 
+                onClick={() => setBookingStep(2)}
+                disabled={!bookingData.guestName || !bookingData.guestEmail}
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all disabled:opacity-50 disabled:hover:bg-gold"
+              >
+                {t.next}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {bookingStep === 2 && (
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-3xl font-serif text-white mb-2">{t.confirmBooking}</h3>
+              <p className="text-xs text-white/40 uppercase tracking-widest">Step 2 of 2: Review Journey</p>
+            </div>
+
+            <div className="glass-panel p-6 rounded-3xl space-y-4">
+              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                <span className="text-[10px] text-white/40 uppercase tracking-widest">Guest</span>
+                <span className="text-sm text-white font-medium">{bookingData.guestName}</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                <span className="text-[10px] text-white/40 uppercase tracking-widest">Journey</span>
+                <span className="text-sm text-white font-medium">{cart.length} {t.items}</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                <span className="text-[10px] text-white/40 uppercase tracking-widest">Investment</span>
+                <span className="text-xl text-gold font-light">{calculateTotal()}</span>
+              </div>
+            </div>
+
+            <div className="flex gap-4 pt-4">
+              <button 
+                onClick={() => setBookingStep(1)}
+                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
+              >
+                {t.prev}
+              </button>
+              <button 
+                onClick={handleConfirmBooking}
+                disabled={isProcessing}
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all flex items-center justify-center gap-2"
+              >
+                {isProcessing ? <Loader2 className="animate-spin" size={16} /> : t.confirmBooking}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {bookingStep === 3 && (
+          <div className="text-center py-12 space-y-8">
+            <div className="w-24 h-24 bg-gold/20 text-gold rounded-full flex items-center justify-center mx-auto mb-8">
+              <Shield size={48} />
+            </div>
+            <div>
+              <h3 className="text-4xl font-serif text-white mb-4">{t.success}</h3>
+              <p className="text-sm text-white/60 font-light max-w-md mx-auto">{t.successSub}</p>
+            </div>
+            <button 
+              onClick={() => setIsBookingModalOpen(false)}
+              className="px-12 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all"
+            >
+              Return to Marketplace
+            </button>
+          </div>
+        )}
+      </motion.div>
+    </div>
+  );
 
   const renderCart = () => (
     <motion.div
@@ -203,10 +451,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
             <span className="text-2xl font-light text-gold">{calculateTotal()}</span>
           </div>
           <button 
-            onClick={() => {
-              onBookAssets(cart);
-              setIsCartOpen(false);
-            }}
+            onClick={handleCheckout}
             className="w-full py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
           >
             {t.checkout} <ArrowRight size={16} />
@@ -423,6 +668,10 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets, lang, onBookAs
             {renderCart()}
           </>
         )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isBookingModalOpen && renderBookingModal()}
       </AnimatePresence>
 
       <div className="max-w-7xl mx-auto">

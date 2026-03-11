@@ -3,11 +3,21 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+import Stripe from "stripe";
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+let stripe: Stripe | null = null;
+
+const getStripe = () => {
+  if (!stripe && process.env.STRIPE_SECRET_KEY) {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  }
+  return stripe;
+};
 
 async function startServer() {
   const app = express();
@@ -58,14 +68,77 @@ async function startServer() {
   });
 
   // Simulated Stripe Payment Intent (Invisible Payments)
-  app.post("/api/payments/create-intent", (req, res) => {
+  app.post("/api/payments/create-intent", async (req, res) => {
     const { amount, customerId } = req.body;
-    // In a real app, you'd use stripe.paymentIntents.create
-    console.log(`Creating invisible payment intent for customer ${customerId}: ${amount}`);
-    res.json({
-      clientSecret: "pi_simulated_secret_" + Math.random().toString(36).substring(7),
-      status: "requires_confirmation"
-    });
+    const stripeClient = getStripe();
+    
+    if (stripeClient) {
+      try {
+        const paymentIntent = await stripeClient.paymentIntents.create({
+          amount: Math.round(amount * 100),
+          currency: 'usd',
+          customer: customerId,
+          automatic_payment_methods: { enabled: true },
+        });
+        res.json({ clientSecret: paymentIntent.client_secret });
+      } catch (error: any) {
+        res.status(400).json({ error: error.message });
+      }
+    } else {
+      // Fallback for mock
+      console.log(`Creating invisible payment intent for customer ${customerId}: ${amount}`);
+      res.json({
+        clientSecret: "pi_simulated_secret_" + Math.random().toString(36).substring(7),
+        status: "requires_confirmation"
+      });
+    }
+  });
+
+  // Stripe Connect: Create Account
+  app.post("/api/stripe/connect", async (req, res) => {
+    const stripeClient = getStripe();
+    if (!stripeClient) return res.status(503).json({ error: "Stripe not configured" });
+
+    try {
+      const account = await stripeClient.accounts.create({ type: 'express' });
+      const accountLink = await stripeClient.accountLinks.create({
+        account: account.id,
+        refresh_url: `${req.headers.origin}/provider/stripe-refresh`,
+        return_url: `${req.headers.origin}/provider/stripe-return`,
+        type: 'account_onboarding',
+      });
+      res.json({ url: accountLink.url, accountId: account.id });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  // Stripe Checkout Session
+  app.post("/api/stripe/create-checkout-session", async (req, res) => {
+    const stripeClient = getStripe();
+    if (!stripeClient) return res.status(503).json({ error: "Stripe not configured" });
+
+    const { items, successUrl, cancelUrl } = req.body;
+
+    try {
+      const session = await stripeClient.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: items.map((item: any) => ({
+          price_data: {
+            currency: 'usd',
+            product_data: { name: item.name },
+            unit_amount: Math.round(parseFloat(item.pricePerUnit.replace(/[^0-9.]/g, '')) * 100),
+          },
+          quantity: 1,
+        })),
+        mode: 'payment',
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+      });
+      res.json({ id: session.id, url: session.url });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
   });
 
   // Vite middleware for development
