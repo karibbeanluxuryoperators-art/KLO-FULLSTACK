@@ -14,51 +14,77 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ lang }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    message: ''
+    whatsapp: '',
+    experience_type: 'VILLA',
+    budget: '',
+    travel_dates: '',
+    special_requests: ''
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const t = {
     EN: {
       cta: 'Chat with Concierge',
       title: 'WhatsApp Concierge',
       subtitle: 'Instant orchestration for your next journey.',
-      name: 'Full Name',
+      name: 'Full Name *',
       email: 'Email Address',
-      phone: 'WhatsApp Number',
-      message: 'How can we help?',
+      whatsapp: 'WhatsApp Number *',
+      experience: 'Experience Type',
+      budget: 'Estimated Budget',
+      dates: 'Travel Dates',
+      requests: 'Special Requests',
       submit: 'Start Chat',
-      success: 'Request Received',
-      successSub: 'A concierge will contact you via WhatsApp shortly.'
+      success: 'Your request has been received.',
+      successSub: 'A KLO concierge will contact you via WhatsApp within 2 hours.',
+      required: 'This field is required'
     },
     ES: {
       cta: 'Hablar con Conserje',
       title: 'Conserje WhatsApp',
       subtitle: 'Orquestación instantánea para su próximo viaje.',
-      name: 'Nombre Completo',
+      name: 'Nombre Completo *',
       email: 'Correo Electrónico',
-      phone: 'Número de WhatsApp',
-      message: '¿Cómo podemos ayudar?',
+      whatsapp: 'Número de WhatsApp *',
+      experience: 'Tipo de Experiencia',
+      budget: 'Presupuesto Estimado',
+      dates: 'Fechas de Viaje',
+      requests: 'Solicitudes Especiales',
       submit: 'Iniciar Chat',
-      success: 'Solicitud Recibida',
-      successSub: 'Un conserje se pondrá en contacto con usted por WhatsApp en breve.'
+      success: 'Su solicitud ha sido recibida.',
+      successSub: 'Un conserje de KLO se pondrá en contacto con usted por WhatsApp en menos de 2 horas.',
+      required: 'Este campo es obligatorio'
     },
     PT: {
       cta: 'Falar com Concierge',
       title: 'Concierge WhatsApp',
       subtitle: 'Orquestração instantânea para sua próxima jornada.',
-      name: 'Nome Completo',
+      name: 'Nome Completo *',
       email: 'E-mail',
-      phone: 'Número do WhatsApp',
-      message: 'Como podemos ajudar?',
+      whatsapp: 'Número do WhatsApp *',
+      experience: 'Tipo de Experiência',
+      budget: 'Orçamento Estimado',
+      dates: 'Datas de Viagem',
+      requests: 'Pedidos Especiais',
       submit: 'Iniciar Chat',
-      success: 'Solicitação Recebida',
-      successSub: 'Um concierge entrará em contato com você via WhatsApp em breve.'
+      success: 'Sua solicitação foi recebida.',
+      successSub: 'Um concierge da KLO entrará em contato com você via WhatsApp em até 2 horas.',
+      required: 'Este campo é obrigatório'
     }
   }[lang];
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.name.trim()) newErrors.name = t.required;
+    if (!formData.whatsapp.trim()) newErrors.whatsapp = t.required;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+    
     setIsSubmitting(true);
     try {
       const res = await fetch('/api/leads', {
@@ -70,17 +96,29 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ lang }) => {
         setIsSuccess(true);
         
         // Open WhatsApp with pre-filled message
-        const message = `Hello KLO Concierge, my name is ${formData.name}. I am interested in your luxury services.
-Email: ${formData.email}
-Phone: ${formData.phone}
-Message: ${formData.message}`;
+        const message = `Hi KLO, I submitted an inquiry:
+Name: ${formData.name}
+WhatsApp: ${formData.whatsapp}
+Experience: ${formData.experience_type}
+Budget: ${formData.budget}
+Dates: ${formData.travel_dates}
+Notes: ${formData.special_requests}`;
         const encodedMessage = encodeURIComponent(message);
         window.open(`https://wa.me/573243132500?text=${encodedMessage}`, '_blank');
 
         setTimeout(() => {
           setIsSuccess(false);
           setIsOpen(false);
-          setFormData({ name: '', email: '', phone: '', message: '' });
+          setFormData({ 
+            name: '', 
+            email: '', 
+            whatsapp: '', 
+            experience_type: 'VILLA',
+            budget: '',
+            travel_dates: '',
+            special_requests: ''
+          });
+          setErrors({});
         }, 3000);
       }
     } catch (err) {
@@ -135,7 +173,7 @@ Message: ${formData.message}`;
                 <p className="text-xs text-white/80 font-light">{t.subtitle}</p>
               </div>
 
-              <div className="p-8">
+              <div className="p-8 max-h-[70vh] overflow-y-auto custom-scrollbar">
                 {isSuccess ? (
                   <div className="text-center py-8 space-y-4">
                     <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto">
@@ -150,44 +188,88 @@ Message: ${formData.message}`;
                       <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.name}</label>
                       <input 
                         type="text"
-                        required
                         value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light"
+                        onChange={(e) => {
+                          setFormData({...formData, name: e.target.value});
+                          if (errors.name) setErrors({...errors, name: ''});
+                        }}
+                        className={`w-full bg-black/5 border ${errors.name ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light`}
                         placeholder="John Doe"
                       />
+                      {errors.name && <p className="text-[8px] text-red-500 uppercase tracking-widest">{errors.name}</p>}
                     </div>
+
                     <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.whatsapp}</label>
+                        <input 
+                          type="tel"
+                          value={formData.whatsapp}
+                          onChange={(e) => {
+                            setFormData({...formData, whatsapp: e.target.value});
+                            if (errors.whatsapp) setErrors({...errors, whatsapp: ''});
+                          }}
+                          className={`w-full bg-black/5 border ${errors.whatsapp ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light`}
+                          placeholder="+1..."
+                        />
+                        {errors.whatsapp && <p className="text-[8px] text-red-500 uppercase tracking-widest">{errors.whatsapp}</p>}
+                      </div>
                       <div className="space-y-1">
                         <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.email}</label>
                         <input 
                           type="email"
-                          required
                           value={formData.email}
                           onChange={(e) => setFormData({...formData, email: e.target.value})}
                           className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light"
                           placeholder="john@klo.com"
                         />
                       </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.phone}</label>
+                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.experience}</label>
+                        <select 
+                          value={formData.experience_type}
+                          onChange={(e) => setFormData({...formData, experience_type: e.target.value})}
+                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light appearance-none"
+                        >
+                          <option value="VILLA">Villa</option>
+                          <option value="YACHT">Yacht</option>
+                          <option value="JET">Private Jet</option>
+                          <option value="EVENT">Event</option>
+                          <option value="CONCIERGE">Full Concierge</option>
+                        </select>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.budget}</label>
                         <input 
-                          type="tel"
-                          required
-                          value={formData.phone}
-                          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                          type="text"
+                          value={formData.budget}
+                          onChange={(e) => setFormData({...formData, budget: e.target.value})}
                           className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light"
-                          placeholder="+1..."
+                          placeholder="$10k+"
                         />
                       </div>
                     </div>
+
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.message}</label>
+                      <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.dates}</label>
+                      <input 
+                        type="text"
+                        value={formData.travel_dates}
+                        onChange={(e) => setFormData({...formData, travel_dates: e.target.value})}
+                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light"
+                        placeholder="Dec 20 - Jan 5"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.requests}</label>
                       <textarea 
-                        required
-                        value={formData.message}
-                        onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light h-24 resize-none"
+                        value={formData.special_requests}
+                        onChange={(e) => setFormData({...formData, special_requests: e.target.value})}
+                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light h-20 resize-none"
                         placeholder="I'm interested in..."
                       />
                     </div>

@@ -28,6 +28,7 @@ export const SupplierPortal: React.FC = () => {
   const [direction, setDirection] = useState(0);
   const [type, setType] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [supplierId, setSupplierId] = useState<string | null>(null);
 
@@ -116,6 +117,7 @@ export const SupplierPortal: React.FC = () => {
   const handleSubmit = async () => {
     if (!agreedToTerms) return;
     setIsSubmitting(true);
+    setSubmitError(null);
 
     try {
       // 1. Register Supplier
@@ -134,56 +136,79 @@ export const SupplierPortal: React.FC = () => {
       });
       const supplierData = await supplierRes.json();
       
-      if (supplierData.success) {
-        const sid = supplierData.supplier_id;
-        setSupplierId(sid);
+      if (!supplierData.success) {
+        throw new Error(supplierData.error || 'Failed to register supplier');
+      }
 
-        // 2. Create Asset
-        const assetPayload = {
-          supplier_id: sid,
-          name: formData.business_name,
-          type: type,
-          location: formData.location,
-          description: formData.description,
-          price_per_unit: type === 'VILLA' ? formData.price_per_night : 
-                          type === 'YACHT' ? formData.price_per_day :
-                          type === 'AVIATION' ? formData.price_per_hour :
-                          formData.daily_rate,
-          price_type: type === 'VILLA' ? 'PER_NIGHT' : 
-                      type === 'YACHT' ? 'PER_DAY' :
-                      type === 'AVIATION' ? 'PER_HOUR' :
-                      'PER_DAY',
-          capacity: parseInt(formData.max_guests || formData.max_passengers || '0'),
-          amenities: type === 'VILLA' ? formData.amenities : 
-                     type === 'YACHT' ? formData.features : 
-                     [],
-          images: formData.photo_url ? [formData.photo_url] : [],
-          status: 'PENDING'
-        };
+      const sid = supplierData.supplier_id;
+      setSupplierId(sid);
 
-        const assetRes = await fetch('/api/assets', {
+      // Map asset type
+      const mappedType = type === 'VILLA' ? 'LODGING' : 
+                         type === 'YACHT' ? 'VESSEL' :
+                         type === 'AVIATION' ? 'AIRCRAFT' :
+                         'STAFF';
+
+      // 2. Create Asset
+      const assetPayload = {
+        supplier_id: sid,
+        name: formData.business_name,
+        type: mappedType,
+        location: formData.location,
+        description: formData.description,
+        price_per_unit: type === 'VILLA' ? formData.price_per_night : 
+                        type === 'YACHT' ? formData.price_per_day :
+                        type === 'AVIATION' ? formData.price_per_hour :
+                        formData.daily_rate,
+        price_type: type === 'VILLA' ? 'PER_NIGHT' : 
+                    type === 'YACHT' ? 'PER_DAY' :
+                    type === 'AVIATION' ? 'PER_HOUR' :
+                    'PER_DAY',
+        capacity: parseInt(formData.max_guests || formData.max_passengers || '0'),
+        amenities: type === 'VILLA' ? formData.amenities : 
+                   type === 'YACHT' ? formData.features : 
+                   [],
+        images: formData.photo_url ? [formData.photo_url] : [],
+        status: 'PENDING'
+      };
+
+      const assetRes = await fetch('/api/assets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(assetPayload)
+      });
+      const assetData = await assetRes.json();
+
+      if (!assetData.success) {
+        throw new Error(assetData.error || 'Failed to create asset');
+      }
+
+      if (formData.manual_availability.length > 0) {
+        // 3. Save Availability
+        await fetch(`/api/assets/${assetData.asset_id}/availability`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(assetPayload)
+          body: JSON.stringify({
+            dates: formData.manual_availability,
+            status: 'BLOCKED'
+          })
         });
-        const assetData = await assetRes.json();
-
-        if (assetData.success && formData.manual_availability.length > 0) {
-          // 3. Save Availability
-          await fetch(`/api/assets/${assetData.asset_id}/availability`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              dates: formData.manual_availability,
-              status: 'BLOCKED'
-            })
-          });
-        }
-
-        nextStep();
       }
-    } catch (error) {
+
+      // WhatsApp notification
+      window.open('https://wa.me/573243132500?text=' +
+      encodeURIComponent(
+        `New KLO supplier application:\n` +
+        `Business: ${formData.business_name}\n` +
+        `Type: ${type}\n` +
+        `Location: ${formData.location}\n` +
+        `WhatsApp: ${formData.whatsapp}`
+      ), '_blank');
+
+      nextStep();
+    } catch (error: any) {
       console.error("Submission failed", error);
+      setSubmitError(error.message || 'An unexpected error occurred during submission.');
     } finally {
       setIsSubmitting(false);
     }
@@ -663,6 +688,12 @@ export const SupplierPortal: React.FC = () => {
           <span className="text-xs uppercase tracking-widest font-bold">I agree to KLO Partnership Terms</span>
         </label>
       </div>
+
+      {submitError && (
+        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-xs text-center">
+          {submitError}
+        </div>
+      )}
 
       <div className="flex justify-between pt-8">
         <button onClick={prevStep} className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-luxury-black/40 hover:text-luxury-black transition-colors">

@@ -209,8 +209,8 @@ async function startServer() {
 
   // Mock Leads
   let MOCK_LEADS: any[] = [
-    { id: 'L1', name: 'Julian Casablancas', email: 'julian@thestrokes.com', phone: '+1 212 555 0192', message: 'Interested in a private villa in Anguilla for April.', status: 'NEW', timestamp: '1h ago', source: 'WHATSAPP' },
-    { id: 'L2', name: 'Sofia Coppola', email: 'sofia@lostintranslation.com', phone: '+1 310 555 0183', message: 'Need a Gulfstream G650 for a trip to Tokyo.', status: 'CONTACTED', timestamp: '3h ago', source: 'CONCIERGE' },
+    { id: 'L1', name: 'Julian Casablancas', email: 'julian@thestrokes.com', phone: '+1 212 555 0192', message: 'Interested in a private villa in Anguilla for April.', status: 'NEW', timestamp: new Date(Date.now() - 3600000).toISOString(), source: 'WHATSAPP' },
+    { id: 'L2', name: 'Sofia Coppola', email: 'sofia@lostintranslation.com', phone: '+1 310 555 0183', message: 'Need a Gulfstream G650 for a trip to Tokyo.', status: 'CONTACTED', timestamp: new Date(Date.now() - 10800000).toISOString(), source: 'CONCIERGE' },
   ];
 
   // Leads API
@@ -222,7 +222,7 @@ async function startServer() {
     const lead = {
       ...req.body,
       id: 'L' + (MOCK_LEADS.length + 1),
-      timestamp: 'Just now',
+      timestamp: new Date().toISOString(),
       status: 'NEW'
     };
     MOCK_LEADS = [lead, ...MOCK_LEADS];

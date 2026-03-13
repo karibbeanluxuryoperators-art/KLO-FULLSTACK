@@ -47,7 +47,8 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
   const [activeView, setActiveView] = useState<'SUPPLIERS' | 'BOOKINGS'>('SUPPLIERS');
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [suppliersLoading, setSuppliersLoading] = useState(true);
+  const [bookingsLoading, setBookingsLoading] = useState(true);
   const [filter, setFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED' | 'CONFIRMED' | 'CANCELLED'>('ALL');
   const [search, setSearch] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -65,7 +66,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
   }, [activeView]);
 
   const fetchSuppliers = async () => {
-    setLoading(true);
+    setSuppliersLoading(true);
     try {
       const res = await fetch('/api/suppliers');
       const data = await res.json();
@@ -73,12 +74,12 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
     } catch (error) {
       console.error('Failed to fetch suppliers', error);
     } finally {
-      setLoading(false);
+      setSuppliersLoading(false);
     }
   };
 
   const fetchBookings = async () => {
-    setLoading(true);
+    setBookingsLoading(true);
     try {
       const res = await fetch('/api/bookings');
       const data = await res.json();
@@ -86,7 +87,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
     } catch (error) {
       console.error('Failed to fetch bookings', error);
     } finally {
-      setLoading(false);
+      setBookingsLoading(false);
     }
   };
 
@@ -321,7 +322,9 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
     );
   };
 
-  if (loading && suppliers.length === 0 && bookings.length === 0) {
+  const isLoading = activeView === 'SUPPLIERS' ? suppliersLoading : bookingsLoading;
+
+  if (isLoading && (activeView === 'SUPPLIERS' ? suppliers.length === 0 : bookings.length === 0)) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="animate-spin text-gold" size={32} />
@@ -582,7 +585,12 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                   <td colSpan={7} className="px-8 py-20 text-center">
                     <div className="flex flex-col items-center gap-4 text-white/20">
                       <AlertCircle size={48} />
-                      <p className="text-sm uppercase tracking-widest">No {activeView.toLowerCase()} found matching your criteria</p>
+                      <p className="text-sm uppercase tracking-widest">
+                        {activeView === 'SUPPLIERS' 
+                          ? (suppliers.length === 0 ? 'No suppliers yet' : 'No suppliers found matching your criteria')
+                          : (bookings.length === 0 ? 'No bookings yet' : 'No bookings found matching your criteria')
+                        }
+                      </p>
                     </div>
                   </td>
                 </tr>

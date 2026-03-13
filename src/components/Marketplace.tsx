@@ -18,6 +18,7 @@ interface MarketplaceProps {
 
 export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets, lang, initialSuccess, onBookAssets }) => {
   const [assets, setAssets] = useState<Asset[]>(initialAssets);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<AssetType | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
@@ -37,11 +38,21 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
   });
 
   React.useEffect(() => {
+    setLoading(true);
     fetch('/api/assets?status=ACTIVE')
       .then(res => res.json())
       .then(data => {
-        if (data && data.length > 0) {
-          setAssets(data);
+        if (data && Array.isArray(data) && data.length > 0) {
+          const parsedAssets = data.map(a => ({
+            ...a,
+            amenities: typeof a.amenities === 'string'
+              ? JSON.parse(a.amenities || '[]') : a.amenities,
+            images: typeof a.images === 'string'
+              ? JSON.parse(a.images || '[]') : a.images,
+            image: typeof a.images === 'string'
+              ? JSON.parse(a.images || '[]')[0] : a.images?.[0]
+          }));
+          setAssets(parsedAssets);
         } else {
           setAssets(initialAssets);
         }
@@ -49,6 +60,9 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
       .catch(err => {
         console.error('Failed to fetch active assets', err);
         setAssets(initialAssets);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [initialAssets]);
 
@@ -823,69 +837,94 @@ Please let me know the availability and next steps.`;
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredAssets.map((asset) => (
-              <motion.div 
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                key={asset.id}
-                className="glass-panel rounded-[40px] overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
-                onClick={() => setSelectedAsset(asset)}
+          {loading ? (
+            <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
+              <Loader2 className="animate-spin text-gold" size={48} />
+              <p className="text-xs uppercase tracking-[0.2em] text-white/40">Loading Exclusive Inventory...</p>
+            </div>
+          ) : filteredAssets.length === 0 ? (
+            <div className="col-span-full py-20 flex flex-col items-center justify-center text-center gap-6">
+              <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-white/20">
+                <Search size={40} />
+              </div>
+              <div>
+                <p className="text-xl font-serif text-white mb-2">New assets being verified. Check back soon.</p>
+                <p className="text-sm text-white/40 font-light">Our concierge team is currently onboarding new exclusive inventory.</p>
+              </div>
+              <a
+                href="https://wa.me/573243132500?text=Hello%20KLO%2C%20I%20am%20looking%20for%20specific%20luxury%20assets%20not%20listed%20in%20the%20marketplace."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center gap-2"
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img 
-                    src={asset.image || `https://picsum.photos/seed/${asset.id}/800/600`} 
-                    alt={asset.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-60" />
-                  <div className="absolute top-4 right-4 px-3 py-1 bg-luxury-black/60 backdrop-blur-md rounded-full text-[8px] uppercase tracking-widest border border-white/10 text-white">
-                    {asset.type}
-                  </div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-2xl font-serif text-white mb-1">{asset.name}</h3>
-                    <div className="flex items-center gap-2 text-white/60">
-                      <MapPin size={12} />
-                      <span className="text-[10px] uppercase tracking-widest">{asset.location}</span>
+                <MessageSquare size={16} /> Contact Concierge
+              </a>
+            </div>
+          ) : (
+            <AnimatePresence mode="popLayout">
+              {filteredAssets.map((asset) => (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  key={asset.id}
+                  className="glass-panel rounded-[40px] overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
+                  onClick={() => setSelectedAsset(asset)}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <img 
+                      src={asset.image || `https://picsum.photos/seed/${asset.id}/800/600`} 
+                      alt={asset.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-60" />
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-luxury-black/60 backdrop-blur-md rounded-full text-[8px] uppercase tracking-widest border border-white/10 text-white">
+                      {asset.type}
                     </div>
-                  </div>
-                </div>
-                
-                <div className="p-8">
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="flex flex-col">
-                        <span className="text-[8px] text-white/30 uppercase tracking-widest mb-1">{t.capacity}</span>
-                        <span className="text-xs font-medium text-white">{asset.capacity} PAX</span>
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <h3 className="text-2xl font-serif text-white mb-1">{asset.name}</h3>
+                      <div className="flex items-center gap-2 text-white/60">
+                        <MapPin size={12} />
+                        <span className="text-[10px] uppercase tracking-widest">{asset.location}</span>
                       </div>
-                      <div className="w-[1px] h-6 bg-white/10" />
-                      <div className="flex flex-col">
-                        <span className="text-[8px] text-white/30 uppercase tracking-widest mb-1">{t.rate}</span>
-                        <span className="text-xs font-bold text-gold">{asset.pricePerUnit}</span>
-                      </div>
-                    </div>
-                    <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-gold group-hover:text-luxury-black transition-all text-white">
-                      <ArrowRight size={18} />
                     </div>
                   </div>
-                  <a
-                    href={`https://wa.me/573243132500?text=${encodeURIComponent(
-                      `Hi KLO, I am interested in:\n\nAsset: ${asset.name}\nType: ${asset.type}\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}\nCapacity: ${asset.capacity} PAX\n\nPlease contact me to arrange.`
-                    )}`}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    onClick={(e) => e.stopPropagation()}
-                    className='w-full mt-4 py-3 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2'
-                  >
-                    <MessageSquare size={14} /> Request via WhatsApp
-                  </a>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                  
+                  <div className="p-8">
+                    <div className="flex justify-between items-center mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="flex flex-col">
+                          <span className="text-[8px] text-white/30 uppercase tracking-widest mb-1">{t.capacity}</span>
+                          <span className="text-xs font-medium text-white">{asset.capacity} PAX</span>
+                        </div>
+                        <div className="w-[1px] h-6 bg-white/10" />
+                        <div className="flex flex-col">
+                          <span className="text-[8px] text-white/30 uppercase tracking-widest mb-1">{t.rate}</span>
+                          <span className="text-xs font-bold text-gold">{asset.pricePerUnit}</span>
+                        </div>
+                      </div>
+                      <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-gold group-hover:text-luxury-black transition-all text-white">
+                        <ArrowRight size={18} />
+                      </div>
+                    </div>
+                    <a
+                      href={`https://wa.me/573243132500?text=${encodeURIComponent(
+                        `Hi KLO, I am interested in:\n\nAsset: ${asset.name}\nType: ${asset.type}\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}\nCapacity: ${asset.capacity} PAX\n\nPlease contact me to arrange.`
+                      )}`}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      onClick={(e) => e.stopPropagation()}
+                      className='w-full mt-4 py-3 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2'
+                    >
+                      <MessageSquare size={14} /> Request via WhatsApp
+                    </a>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
         </div>
       </div>
 

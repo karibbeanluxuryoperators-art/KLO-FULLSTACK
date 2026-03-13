@@ -1,13 +1,16 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Activity, Shield, Clock, MapPin, AlertTriangle, 
   CheckCircle2, Timer, Users, Plane, Ship, Car, Home,
   Wind, Droplets, Thermometer, TrendingUp, DollarSign,
-  Zap, MessageSquare, AlertCircle
+  Zap, MessageSquare, AlertCircle, Plus, Globe, ExternalLink,
+  Wifi, WifiOff
 } from 'lucide-react';
-import { Booking, Language, AssetType, Incident } from '../types';
+import { Booking, Language, AssetType, Incident, Asset } from '../types';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar } from 'recharts';
+import { LeadCaptureForm } from './LeadCaptureForm';
+import { AssetManagement } from './AssetManagement';
 
 interface OCCProps {
   bookings: Booking[];
@@ -16,6 +19,55 @@ interface OCCProps {
 }
 
 export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, incidents, lang }) => {
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [serverStatus, setServerStatus] = useState<'OPERATIONAL' | 'OFFLINE'>('OPERATIONAL');
+  const [showLeadForm, setShowLeadForm] = useState(false);
+  const [showAssetMgmt, setShowAssetMgmt] = useState(false);
+
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const res = await fetch('/api/assets');
+        const data = await res.json();
+        setAssets(data);
+      } catch (error) {
+        console.error('Failed to fetch assets:', error);
+      }
+    };
+
+    const checkHealth = async () => {
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) setServerStatus('OPERATIONAL');
+        else setServerStatus('OFFLINE');
+      } catch (error) {
+        setServerStatus('OFFLINE');
+      }
+    };
+
+    fetchAssets();
+    checkHealth();
+
+    const clockInterval = setInterval(() => setCurrentTime(new Date()), 1000);
+    const healthInterval = setInterval(checkHealth, 30000);
+
+    return () => {
+      clearInterval(clockInterval);
+      clearInterval(healthInterval);
+    };
+  }, []);
+
+  const formatTime = (tz: string) => {
+    return new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZone: tz
+    }).format(currentTime);
+  };
+
   const t = {
     EN: {
       title: 'Operational Command Center',
@@ -115,6 +167,54 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
 
   return (
     <div className="space-y-8">
+      {/* Command Header: Clocks & Status */}
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-6 glass-panel p-6 rounded-[32px] border-white/5">
+        <div className="flex flex-wrap justify-center lg:justify-start gap-8">
+          {[
+            { label: 'Cartagena', tz: 'America/Bogota', code: 'COT' },
+            { label: 'Miami', tz: 'America/New_York', code: 'EST' },
+            { label: 'London', tz: 'Europe/London', code: 'GMT' },
+            { label: 'Dubai', tz: 'Asia/Dubai', code: 'GST' },
+          ].map((city) => (
+            <div key={city.code} className="text-center lg:text-left">
+              <span className="text-[8px] text-luxury-cream/40 uppercase tracking-[0.2em] block mb-1">{city.label} ({city.code})</span>
+              <span className="text-xl font-mono text-white tracking-wider">{formatTime(city.tz)}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-6 border-l border-white/10 pl-6">
+          <div className="flex items-center gap-3">
+            <div className={`w-2 h-2 rounded-full animate-pulse ${serverStatus === 'OPERATIONAL' ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' : 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]'}`} />
+            <span className={`text-[10px] uppercase tracking-[0.2em] font-bold ${serverStatus === 'OPERATIONAL' ? 'text-emerald-400' : 'text-red-500'}`}>
+              KLO: {serverStatus}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions Panel */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button 
+          onClick={() => setShowLeadForm(true)}
+          className="flex items-center justify-center gap-3 p-4 bg-gold text-luxury-black rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-white transition-all"
+        >
+          <Plus size={16} /> New Lead
+        </button>
+        <button 
+          onClick={() => window.open('https://wa.me/573243132500', '_blank')}
+          className="flex items-center justify-center gap-3 p-4 bg-emerald-500 text-white rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-emerald-400 transition-all"
+        >
+          <MessageSquare size={16} /> WhatsApp
+        </button>
+        <button 
+          onClick={() => setShowAssetMgmt(true)}
+          className="flex items-center justify-center gap-3 p-4 bg-white/5 text-white rounded-2xl border border-white/10 font-bold uppercase text-[10px] tracking-widest hover:bg-white/10 transition-all"
+        >
+          <Plus size={16} /> Add Asset
+        </button>
+      </div>
+
       {/* Top Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="glass-panel p-6 rounded-3xl border-emerald-500/20">
@@ -210,6 +310,31 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                       </div>
                     ))}
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Asset Status Monitor */}
+          <div className="glass-panel p-8 rounded-[40px]">
+            <div className="flex justify-between items-center mb-8">
+              <h3 className="text-2xl font-serif">Asset Status Monitor</h3>
+              <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">{assets.length} Total Assets</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {assets.slice(0, 8).map((asset) => (
+                <div key={asset.id} className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="p-1.5 rounded-lg bg-white/5 text-gold">
+                      {getPillarIcon(asset.type === 'VESSEL' ? 'SEA' : asset.type === 'AIRCRAFT' ? 'AIR' : asset.type === 'VEHICLE' ? 'LAND' : 'STAY')}
+                    </div>
+                    <div className={`w-1.5 h-1.5 rounded-full ${
+                      asset.status === 'AVAILABLE' ? 'bg-emerald-400' : 
+                      asset.status === 'BOOKED' ? 'bg-gold' : 'bg-red-400'
+                    }`} />
+                  </div>
+                  <span className="text-[10px] font-bold block truncate">{asset.name}</span>
+                  <span className="text-[8px] text-luxury-cream/40 uppercase tracking-widest">{asset.status}</span>
                 </div>
               ))}
             </div>
@@ -331,6 +456,65 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <AnimatePresence>
+        {showLeadForm && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowLeadForm(false)}
+              className="absolute inset-0 bg-luxury-black/90 backdrop-blur-xl"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-2xl bg-luxury-paper rounded-[40px] overflow-hidden border border-white/10"
+            >
+              <div className="p-8 border-b border-white/5 flex justify-between items-center">
+                <h3 className="text-2xl font-serif text-white">New Lead Capture</h3>
+                <button onClick={() => setShowLeadForm(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                  <Plus size={24} className="rotate-45 text-white" />
+                </button>
+              </div>
+              <div className="p-8 max-h-[70vh] overflow-y-auto">
+                <LeadCaptureForm lang={lang} />
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {showAssetMgmt && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowAssetMgmt(false)}
+              className="absolute inset-0 bg-luxury-black/90 backdrop-blur-xl"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-5xl bg-luxury-paper rounded-[40px] overflow-hidden border border-white/10"
+            >
+              <div className="p-8 border-b border-white/5 flex justify-between items-center">
+                <h3 className="text-2xl font-serif text-white">Asset Management</h3>
+                <button onClick={() => setShowAssetMgmt(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                  <Plus size={24} className="rotate-45 text-white" />
+                </button>
+              </div>
+              <div className="p-8 max-h-[80vh] overflow-y-auto">
+                <AssetManagement lang={lang} />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

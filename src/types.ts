@@ -179,8 +179,13 @@ export interface Lead {
   name: string;
   email: string;
   phone: string;
-  message: string;
-  status: 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'LOST';
+  whatsapp?: string;
+  experience_type?: string;
+  budget?: string;
+  travel_dates?: string;
+  special_requests?: string;
+  message?: string;
+  status: 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'CLOSED' | 'LOST';
   timestamp: string;
   source: 'WHATSAPP' | 'MARKETPLACE' | 'CONCIERGE';
 }

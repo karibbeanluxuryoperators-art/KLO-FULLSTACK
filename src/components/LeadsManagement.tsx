@@ -4,7 +4,7 @@ import {
   Users, Mail, Phone, MessageSquare, 
   Calendar, Clock, Filter, Search, 
   CheckCircle2, XCircle, MoreVertical, 
-  ExternalLink, Loader2, Trash2
+  ExternalLink, Loader2, Trash2, Send, ArrowUpRight
 } from 'lucide-react';
 import { Lead, Language } from '../types';
 
@@ -50,20 +50,40 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
     }
   };
 
-  const filteredLeads = leads.filter(lead => {
-    const matchesFilter = filter === 'ALL' || lead.status === filter;
-    const matchesSearch = lead.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          lead.email.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  const filteredLeads = leads
+    .filter(lead => {
+      const matchesFilter = filter === 'ALL' || lead.status === filter;
+      const matchesSearch = lead.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            lead.email.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesFilter && matchesSearch;
+    })
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
   const getStatusColor = (status: Lead['status']) => {
     switch (status) {
       case 'NEW': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
       case 'CONTACTED': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
       case 'QUALIFIED': return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
+      case 'CLOSED': return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
       case 'LOST': return 'bg-red-500/10 text-red-500 border-red-500/20';
     }
+  };
+
+  const getNextStatus = (current: Lead['status']): Lead['status'] | null => {
+    switch (current) {
+      case 'NEW': return 'CONTACTED';
+      case 'CONTACTED': return 'QUALIFIED';
+      case 'QUALIFIED': return 'CLOSED';
+      default: return null;
+    }
+  };
+
+  const stats = {
+    total: leads.length,
+    new: leads.filter(l => l.status === 'NEW').length,
+    contacted: leads.filter(l => l.status === 'CONTACTED').length,
+    qualified: leads.filter(l => l.status === 'QUALIFIED').length,
+    closed: leads.filter(l => l.status === 'CLOSED').length,
   };
 
   const t = {
@@ -75,12 +95,16 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
       new: 'New',
       contacted: 'Contacted',
       qualified: 'Qualified',
+      closed: 'Closed',
       lost: 'Lost',
       noLeads: 'No leads found matching your criteria.',
       actions: 'Actions',
       markContacted: 'Mark Contacted',
       markQualified: 'Mark Qualified',
-      markLost: 'Mark Lost'
+      markClosed: 'Mark Closed',
+      markLost: 'Mark Lost',
+      advance: 'Advance Status',
+      whatsappMsg: (name: string, exp: string) => `Hi ${name}, this is KLO. Thank you for your inquiry about ${exp}. I would love to discuss your trip to the Caribbean.`
     },
     ES: {
       title: 'Gestión de Leads',
@@ -90,14 +114,37 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
       new: 'Nuevos',
       contacted: 'Contactados',
       qualified: 'Calificados',
+      closed: 'Cerrados',
       lost: 'Perdidos',
       noLeads: 'No se encontraron leads que coincidan con sus criterios.',
       actions: 'Acciones',
       markContacted: 'Marcar como Contactado',
       markQualified: 'Marcar como Calificado',
-      markLost: 'Marcar como Perdido'
+      markClosed: 'Marcar como Cerrado',
+      markLost: 'Marcar como Perdido',
+      advance: 'Avanzar Estado',
+      whatsappMsg: (name: string, exp: string) => `Hola ${name}, te escribe KLO. Gracias por tu consulta sobre ${exp}. Me encantaría hablar sobre tu viaje al Caribe.`
+    },
+    PT: {
+      title: 'Gestão de Leads',
+      subtitle: 'Rastree e orquestre novas consultas do ecossistema.',
+      search: 'Buscar leads...',
+      all: 'Todos os Leads',
+      new: 'Novos',
+      contacted: 'Contatados',
+      qualified: 'Qualificados',
+      closed: 'Fechados',
+      lost: 'Perdidos',
+      noLeads: 'Nenhum lead encontrado.',
+      actions: 'Ações',
+      markContacted: 'Marcar Contatado',
+      markQualified: 'Marcar Qualificado',
+      markClosed: 'Marcar Fechado',
+      markLost: 'Marcar Perdido',
+      advance: 'Avançar Status',
+      whatsappMsg: (name: string, exp: string) => `Olá ${name}, aqui é a KLO. Obrigado pelo seu interesse em ${exp}. Adoraria conversar sobre sua viagem ao Caribe.`
     }
-  }[lang === 'PT' ? 'EN' : lang];
+  }[lang];
 
   return (
     <div className="space-y-8">
@@ -107,30 +154,54 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
           <p className="text-xs text-white/40 uppercase tracking-widest font-light">{t.subtitle}</p>
         </div>
         
-        <div className="flex gap-4 w-full md:w-auto">
-          <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
-            <input 
-              type="text"
-              placeholder={t.search}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-xs font-light text-white"
-            />
+        <div className="flex flex-wrap gap-3">
+          <div className="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
+            <span className="text-[10px] text-white/40 uppercase tracking-widest">Total</span>
+            <span className="text-lg font-serif text-white">{stats.total}</span>
           </div>
-          <div className="flex gap-2">
-            {['ALL', 'NEW', 'CONTACTED', 'QUALIFIED', 'LOST'].map(s => (
-              <button 
-                key={s}
-                onClick={() => setFilter(s as any)}
-                className={`px-4 py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all border ${
-                  filter === s ? 'bg-gold text-luxury-black font-bold border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
-                }`}
-              >
-                {s === 'ALL' ? t.all : t[s.toLowerCase() as keyof typeof t]}
-              </button>
-            ))}
+          <div className="px-4 py-2 bg-blue-500/10 rounded-xl border border-blue-500/20 flex items-center gap-3">
+            <span className="text-[10px] text-blue-500 uppercase tracking-widest">{t.new}</span>
+            <span className="text-lg font-serif text-blue-500">{stats.new}</span>
           </div>
+          <div className="px-4 py-2 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
+            <span className="text-[10px] text-amber-500 uppercase tracking-widest">{t.contacted}</span>
+            <span className="text-lg font-serif text-amber-500">{stats.contacted}</span>
+          </div>
+          <div className="px-4 py-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20 flex items-center gap-3">
+            <span className="text-[10px] text-emerald-500 uppercase tracking-widest">{t.qualified}</span>
+            <span className="text-lg font-serif text-emerald-500">{stats.qualified}</span>
+          </div>
+          <div className="px-4 py-2 bg-purple-500/10 rounded-xl border border-purple-500/20 flex items-center gap-3">
+            <span className="text-[10px] text-purple-500 uppercase tracking-widest">{t.closed}</span>
+            <span className="text-lg font-serif text-purple-500">{stats.closed}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="relative w-full md:w-96">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
+          <input 
+            type="text"
+            placeholder={t.search}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-xs font-light text-white"
+          />
+        </div>
+        
+        <div className="flex flex-wrap gap-2">
+          {['ALL', 'NEW', 'CONTACTED', 'QUALIFIED', 'CLOSED', 'LOST'].map(s => (
+            <button 
+              key={s}
+              onClick={() => setFilter(s as any)}
+              className={`px-4 py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all border ${
+                filter === s ? 'bg-gold text-luxury-black font-bold border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+              }`}
+            >
+              {s === 'ALL' ? t.all : t[s.toLowerCase() as keyof typeof t]}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -177,7 +248,10 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                       <div className="flex flex-wrap gap-4 text-[10px] text-white/40 uppercase tracking-widest font-light">
                         <span className="flex items-center gap-1"><Mail size={12} /> {lead.email}</span>
                         <span className="flex items-center gap-1"><Phone size={12} /> {lead.phone}</span>
-                        <span className="flex items-center gap-1"><Clock size={12} /> {lead.timestamp}</span>
+                        <span className="flex items-center gap-1"><Clock size={12} /> {(() => {
+                          const date = new Date(lead.timestamp);
+                          return isNaN(date.getTime()) ? lead.timestamp : date.toLocaleString();
+                        })()}</span>
                       </div>
                     </div>
                   </div>
@@ -189,25 +263,28 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                   </div>
 
                   <div className="flex gap-2">
-                    {lead.status === 'NEW' && (
+                    <button 
+                      onClick={() => {
+                        const msg = t.whatsappMsg(lead.name, lead.experience_type || 'luxury services');
+                        window.open(`https://wa.me/${lead.whatsapp || lead.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+                      }}
+                      className="p-4 bg-emerald-500/10 text-emerald-500 rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
+                      title="WhatsApp Quick Reply"
+                    >
+                      <Send size={18} />
+                    </button>
+
+                    {getNextStatus(lead.status) && (
                       <button 
-                        onClick={() => updateLeadStatus(lead.id, 'CONTACTED')}
-                        className="p-4 bg-amber-500/10 text-amber-500 rounded-2xl border border-amber-500/20 hover:bg-amber-500/20 transition-all"
-                        title={t.markContacted}
+                        onClick={() => updateLeadStatus(lead.id, getNextStatus(lead.status)!)}
+                        className="p-4 bg-gold/10 text-gold rounded-2xl border border-gold/20 hover:bg-gold/20 transition-all"
+                        title={t.advance}
                       >
-                        <Phone size={18} />
+                        <ArrowUpRight size={18} />
                       </button>
                     )}
-                    {lead.status !== 'QUALIFIED' && (
-                      <button 
-                        onClick={() => updateLeadStatus(lead.id, 'QUALIFIED')}
-                        className="p-4 bg-emerald-500/10 text-emerald-500 rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
-                        title={t.markQualified}
-                      >
-                        <CheckCircle2 size={18} />
-                      </button>
-                    )}
-                    {lead.status !== 'LOST' && (
+
+                    {lead.status !== 'LOST' && lead.status !== 'CLOSED' && (
                       <button 
                         onClick={() => updateLeadStatus(lead.id, 'LOST')}
                         className="p-4 bg-red-500/10 text-red-500 rounded-2xl border border-red-500/20 hover:bg-red-500/20 transition-all"
@@ -216,9 +293,6 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                         <XCircle size={18} />
                       </button>
                     )}
-                    <button className="p-4 bg-white/5 text-white/40 rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
-                      <ExternalLink size={18} />
-                    </button>
                   </div>
                 </motion.div>
               ))
