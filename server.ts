@@ -99,6 +99,95 @@ async function startServer() {
     );
   `);
 
+  const seedAssets = () => {
+    const count = db.prepare('SELECT COUNT(*) as c FROM assets').get() as any;
+    if (count.c > 0) return;
+
+    const insert = db.prepare(`
+      INSERT INTO assets (id, supplier_id, name, type, location,
+      description, price_per_unit, price_type, capacity,
+      amenities, images, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const assets = [
+      { id: 'villa-001', supplier_id: 'klo-direct',
+        name: 'Villa Casa de Lujo', type: 'LODGING',
+        location: 'Cartagena', price_per_unit: '$5,500/night',
+        price_type: 'PER_NIGHT', capacity: 12,
+        description: 'Spectacular 6-bedroom oceanfront villa in Cartagena with private pool, beach access, and 24/7 security. Perfect for UHNW families and corporate retreats.',
+        amenities: JSON.stringify(['Pool','Beach Access','Chef Kitchen','Gym','Security Room','Private Dock']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800'])
+      },
+      { id: 'villa-002', supplier_id: 'klo-direct',
+        name: 'Villa Punta Norte', type: 'LODGING',
+        location: 'Santa Marta', price_per_unit: '$3,800/night',
+        price_type: 'PER_NIGHT', capacity: 8,
+        description: 'Breathtaking 4-bedroom villa with panoramic mountain and sea views. Private chef available. Helipad access.',
+        amenities: JSON.stringify(['Pool','Mountain View','Chef Kitchen','Helipad','Gym']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800'])
+      },
+      { id: 'yacht-001', supplier_id: 'klo-direct',
+        name: 'Serenity 150', type: 'VESSEL',
+        location: 'Cartagena', price_per_unit: '$15,000/day',
+        price_type: 'PER_DAY', capacity: 12,
+        description: '150ft superyacht with crew of 8. Beach club, infinity pool, water toys, Michelin-level dining. Available for day charters and multi-day voyages across the Caribbean.',
+        amenities: JSON.stringify(['Crew of 8','Water Toys','Jet Ski','Dive Equipment','Tender','Fine Dining']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=800'])
+      },
+      { id: 'yacht-002', supplier_id: 'klo-direct',
+        name: 'Azul Express 85', type: 'VESSEL',
+        location: 'Cartagena', price_per_unit: '$6,500/day',
+        price_type: 'PER_DAY', capacity: 8,
+        description: '85ft luxury motor yacht. Perfect for day trips to the Rosario Islands. Crew of 4, fully equipped with water sports gear.',
+        amenities: JSON.stringify(['Crew of 4','Water Toys','Fishing Gear','Snorkeling','BBQ']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800'])
+      },
+      { id: 'jet-001', supplier_id: 'klo-direct',
+        name: 'Gulfstream G450', type: 'AIRCRAFT',
+        location: 'Bogota', price_per_unit: '$12,000/hr',
+        price_type: 'PER_HOUR', capacity: 12,
+        description: 'Ultra long range heavy jet. Direct flights from Bogota to Miami, New York, or London. Bespoke interior with full galley and sleeping capacity.',
+        amenities: JSON.stringify(['Sleeping Cabin','Full Galley','WiFi','Entertainment','Baggage Hold']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800'])
+      },
+      { id: 'jet-002', supplier_id: 'klo-direct',
+        name: 'King Air 350', type: 'AIRCRAFT',
+        location: 'Cartagena', price_per_unit: '$3,500/hr',
+        price_type: 'PER_HOUR', capacity: 8,
+        description: 'Premium turboprop for inter-Caribbean routes. Ideal for Cartagena to San Andres, Santa Marta, or Medellin. Fast, comfortable, economical.',
+        amenities: JSON.stringify(['WiFi','Leather Seating','Climate Control','Baggage Hold']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800'])
+      },
+      { id: 'vehicle-001', supplier_id: 'klo-direct',
+        name: 'Escalade ESV Armored', type: 'VEHICLE',
+        location: 'Bogota', price_per_unit: '$950/day',
+        price_type: 'PER_DAY', capacity: 6,
+        description: 'B6 level armored Escalade ESV Platinum. Professional security driver, secure comms, pre-vetted routes. Available for airport transfers and full-day security detail.',
+        amenities: JSON.stringify(['B6 Armor','Secure Comms','Professional Driver','GPS Tracking','Privacy Glass']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800'])
+      },
+      { id: 'staff-001', supplier_id: 'klo-direct',
+        name: 'Private Chef — Mediterranean', type: 'STAFF',
+        location: 'Cartagena', price_per_unit: '$800/day',
+        price_type: 'PER_DAY', capacity: 1,
+        description: 'Michelin-trained private chef specializing in Mediterranean and Caribbean fusion. Sources local ingredients daily. Available for villa, yacht, and event catering.',
+        amenities: JSON.stringify(['Michelin Trained','Menu Planning','Dietary Accommodations','Wine Pairing','Event Catering']),
+        images: JSON.stringify(['https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800'])
+      },
+    ];
+
+    for (const a of assets) {
+      insert.run(a.id, a.supplier_id, a.name, a.type,
+        a.location, a.description, a.price_per_unit,
+        a.price_type, a.capacity, a.amenities,
+        a.images, 'ACTIVE');
+    }
+    console.log('KLO: Seeded', assets.length, 'real assets');
+  };
+
+  seedAssets();
+
   // Mock Users
   const MOCK_USERS = {
     'admin@klo.com': { id: 'admin_1', email: 'admin@klo.com', role: 'ADMIN', name: 'KLO Administrator' },
