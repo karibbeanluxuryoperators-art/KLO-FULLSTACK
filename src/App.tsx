@@ -6,7 +6,7 @@ import {
   Send, Loader2, Menu, X, ArrowRight, Star, Quote,
   LayoutDashboard, Users, Briefcase, CreditCard, Settings,
   TrendingUp, Activity, Package, ExternalLink, Timer, AlertTriangle,
-  Zap, DollarSign
+  Zap, DollarSign, CheckCircle2
 } from 'lucide-react';
 import { KLOExperience } from './services/kloBrain';
 import { PILLARS, LUXURY_IMAGES } from './constants';
@@ -558,6 +558,100 @@ export default function App() {
         </div>
       </section>
 
+      {/* Social Proof Section */}
+      <section className="bg-luxury-black py-24 px-6 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl md:text-6xl font-serif text-white mb-6 uppercase tracking-tight">
+              {lang === 'EN' ? 'The Standard for' : lang === 'ES' ? 'El Estándar para' : 'O Padrão para'} <br />
+              <span className="text-gold italic">{lang === 'EN' ? 'Caribbean Ultra-Luxury' : lang === 'ES' ? 'Ultra-Lujo del Caribe' : 'Ultra-Luxo do Caribe'}</span>
+            </h2>
+            <div className="w-24 h-1 bg-gold mx-auto" />
+          </motion.div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+            {[
+              { label: '$7,500 avg booking', icon: DollarSign },
+              { label: '<0.5s response time', icon: Timer },
+              { label: '5 pillars covered', icon: LayoutDashboard },
+              { label: '100% vetted assets', icon: Shield },
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="glass-panel p-8 rounded-3xl text-center border border-white/5 hover:border-gold/30 transition-all group"
+              >
+                <stat.icon className="mx-auto mb-4 text-gold/50 group-hover:text-gold transition-colors" size={32} />
+                <p className="text-white font-serif text-lg md:text-xl">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Shield,
+                title: lang === 'EN' ? 'Military-Grade Vetting' : lang === 'ES' ? 'Veteo de Grado Militar' : 'Vetting de Grau Militar',
+                desc: lang === 'EN' 
+                  ? 'Every asset physically verified by CEO/COO. Ex-Military Intelligence security protocols.'
+                  : lang === 'ES'
+                  ? 'Cada activo verificado físicamente por el CEO/COO. Protocolos de seguridad de Inteligencia Ex-Militar.'
+                  : 'Cada ativo verificado fisicamente pelo CEO/COO. Protocolos de segurança de Inteligência Ex-Militar.'
+              },
+              {
+                icon: Zap,
+                title: lang === 'EN' ? 'Instant Orchestration' : lang === 'ES' ? 'Orquestación Instantánea' : 'Orquestração Instantânea',
+                desc: lang === 'EN'
+                  ? 'Maria Fernanda AI plans your complete 360 experience in under 1 second.'
+                  : lang === 'ES'
+                  ? 'La IA Maria Fernanda planifica su experiencia 360 completa en menos de 1 segundo.'
+                  : 'A IA Maria Fernanda planeja sua experiência 360 completa em menos de 1 segundo.'
+              },
+              {
+                icon: Users,
+                title: lang === 'EN' ? 'B2B2C Network' : lang === 'ES' ? 'Red B2B2C' : 'Rede B2B2C',
+                desc: lang === 'EN'
+                  ? 'On-site staff become your sales force. Zero acquisition cost after month 6.'
+                  : lang === 'ES'
+                  ? 'El personal en el sitio se convierte en su fuerza de ventas. Costo de adquisición cero después del mes 6.'
+                  : 'A equipe no local torna-se sua força de vendas. Custo de aquisição zero após o mês 6.'
+              }
+            ].map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: idx === 0 ? -50 : idx === 2 ? 50 : 0, y: idx === 1 ? 50 : 0 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 + (idx * 0.1) }}
+                className="glass-panel p-10 rounded-[2rem] border border-white/5 hover:border-gold/20 transition-all"
+              >
+                <div className="w-16 h-16 bg-gold/10 rounded-2xl flex items-center justify-center text-gold mb-8">
+                  <feature.icon size={32} />
+                </div>
+                <h3 className="text-2xl font-serif text-white mb-4">{feature.title}</h3>
+                <p className="text-white/50 leading-relaxed">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Background Accents */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+          <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full" />
+          <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full" />
+        </div>
+      </section>
+
       {/* Planned Experience Dashboard */}
       <AnimatePresence>
         {plannedExperience && (
@@ -689,6 +783,94 @@ export default function App() {
           </motion.section>
         )}
       </AnimatePresence>
+      {/* Become a Partner Section */}
+      <section className="py-24 px-6 bg-gradient-to-br from-gold via-gold/80 to-gold/60 text-luxury-black">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-6xl font-serif mb-8 uppercase leading-tight">
+              {lang === 'EN' ? 'Join the KLO Partner Network' : lang === 'ES' ? 'Únase a la Red de Socios de KLO' : 'Junte-se à Rede de Parceiros KLO'}
+            </h2>
+            <p className="text-luxury-black/70 text-lg font-light mb-12 leading-relaxed">
+              {lang === 'EN' 
+                ? "List your villa, yacht, aircraft, or services with the Caribbean's premier ultra-luxury platform. Reach UHNW clients globally with zero upfront cost."
+                : lang === 'ES'
+                ? "Anuncie su villa, yate, avión o servicios en la plataforma de ultra-lujo líder del Caribe. Llegue a clientes UHNW a nivel mundial sin costo inicial."
+                : "Liste sua vila, iate, aeronave ou serviços na principal plataforma de ultra-luxo do Caribe. Alcance clientes UHNW globalmente com custo inicial zero."}
+            </p>
+            
+            <div className="space-y-6 mb-12">
+              {[
+                { en: '20% commission — you keep 80%', es: '20% de comisión — usted se queda con el 80%', pt: '20% de comissão — você fica com 80%' },
+                { en: 'Verified UHNW client base', es: 'Base de clientes UHNW verificada', pt: 'Base de clientes UHNW verificada' },
+                { en: '48-hour payment after check-in', es: 'Pago en 48 horas después del check-in', pt: 'Pagamento em 48 horas após o check-in' }
+              ].map((point, idx) => (
+                <div key={idx} className="flex items-center gap-4">
+                  <div className="w-6 h-6 rounded-full bg-luxury-black/10 flex items-center justify-center">
+                    <CheckCircle2 size={14} className="text-luxury-black" />
+                  </div>
+                  <span className="text-sm font-medium uppercase tracking-widest">
+                    {lang === 'EN' ? point.en : lang === 'ES' ? point.es : point.pt}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <button 
+                onClick={() => {
+                  window.history.pushState({}, '', '/supplier');
+                  window.location.reload();
+                }}
+                className="w-full sm:w-auto px-10 py-4 bg-luxury-black text-gold rounded-full font-bold uppercase tracking-widest hover:bg-white hover:text-luxury-black transition-all shadow-2xl"
+              >
+                {lang === 'EN' ? 'Apply to Become a Partner' : lang === 'ES' ? 'Solicitar ser Socio' : 'Candidatar-se a Parceiro'}
+              </button>
+              <a 
+                href="https://wa.me/573243132500"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-luxury-black font-bold uppercase tracking-widest hover:underline"
+              >
+                <MessageSquare size={18} />
+                {lang === 'EN' ? 'WhatsApp Us First' : lang === 'ES' ? 'WhatsApp Primero' : 'WhatsApp Primeiro'}
+              </a>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white/20">
+              <img 
+                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000" 
+                alt="Luxury Partner"
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="absolute -bottom-10 -left-10 glass-panel p-8 rounded-3xl border-white/20 text-luxury-black shadow-2xl">
+              <div className="flex items-center gap-4 mb-2">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-gold bg-luxury-paper overflow-hidden">
+                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Partner" />
+                    </div>
+                  ))}
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">500+ Active Partners</span>
+              </div>
+              <p className="text-xs italic font-light">"KLO changed our business model."</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </>
   );
 };
