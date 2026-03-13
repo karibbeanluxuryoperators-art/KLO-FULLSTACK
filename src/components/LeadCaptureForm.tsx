@@ -68,6 +68,15 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ lang }) => {
       });
       if (res.ok) {
         setIsSuccess(true);
+        
+        // Open WhatsApp with pre-filled message
+        const message = `Hello KLO Concierge, my name is ${formData.name}. I am interested in your luxury services.
+Email: ${formData.email}
+Phone: ${formData.phone}
+Message: ${formData.message}`;
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/573243132500?text=${encodedMessage}`, '_blank');
+
         setTimeout(() => {
           setIsSuccess(false);
           setIsOpen(false);

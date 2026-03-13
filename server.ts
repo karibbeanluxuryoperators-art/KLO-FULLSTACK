@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 import Database from "better-sqlite3";
 import crypto from "crypto";
-import { KLOBrain } from './src/services/kloBrain.ts';
 
 dotenv.config();
 
@@ -85,6 +84,19 @@ async function startServer() {
       is_primary BOOLEAN DEFAULT 0,
       created_at TEXT DEFAULT current_timestamp
     );
+
+    CREATE TABLE IF NOT EXISTS bookings (
+      id TEXT PRIMARY KEY,
+      asset_id TEXT,
+      guest_name TEXT,
+      guest_email TEXT,
+      start_date TEXT,
+      end_date TEXT,
+      total_price TEXT,
+      status TEXT DEFAULT 'PENDING',
+      notes TEXT,
+      created_at TEXT DEFAULT current_timestamp
+    );
   `);
 
   // Mock Users
@@ -133,6 +145,53 @@ async function startServer() {
     const updates = req.body;
     MOCK_LEADS = MOCK_LEADS.map(l => l.id === id ? { ...l, ...updates } : l);
     res.json({ success: true });
+  });
+
+  // Bookings API
+  app.get("/api/bookings", (req, res) => {
+    try {
+      const bookings = db.prepare(`
+        SELECT b.*, a.name as asset_name, a.type as asset_type 
+        FROM bookings b
+        LEFT JOIN assets a ON b.asset_id = a.id
+        ORDER BY b.created_at DESC
+      `).all();
+      res.json(bookings);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/bookings", (req, res) => {
+    const { asset_id, guest_name, guest_email, start_date, end_date, total_price, notes } = req.body;
+    const id = crypto.randomUUID();
+    try {
+      const stmt = db.prepare(`
+        INSERT INTO bookings (id, asset_id, guest_name, guest_email, start_date, end_date, total_price, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      stmt.run(id, asset_id, guest_name, guest_email, start_date, end_date, total_price, notes);
+      res.json({ success: true, booking_id: id });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.patch("/api/bookings/:id", (req, res) => {
+    const { id } = req.params;
+    const { status, notes } = req.body;
+    try {
+      if (status && notes !== undefined) {
+        db.prepare("UPDATE bookings SET status = ?, notes = ? WHERE id = ?").run(status, notes, id);
+      } else if (status) {
+        db.prepare("UPDATE bookings SET status = ? WHERE id = ?").run(status, id);
+      } else if (notes !== undefined) {
+        db.prepare("UPDATE bookings SET notes = ? WHERE id = ?").run(notes, id);
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
   // Supplier API
@@ -561,28 +620,70 @@ async function startServer() {
     }
   });
 
-  // AI Brain Setup
-  const brain = new KLOBrain();
-
-  app.post("/api/ai/chat", async (req, res) => {
-    const { message, lang, mode } = req.body;
-    try {
-      let result;
-      if (mode === 'plan') {
-        result = await brain.planExperience(message, lang || 'EN');
-        res.json({ success: true, plan: result });
-      } else {
-        const response = await brain.chat(message, lang || 'EN');
-        res.json({ success: true, text: response.text });
+app.post('/api/ai/chat', async (req, res) => {
+  const { message, lang, mode } = req.body;
+  const systemPrompt = `You are Maria Fernanda,
+  the AI orchestration engine for KLO
+  (Karibbean Luxury Operators), an ultra-luxury
+  travel brokerage in the Caribbean.
+  You help UHNW clients plan extraordinary
+  experiences across 5 pillars:
+  AIR: Private aviation (jets, helicopters)
+  SEA: Yachts and maritime experiences
+  STAY: Ultra-luxury villas and residences
+  LAND: Armored transport via Vianco VIP
+  STAFF: Private chefs, security, DJs, butlers
+  KLO charges 20% management fee on all bookings.
+  Always respond in ${lang} language.
+  Be concise, elegant, ultra-luxury in tone.
+  When user asks to plan a journey respond ONLY
+  with valid raw JSON no markdown no extra text:
+  {title, estimatedTotal, managementFee,
+   pillars:{air,sea,stay,land,staff},
+   itinerary:[{time,activity,pillar,location,
+   status,tte}],
+   securityBrief:{level,riskAssessment,protocols},
+   legalRequirements:[]}`;
+  try {
+    const response = await fetch(
+      'https://openrouter.ai/api/v1/chat/completions',
+      { method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'HTTP-Referer': 'https://karibbeanluxuryoperators.lat',
+          'X-Title': 'KLO Karibbean Luxury Operators'
+        },
+        body: JSON.stringify({
+          model: 'meta-llama/llama-3.3-70b-instruct:free',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: message }
+          ],
+          temperature: 0.7,
+          max_tokens: 1500
+        })
       }
-    } catch (error: any) {
-      res.json({ 
-        success: true, 
-        text: "Thank you for your interest in KLO. A concierge from Maria Fernanda's team will contact you via WhatsApp within 2 hours.",
-        plan: null
-      });
+    );
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    if (mode === 'plan') {
+      try {
+        const clean = text.replace(/```json|```/g,'').trim();
+        const plan = JSON.parse(clean);
+        res.json({ success: true, plan });
+      } catch {
+        res.json({ success: true, plan: null, text });
+      }
+    } else {
+      res.json({ success: true, text });
     }
-  });
+  } catch (error) {
+    res.json({ success: true,
+      text: 'A KLO concierge will contact you via WhatsApp within 2 hours.',
+      plan: null });
+  }
+});
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {

@@ -4,7 +4,7 @@ import {
   Users, Plane, Ship, Car, Home, 
   Search, Filter, Star, MapPin, 
   ChevronRight, ArrowRight, Shield,
-  Calendar, Clock, DollarSign, ShoppingBag, Trash2, X, Loader2
+  Calendar, Clock, DollarSign, ShoppingBag, Trash2, X, Loader2, MessageSquare
 } from 'lucide-react';
 import { Asset, AssetType, Language } from '../types';
 import { MiniCalendar } from './MiniCalendar';
@@ -42,10 +42,15 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
       .then(data => {
         if (data && data.length > 0) {
           setAssets(data);
+        } else {
+          setAssets(initialAssets);
         }
       })
-      .catch(err => console.error('Failed to fetch active assets', err));
-  }, []);
+      .catch(err => {
+        console.error('Failed to fetch active assets', err);
+        setAssets(initialAssets);
+      });
+  }, [initialAssets]);
 
   React.useEffect(() => {
     if (selectedAsset) {
@@ -236,6 +241,23 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
   const handleConfirmBooking = async () => {
     setIsProcessing(true);
     try {
+      // Save booking to DB first
+      for (const item of cart) {
+        await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            asset_id: item.id,
+            guest_name: bookingData.guestName,
+            guest_email: bookingData.guestEmail,
+            start_date: bookingData.startDate,
+            end_date: bookingData.endDate,
+            total_price: item.pricePerUnit,
+            notes: bookingData.specialRequests
+          })
+        });
+      }
+
       const res = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -263,6 +285,17 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const openWhatsAppRequest = (asset: Asset) => {
+    const message = `Hello KLO Concierge, I am interested in requesting a booking for:
+Asset: ${asset.name}
+Location: ${asset.location}
+Rate: ${asset.pricePerUnit}
+
+Please let me know the availability and next steps.`;
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/573243132500?text=${encodedMessage}`, '_blank');
   };
 
   const renderBookingModal = () => (
@@ -419,12 +452,24 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
               <h3 className="text-4xl font-serif text-white mb-4">{t.success}</h3>
               <p className="text-sm text-white/60 font-light max-w-md mx-auto">{t.successSub}</p>
             </div>
-            <button 
-              onClick={() => setIsBookingModalOpen(false)}
-              className="px-12 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all"
-            >
-              Return to Marketplace
-            </button>
+            <div className="flex gap-4 pt-4">
+              <button 
+                onClick={() => setIsBookingModalOpen(false)}
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all"
+              >
+                Return to Marketplace
+              </button>
+              <a
+                href={`https://wa.me/573243132500?text=${encodeURIComponent(
+                  `Hi KLO, I just completed a booking.\nGuest: ${bookingData.guestName}\nEmail: ${bookingData.guestEmail}\nDates: ${bookingData.startDate} to ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}\nRequests: ${bookingData.specialRequests}`
+                )}`}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='px-12 py-5 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2 mt-4'
+              >
+                <MessageSquare size={16} /> Confirm with Concierge
+              </a>
+            </div>
           </div>
         )}
       </motion.div>
@@ -636,15 +681,33 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
               </h3>
               <MiniCalendar bookedDates={assetAvailability.length > 0 ? assetAvailability : (asset.bookedDates || [])} lang={lang} />
               
-              <button 
-                onClick={() => {
-                  addToCart(asset);
-                  setSelectedAsset(null);
-                }}
-                className="w-full mt-8 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
-              >
-                {t.addToJourney} <ArrowRight size={16} />
-              </button>
+              <div className="flex flex-wrap gap-4 mt-8">
+                <button 
+                  onClick={() => {
+                    addToCart(asset);
+                    setSelectedAsset(null);
+                  }}
+                  className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
+                >
+                  {t.addToJourney} <ArrowRight size={16} />
+                </button>
+                <a
+                  href={`https://wa.me/573243132500?text=${encodeURIComponent(
+                    `Hi KLO, I would like to book:\n\nAsset: ${asset.name}\nType: ${asset.type}\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}\nCapacity: ${asset.capacity} PAX\n\nPlease confirm availability.`
+                  )}`}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='w-full mt-4 py-5 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2'
+                >
+                  <MessageSquare size={18} /> Confirm via WhatsApp
+                </a>
+                <button 
+                  onClick={() => openWhatsAppRequest(asset)}
+                  className="flex-1 py-5 bg-emerald-500 text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-emerald-600 transition-all flex items-center justify-center gap-3"
+                >
+                  <MessageSquare size={16} /> WhatsApp Request
+                </button>
+              </div>
             </div>
 
             <div className="glass-panel p-8 rounded-[40px] border-white/5">
@@ -808,6 +871,17 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
                       <ArrowRight size={18} />
                     </div>
                   </div>
+                  <a
+                    href={`https://wa.me/573243132500?text=${encodeURIComponent(
+                      `Hi KLO, I am interested in:\n\nAsset: ${asset.name}\nType: ${asset.type}\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}\nCapacity: ${asset.capacity} PAX\n\nPlease contact me to arrange.`
+                    )}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    onClick={(e) => e.stopPropagation()}
+                    className='w-full mt-4 py-3 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2'
+                  >
+                    <MessageSquare size={14} /> Request via WhatsApp
+                  </a>
                 </div>
               </motion.div>
             ))}
