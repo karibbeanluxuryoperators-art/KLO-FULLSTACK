@@ -233,9 +233,14 @@ export const SupplierPortal: React.FC = () => {
   const renderStep1 = () => (
     <div className="space-y-12">
       <div className="text-center space-y-4">
-        <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-gold/20">
+        <motion.div 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => window.location.href = '/'}
+          className="w-20 h-20 bg-gold rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-gold/20 cursor-pointer"
+        >
           <span className="text-luxury-black font-bold text-3xl">K</span>
-        </div>
+        </motion.div>
         <h1 className="text-5xl font-serif text-luxury-black uppercase tracking-tight">Become a KLO Verified Partner</h1>
         <p className="text-luxury-black/60 font-light text-xl max-w-2xl mx-auto">
           Join the Caribbean's premier ultra-luxury network. Reach UHNW clients worldwide.
@@ -743,7 +748,17 @@ export const SupplierPortal: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-luxury-paper pb-40">
+    <div className="min-h-screen bg-luxury-paper pb-40 relative">
+      {/* Home Button */}
+      <div className="absolute top-8 left-8 z-[70]">
+        <button 
+          onClick={() => window.location.href = '/'}
+          className="flex items-center gap-2 px-6 py-3 bg-white/50 backdrop-blur-md border border-black/5 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white transition-all shadow-sm"
+        >
+          <Home size={14} /> Back to Home
+        </button>
+      </div>
+
       {/* Progress Bar */}
       {step < 5 && (
         <div className="fixed top-0 left-0 w-full h-1 bg-black/5 z-[60]">
