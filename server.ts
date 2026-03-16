@@ -196,8 +196,42 @@ async function startServer() {
 
   // Mock Leads
   let MOCK_LEADS: any[] = [
-    { id: 'L1', name: 'Julian Casablancas', email: 'julian@thestrokes.com', phone: '+1 212 555 0192', message: 'Interested in a private villa in Anguilla for April.', status: 'NEW', timestamp: new Date(Date.now() - 3600000).toISOString(), source: 'WHATSAPP' },
-    { id: 'L2', name: 'Sofia Coppola', email: 'sofia@lostintranslation.com', phone: '+1 310 555 0183', message: 'Need a Gulfstream G650 for a trip to Tokyo.', status: 'CONTACTED', timestamp: new Date(Date.now() - 10800000).toISOString(), source: 'CONCIERGE' },
+    { 
+      id: 'L1', 
+      name: 'Julian Casablancas', 
+      email: 'julian@thestrokes.com', 
+      phone: '+1 212 555 0192', 
+      whatsapp: '12125550192',
+      experience_type: 'VILLA',
+      message: 'Interested in a private villa in Anguilla for April.', 
+      status: 'NEW', 
+      timestamp: new Date(Date.now() - 3600000).toISOString(), 
+      source: 'WHATSAPP' 
+    },
+    { 
+      id: 'L2', 
+      name: 'Sofia Coppola', 
+      email: 'sofia@lostintranslation.com', 
+      phone: '+1 310 555 0183', 
+      whatsapp: '13105550183',
+      experience_type: 'JET',
+      message: 'Need a Gulfstream G650 for a trip to Tokyo.', 
+      status: 'CONTACTED', 
+      timestamp: new Date(Date.now() - 10800000).toISOString(), 
+      source: 'CONCIERGE' 
+    },
+    { 
+      id: 'L3', 
+      name: 'Wes Anderson', 
+      email: 'wes@grandbudapest.com', 
+      phone: '+1 212 555 0174', 
+      whatsapp: '12125550174',
+      experience_type: 'YACHT',
+      message: 'Looking for a symmetrical yacht for a Mediterranean tour.', 
+      status: 'QUALIFIED', 
+      timestamp: new Date(Date.now() - 86400000).toISOString(), 
+      source: 'MARKETPLACE' 
+    },
   ];
 
   // Leads API

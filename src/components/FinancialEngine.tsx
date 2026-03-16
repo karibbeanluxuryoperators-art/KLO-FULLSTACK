@@ -110,8 +110,8 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
   // Parse GMV from totalRevenue (e.g., "$2.4M" -> 2400000)
   const gmvValue = adminStats?.totalRevenue ? parseFloat(adminStats.totalRevenue.replace(/[^0-9.]/g, '')) * 1000000 : 2400000;
   const commissionValue = gmvValue * 0.20;
-  const totalBookings = adminStats?.activeBookings || 42;
-  const avgBookingValue = gmvValue / totalBookings;
+  const totalBookingsCount = adminStats?.activeBookings || 42;
+  const avgBookingValue = gmvValue / totalBookingsCount;
 
   return (
     <div className="space-y-8">
@@ -121,7 +121,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
           { label: t.gmv, value: `$${(gmvValue / 1000000).toFixed(1)}M`, icon: Wallet, color: 'text-gold' },
           { label: t.commission, value: `$${(commissionValue / 1000).toFixed(0)}K`, icon: CreditCard, color: 'text-emerald-400' },
           { label: t.avgBooking, value: `$${(avgBookingValue / 1000).toFixed(1)}K`, icon: TrendingUp, color: 'text-white' },
-          { label: t.totalBookings, value: totalBookings, icon: Target, color: 'text-white' },
+          { label: t.totalBookings, value: totalBookingsCount, icon: Target, color: 'text-white' },
         ].map((stat, i) => (
           <div key={i} className="glass-panel p-6 rounded-3xl border-white/5">
             <div className="flex justify-between items-start mb-4">
@@ -140,7 +140,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
         <div className="flex justify-between items-end mb-4">
           <div>
             <h4 className="text-xl font-serif mb-1">{t.clientProgress}</h4>
-            <p className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">Target: 20 High-Net-Worth Clients</p>
+            <p className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">Target: 20 High-Net-Worth Clients Acquired</p>
           </div>
           <span className="text-2xl font-serif text-gold">{leadsCount} / 20</span>
         </div>

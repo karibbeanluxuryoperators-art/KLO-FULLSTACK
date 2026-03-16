@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Users, Plane, Ship, Car, Home, 
   Search, Filter, Star, MapPin, 
-  ChevronRight, ArrowRight, Shield,
+  ChevronRight, ArrowRight, Shield, Sparkles,
   Calendar, Clock, DollarSign, ShoppingBag, Trash2, X, Loader2, MessageSquare
 } from 'lucide-react';
 import { Asset, AssetType, Language } from '../types';
@@ -14,9 +14,18 @@ interface MarketplaceProps {
   lang: Language;
   initialSuccess?: boolean;
   onBookAssets: (assets: Asset[]) => void;
+  setChatOpen: (open: boolean) => void;
+  setChatPreload: (msg: string | null) => void;
 }
 
-export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets, lang, initialSuccess, onBookAssets }) => {
+export const Marketplace: React.FC<MarketplaceProps> = ({ 
+  assets: initialAssets, 
+  lang, 
+  initialSuccess, 
+  onBookAssets,
+  setChatOpen,
+  setChatPreload
+}) => {
   const [assets, setAssets] = useState<Asset[]>(initialAssets);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<AssetType | 'ALL'>('ALL');
@@ -28,6 +37,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ assets: initialAssets,
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [bookingStep, setBookingStep] = useState(1);
+  const [chatPreloadLocal, setChatPreloadLocal] = useState<string | null>(null);
   const [bookingData, setBookingData] = useState({
     guestName: '',
     guestEmail: '',
@@ -705,23 +715,21 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                     addToCart(asset);
                     setSelectedAsset(null);
                   }}
-                  className="w-full sm:flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3 min-h-[44px]"
+                  className="w-full sm:flex-1 py-5 bg-white/5 border border-white/10 text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-all flex items-center justify-center gap-3 min-h-[44px]"
                 >
                   {t.addToJourney} <ArrowRight size={16} />
                 </button>
-                <a
-                  href={`https://wa.me/573243132500?text=${encodeURIComponent(
-                    `Hi KLO, I would like to book:\n\nAsset: ${asset.name}\nType: ${asset.type}
-\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}
-\nCapacity: ${asset.capacity} PAX\n\nPlease confirm availability.`
-                  )}`}
-                  target='_blank' rel='noopener noreferrer'
-                  className='w-full py-5 bg-[#25D366] text-white rounded-full font-bold
-                  uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all
-                  flex items-center justify-center gap-2 min-h-[44px]'
+                <button
+                  onClick={() => {
+                    const msg = `I am interested in the ${asset.name} in ${asset.location}. It is a ${asset.type} at ${asset.pricePerUnit}. Can you help me plan an experience with this?`;
+                    setChatPreload(msg);
+                    setChatOpen(true);
+                  }}
+                  className="w-full sm:flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3 min-h-[44px]"
                 >
-                  <MessageSquare size={18} /> Confirm via WhatsApp
-                </a>
+                  <Sparkles size={18} />
+                  {lang === 'EN' ? 'Plan this Experience' : lang === 'ES' ? 'Planificar esta Experiencia' : 'Planejar esta Experiência'}
+                </button>
               </div>
             </div>
 
@@ -858,7 +866,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 rel="noopener noreferrer"
                 className="px-8 py-4 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center gap-2"
               >
-                <MessageSquare size={16} /> Contact Concierge
+                <MessageSquare size={16} /> Contact Concierge via WhatsApp
               </a>
             </div>
           ) : (
@@ -910,21 +918,18 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                         <ArrowRight size={18} />
                       </div>
                     </div>
-                    <a
-                      href={`https://wa.me/573243132500?text=${encodeURIComponent(
-                        `Hi KLO, I am interested in:\n\nAsset: ${asset.name}\nType: ${asset.type}
-\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}
-\nCapacity: ${asset.capacity} PAX\n\nPlease contact me to arrange.`
-                      )}`}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      onClick={(e) => e.stopPropagation()}
-                      className='w-full mt-4 py-3 bg-[#25D366] text-white rounded-full font-bold
-                      uppercase tracking-widest text-[10px] hover:bg-[#20bd5a] transition-all
-                      flex items-center justify-center gap-2'
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const msg = `I am interested in the ${asset.name} in ${asset.location}. It is a ${asset.type} at ${asset.pricePerUnit}. Can you help me plan an experience with this?`;
+                        setChatPreload(msg);
+                        setChatOpen(true);
+                      }}
+                      className="w-full mt-4 py-3 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all flex items-center justify-center gap-2"
                     >
-                      <MessageSquare size={14} /> Request via WhatsApp
-                    </a>
+                      <Sparkles size={14} />
+                      {lang === 'EN' ? 'Plan this Experience' : lang === 'ES' ? 'Planificar esta Experiencia' : 'Planejar esta Experiência'}
+                    </button>
                   </div>
                 </motion.div>
               ))}

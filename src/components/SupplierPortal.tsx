@@ -120,7 +120,7 @@ export const SupplierPortal: React.FC = () => {
     setSubmitError(null);
 
     try {
-      // STEP 1: Register Supplier
+      // STEP 1: POST to /api/suppliers/register
       const supplierRes = await fetch('/api/suppliers/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -134,16 +134,16 @@ export const SupplierPortal: React.FC = () => {
           description: formData.description
         })
       });
-      const supplierData = await supplierRes.json();
       
-      if (!supplierData.success) {
+      const supplierData = await supplierRes.json();
+      if (!supplierRes.ok || !supplierData.success) {
         throw new Error(supplierData.error || 'Failed to register supplier');
       }
 
       const sid = supplierData.supplier_id;
       setSupplierId(sid);
 
-      // STEP 2: Create Asset
+      // STEP 2: After getting supplier_id, POST to /api/assets
       const mappedType = type === 'VILLA' ? 'LODGING' : 
                          type === 'YACHT' ? 'VESSEL' :
                          type === 'AVIATION' ? 'AIRCRAFT' :
@@ -165,8 +165,7 @@ export const SupplierPortal: React.FC = () => {
                     'PER_DAY',
         capacity: parseInt(formData.max_guests || formData.max_passengers || (type === 'STAFF' ? '1' : '0')),
         amenities: formData.amenities.length > 0 ? formData.amenities : (formData.features.length > 0 ? formData.features : []),
-        images: [formData.photo_url].filter(Boolean),
-        status: 'PENDING'
+        images: [formData.photo_url].filter(Boolean)
       };
 
       const assetRes = await fetch('/api/assets', {
@@ -174,22 +173,10 @@ export const SupplierPortal: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(assetPayload)
       });
+      
       const assetData = await assetRes.json();
-
-      if (!assetData.success) {
+      if (!assetRes.ok || !assetData.success) {
         throw new Error(assetData.error || 'Failed to create asset');
-      }
-
-      // Optional: Save Availability if any
-      if (formData.manual_availability.length > 0) {
-        await fetch(`/api/assets/${assetData.asset_id}/availability`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            dates: formData.manual_availability,
-            status: 'BLOCKED'
-          })
-        });
       }
 
       // STEP 3: On success, advance to Step 5 (success screen)
@@ -206,7 +193,6 @@ export const SupplierPortal: React.FC = () => {
       setStep(5);
     } catch (error: any) {
       // STEP 4: On any error, show the error message in the UI without crashing
-      console.error("Submission failed", error);
       setSubmitError(error.message || 'An unexpected error occurred during submission.');
     } finally {
       setIsSubmitting(false);

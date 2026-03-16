@@ -24,6 +24,7 @@ import { LeadCaptureForm } from './components/LeadCaptureForm';
 import { LeadsManagement } from './components/LeadsManagement';
 import { SuppliersManagement } from './components/SuppliersManagement';
 import { SupplierPortal } from './components/SupplierPortal';
+import { ChatDrawer } from './components/ChatDrawer';
 import { Asset, Booking, AdminStats, ViewMode, Language, Incident, GuestProfile, AgentialRule, MaintenanceAlert, FinancialDeepDive, ChatMessage } from './types';
 
 // Mock Data for expanded operations
@@ -231,9 +232,7 @@ export default function App() {
   const [lang, setLang] = useState<Language>('EN');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [chatHistory, setChatHistory] = useState<{ role: 'user' | 'assistant', content: string }[]>([]);
-  const [isPlanning, setIsPlanning] = useState(false);
+  const [chatPreload, setChatPreload] = useState<string | null>(null);
   const [plannedExperience, setPlannedExperience] = useState<KLOExperience | null>(null);
   const [activePillar, setActivePillar] = useState(0);
   const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
@@ -247,22 +246,10 @@ export default function App() {
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (window.location.pathname === '/supplier') {
       setViewMode('SUPPLIER');
     }
-    // Initial greeting
-    setChatHistory([{
-      role: 'assistant',
-      content: lang === 'EN' 
-        ? 'Welcome to KLO. I am your Orchestration Core. How can I curate your next 360° ultra-luxury experience?'
-        : lang === 'ES'
-        ? 'Bienvenido a KLO. Soy su Núcleo de Orquestación. ¿Cómo puedo organizar su próxima experiencia de ultra-lujo 360°?'
-        : 'Bem-vindo à KLO. Sou o seu Núcleo de Orquestração. Como posso organizar sua próxima experiência de ultra-luxo 360°?'
-    }]);
-
     // Fetch Assets from API
     fetch('/api/assets')
       .then(res => res.json())
@@ -288,10 +275,6 @@ export default function App() {
       window.history.replaceState({}, '', window.location.pathname);
     }
   }, [viewMode, lang, user]);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatHistory]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -394,60 +377,6 @@ export default function App() {
     </div>
   );
 
-  const handleSendMessage = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (!message.trim()) return;
-
-    const userMsg = message;
-    setMessage('');
-    setChatHistory(prev => [...prev, { role: 'user', content: userMsg }]);
-    setIsPlanning(true);
-
-    try {
-      const isPlanRequest = userMsg.toLowerCase().includes('plan') || userMsg.toLowerCase().includes('quiero') || userMsg.toLowerCase().includes('necesito');
-      
-      const res = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          message: userMsg, 
-          lang, 
-          mode: isPlanRequest ? 'plan' : 'chat' 
-        })
-      });
-      const data = await res.json();
-
-      if (isPlanRequest && data.plan) {
-        setPlannedExperience(data.plan);
-        setChatHistory(prev => [...prev, { 
-          role: 'assistant', 
-          content: lang === 'EN' 
-            ? `I have orchestrated a bespoke 360° experience: "${data.plan.title}". Management fee of ${data.plan.managementFee} has been calculated to protect unit economics.`
-            : lang === 'ES'
-            ? `He orquestado una experiencia 360° a medida: "${data.plan.title}". Se ha calculado una tarifa de gestión de ${data.plan.managementFee} para proteger la economía de la unidad.`
-            : `Orquestrei uma experiência 360° sob medida: "${data.plan.title}". A taxa de gerenciamento de ${data.plan.managementFee} foi calculada para proteger a economia da unidade.`
-        }]);
-      } else {
-        setChatHistory(prev => [...prev, { 
-          role: 'assistant', 
-          content: data.text || (lang === 'EN' ? "I'm processing your request." : lang === 'ES' ? "Estoy procesando su solicitud." : "Estou processando sua solicitação.") 
-        }]);
-      }
-    } catch (error) {
-      console.error(error);
-      setChatHistory(prev => [...prev, { 
-        role: 'assistant', 
-        content: lang === 'EN' 
-          ? "I apologize, but I encountered an error while orchestrating your request." 
-          : lang === 'ES'
-          ? "Lo siento, pero encontré un error al orquestar su solicitud."
-          : "Sinto muito, mas encontrei um erro ao orquestrar sua solicitação."
-      }]);
-    } finally {
-      setIsPlanning(false);
-    }
-  };
-
   const handlePayment = async () => {
     setIsProcessingPayment(true);
     try {
@@ -459,14 +388,6 @@ export default function App() {
       const data = await res.json();
       setTimeout(() => {
         setIsProcessingPayment(false);
-        setChatHistory(prev => [...prev, { 
-          role: 'assistant', 
-          content: lang === 'EN'
-            ? `Payment tokenized successfully via Stripe. Your CGP (Central Guest Profile) has been updated. Status: ${data.status}`
-            : lang === 'ES'
-            ? `Pago tokenizado con éxito a través de Stripe. Su CGP (Perfil Central del Huésped) ha sido actualizado. Estado: ${data.status}`
-            : `Pagamento tokenizado com sucesso via Stripe. Seu CGP (Perfil Central do Hóspede) foi atualizado. Status: ${data.status}`
-        }]);
       }, 2000);
     } catch (error) {
       setIsProcessingPayment(false);
@@ -480,11 +401,13 @@ export default function App() {
           assets={assets} 
           lang={lang} 
           initialSuccess={bookingSuccess}
+          setChatOpen={setChatOpen}
+          setChatPreload={setChatPreload}
           onBookAssets={(selectedAssets) => {
             setChatOpen(true);
             const assetNames = selectedAssets.map(a => a.name).join(', ');
             const locations = [...new Set(selectedAssets.map(a => a.location))].join(' & ');
-            setMessage(lang === 'EN' 
+            setChatPreload(lang === 'EN' 
               ? `I'd like to orchestrate a journey involving: ${assetNames} in ${locations}.` 
               : lang === 'ES' 
               ? `Me gustaría orquestar un viaje que incluya: ${assetNames} en ${locations}.` 
@@ -1224,63 +1147,16 @@ export default function App() {
 
       {/* AI Concierge Drawer */}
       <LeadCaptureForm lang={lang} />
-      <AnimatePresence>
-        {chatOpen && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setChatOpen(false)} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]" />
-            <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed top-0 right-0 h-full w-full md:max-w-md bg-luxury-slate z-[70] shadow-2xl flex flex-col">
-              <div className="p-8 border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center text-luxury-black">
-                    <Sparkles size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-serif text-xl uppercase tracking-wider">Karibbean Luxury Operators</h3>
-                    <span className="text-[10px] text-gold uppercase tracking-[0.2em]">
-                      {lang === 'EN' ? 'Agentic Middleware' : lang === 'ES' ? 'Middleware Agéntico' : 'Middleware Agêntico'}
-                    </span>
-                  </div>
-                </div>
-                <button onClick={() => setChatOpen(false)} className="p-2 hover:bg-white/5 rounded-full"><X /></button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
-                {chatHistory.map((msg, idx) => (
-                  <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] p-5 rounded-3xl text-sm font-light leading-relaxed ${
-                      msg.role === 'user' ? 'bg-gold text-luxury-black rounded-tr-none' : 'glass-panel rounded-tl-none'
-                    }`}>{msg.content}</div>
-                  </div>
-                ))}
-                {isPlanning && (
-                  <div className="flex justify-start">
-                    <div className="glass-panel p-5 rounded-3xl rounded-tl-none flex items-center gap-3">
-                      <Loader2 size={16} className="animate-spin text-gold" />
-                      <span className="text-xs text-luxury-black/50 italic">
-                        {lang === 'EN' ? 'Orchestrating 360° pillars...' : lang === 'ES' ? 'Orquestando pilares 360°...' : 'Orquestrando pilares 360°...'}
-                      </span>
-                    </div>
-                  </div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
-
-              <form onSubmit={handleSendMessage} className="p-8 border-t border-white/10">
-                <div className="relative">
-                  <input 
-                    type="text" 
-                    value={message} 
-                    onChange={(e) => setMessage(e.target.value)} 
-                    placeholder={lang === 'EN' ? 'Plan a 360° experience...' : lang === 'ES' ? 'Planifica una experiencia 360°...' : 'Planeje uma experiência 360°...'} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-6 pr-14 focus:outline-none focus:border-gold/50 transition-colors font-light" 
-                  />
-                  <button type="submit" disabled={isPlanning} className="absolute right-2 top-2 bottom-2 w-10 bg-gold text-luxury-black rounded-xl flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50"><Send size={18} /></button>
-                </div>
-              </form>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <ChatDrawer 
+        isOpen={chatOpen} 
+        onClose={() => {
+          setChatOpen(false);
+          setChatPreload(null);
+        }} 
+        initialMessage={chatPreload}
+        lang={lang}
+        onPlanGenerated={setPlannedExperience}
+      />
 
       {/* Floating Action Button */}
       {!chatOpen && (
