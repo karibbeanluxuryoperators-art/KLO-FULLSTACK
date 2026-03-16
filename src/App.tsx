@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plane, Ship, Home, Car, UserCheck, Shield, Sparkles, 
   MapPin, Calendar, Clock, ChevronRight, MessageSquare, 
-  Send, Loader2, Menu, X, ArrowRight, Star, Quote,
+  Send, Loader2, Menu, X, ArrowRight, ArrowLeft, Star, Quote,
   LayoutDashboard, Users, Briefcase, CreditCard, Settings,
   TrendingUp, Activity, Package, ExternalLink, Timer, AlertTriangle,
   Zap, DollarSign, CheckCircle2
@@ -791,6 +791,15 @@ export default function App() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
+            <button 
+              onClick={() => {
+                setShowMarketplace(true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex items-center gap-2 text-luxury-black/60 hover:text-luxury-black mb-8 uppercase tracking-widest text-[10px] font-bold transition-colors"
+            >
+              <ArrowLeft size={14} /> {lang === 'EN' ? 'Back to Marketplace' : lang === 'ES' ? 'Volver al Mercado' : 'Voltar ao Mercado'}
+            </button>
             <h2 className="text-4xl md:text-6xl font-serif mb-8 uppercase leading-tight">
               {lang === 'EN' ? 'Join the KLO Partner Network' : lang === 'ES' ? 'Únase a la Red de Socios de KLO' : 'Junte-se à Rede de Parceiros KLO'}
             </h2>

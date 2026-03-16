@@ -475,11 +475,15 @@ Please let me know the availability and next steps.`;
               </button>
               <a
                 href={`https://wa.me/573243132500?text=${encodeURIComponent(
-                  `Hi KLO, I just completed a booking.\nGuest: ${bookingData.guestName}\nEmail: ${bookingData.guestEmail}\nDates: ${bookingData.startDate} to ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}\nRequests: ${bookingData.specialRequests}`
+                  `Hi KLO, I just completed a booking.\nGuest: ${bookingData.guestName}
+\nEmail: ${bookingData.guestEmail}\nDates: ${bookingData.startDate} to
+${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
+\nRequests: ${bookingData.specialRequests}`
                 )}`}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='px-12 py-5 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2 mt-4'
+                target='_blank' rel='noopener noreferrer'
+                className='px-12 py-5 bg-[#25D366] text-white rounded-full font-bold
+                uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all
+                flex items-center justify-center gap-2 mt-4'
               >
                 <MessageSquare size={16} /> Confirm with Concierge
               </a>
@@ -707,20 +711,17 @@ Please let me know the availability and next steps.`;
                 </button>
                 <a
                   href={`https://wa.me/573243132500?text=${encodeURIComponent(
-                    `Hi KLO, I would like to book:\n\nAsset: ${asset.name}\nType: ${asset.type}\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}\nCapacity: ${asset.capacity} PAX\n\nPlease confirm availability.`
+                    `Hi KLO, I would like to book:\n\nAsset: ${asset.name}\nType: ${asset.type}
+\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}
+\nCapacity: ${asset.capacity} PAX\n\nPlease confirm availability.`
                   )}`}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='w-full mt-4 py-5 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2'
+                  target='_blank' rel='noopener noreferrer'
+                  className='w-full mt-4 py-5 bg-[#25D366] text-white rounded-full font-bold
+                  uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all
+                  flex items-center justify-center gap-2'
                 >
                   <MessageSquare size={18} /> Confirm via WhatsApp
                 </a>
-                <button 
-                  onClick={() => openWhatsAppRequest(asset)}
-                  className="flex-1 py-5 bg-emerald-500 text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-emerald-600 transition-all flex items-center justify-center gap-3"
-                >
-                  <MessageSquare size={16} /> WhatsApp Request
-                </button>
               </div>
             </div>
 
@@ -911,12 +912,16 @@ Please let me know the availability and next steps.`;
                     </div>
                     <a
                       href={`https://wa.me/573243132500?text=${encodeURIComponent(
-                        `Hi KLO, I am interested in:\n\nAsset: ${asset.name}\nType: ${asset.type}\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}\nCapacity: ${asset.capacity} PAX\n\nPlease contact me to arrange.`
+                        `Hi KLO, I am interested in:\n\nAsset: ${asset.name}\nType: ${asset.type}
+\nLocation: ${asset.location}\nRate: ${asset.pricePerUnit}
+\nCapacity: ${asset.capacity} PAX\n\nPlease contact me to arrange.`
                       )}`}
                       target='_blank'
                       rel='noopener noreferrer'
                       onClick={(e) => e.stopPropagation()}
-                      className='w-full mt-4 py-3 bg-[#25D366] text-white rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2'
+                      className='w-full mt-4 py-3 bg-[#25D366] text-white rounded-full font-bold
+                      uppercase tracking-widest text-[10px] hover:bg-[#20bd5a] transition-all
+                      flex items-center justify-center gap-2'
                     >
                       <MessageSquare size={14} /> Request via WhatsApp
                     </a>
