@@ -314,9 +314,16 @@ async function startServer() {
     const { status } = req.body;
     try {
       db.prepare("UPDATE suppliers SET status = ? WHERE id = ?").run(status, id);
+      
       if (status === 'APPROVED') {
-        console.log(`Supplier ${id} APPROVED. Sending confirmation to ${+573243132500} via WhatsApp.`);
+        // Also activate all assets belonging to this supplier
+        db.prepare("UPDATE assets SET status = 'ACTIVE' WHERE supplier_id = ?").run(id);
+        console.log(`Supplier ${id} APPROVED. Assets activated. Sending confirmation to +573243132500 via WhatsApp.`);
+      } else if (status === 'REJECTED') {
+        // Deactivate assets if supplier is rejected
+        db.prepare("UPDATE assets SET status = 'REJECTED' WHERE supplier_id = ?").run(id);
       }
+      
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: error.message });

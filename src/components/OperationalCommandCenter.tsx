@@ -171,13 +171,15 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
       <div className="flex flex-col lg:flex-row justify-between items-center gap-6 glass-panel p-6 rounded-[32px] border-white/5">
         <div className="flex flex-wrap justify-center lg:justify-start gap-8">
           {[
-            { label: 'Cartagena', tz: 'America/Bogota', code: 'COT' },
-            { label: 'Miami', tz: 'America/New_York', code: 'EST' },
-            { label: 'London', tz: 'Europe/London', code: 'GMT' },
-            { label: 'Dubai', tz: 'Asia/Dubai', code: 'GST' },
+            { label: 'Cartagena', tz: 'America/Bogota', code: 'COT', offset: 'UTC-5' },
+            { label: 'Miami', tz: 'America/New_York', code: 'EST', offset: '' },
+            { label: 'London', tz: 'Europe/London', code: 'GMT', offset: '' },
+            { label: 'Dubai', tz: 'Asia/Dubai', code: 'GST', offset: '' },
           ].map((city) => (
             <div key={city.code} className="text-center lg:text-left">
-              <span className="text-[8px] text-luxury-cream/40 uppercase tracking-[0.2em] block mb-1">{city.label} ({city.code})</span>
+              <span className="text-[8px] text-luxury-cream/40 uppercase tracking-[0.2em] block mb-1">
+                {city.label} ({city.code}{city.offset ? `, ${city.offset}` : ''})
+              </span>
               <span className="text-xl font-mono text-white tracking-wider">{formatTime(city.tz)}</span>
             </div>
           ))}
@@ -187,7 +189,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           <div className="flex items-center gap-3">
             <div className={`w-2 h-2 rounded-full animate-pulse ${serverStatus === 'OPERATIONAL' ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' : 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]'}`} />
             <span className={`text-[10px] uppercase tracking-[0.2em] font-bold ${serverStatus === 'OPERATIONAL' ? 'text-emerald-400' : 'text-red-500'}`}>
-              KLO: {serverStatus}
+              {serverStatus}
             </span>
           </div>
         </div>
@@ -509,7 +511,19 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                 </button>
               </div>
               <div className="p-8 max-h-[80vh] overflow-y-auto">
-                <AssetManagement lang={lang} />
+                <AssetManagement 
+                  assets={assets} 
+                  lang={lang} 
+                  onSaveAsset={(updatedAsset) => {
+                    setAssets(prev => {
+                      const exists = prev.find(a => a.id === updatedAsset.id);
+                      if (exists) {
+                        return prev.map(a => a.id === updatedAsset.id ? updatedAsset : a);
+                      }
+                      return [updatedAsset, ...prev];
+                    });
+                  }}
+                />
               </div>
             </motion.div>
           </div>

@@ -58,6 +58,8 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
   const [isSavingNotes, setIsSavingNotes] = useState(false);
 
   useEffect(() => {
+    setFilter('ALL');
+    setSearch('');
     if (activeView === 'SUPPLIERS') {
       fetchSuppliers();
     } else {
@@ -70,9 +72,10 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
     try {
       const res = await fetch('/api/suppliers');
       const data = await res.json();
-      setSuppliers(data);
+      setSuppliers(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch suppliers', error);
+      setSuppliers([]);
     } finally {
       setSuppliersLoading(false);
     }
@@ -83,9 +86,10 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
     try {
       const res = await fetch('/api/bookings');
       const data = await res.json();
-      setBookings(data);
+      setBookings(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch bookings', error);
+      setBookings([]);
     } finally {
       setBookingsLoading(false);
     }
@@ -380,163 +384,134 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
         </div>
       </div>
 
-      <div className="glass-panel rounded-[40px] overflow-hidden border-white/5">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-white/5 bg-white/5">
-                {activeView === 'SUPPLIERS' ? (
-                  <>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Business Name</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Type</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Location</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">WhatsApp</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Status</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Submitted</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold text-right">Actions</th>
-                  </>
-                ) : (
-                  <>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Guest</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Asset</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Dates</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Total</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Status</th>
-                    <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold text-right">Details</th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {activeView === 'SUPPLIERS' ? (
-                filteredSuppliers.map((supplier) => (
-                  <React.Fragment key={supplier.id}>
-                    <tr className={`hover:bg-white/5 transition-colors cursor-pointer ${expandedId === supplier.id ? 'bg-white/5' : ''}`} onClick={() => setExpandedId(expandedId === supplier.id ? null : supplier.id)}>
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gold/10 rounded-xl flex items-center justify-center text-gold font-bold">
-                            {supplier.business_name.charAt(0)}
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium text-white">{supplier.business_name}</div>
-                            <div className="text-[10px] text-white/40">{supplier.contact_name}</div>
-                          </div>
+      {activeView === 'SUPPLIERS' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {isLoading ? (
+            <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
+              <Loader2 className="animate-spin text-gold" size={48} />
+              <p className="text-xs uppercase tracking-[0.2em] text-white/40">Fetching Partners...</p>
+            </div>
+          ) : filteredSuppliers.length === 0 ? (
+            <div className="col-span-full py-20 flex flex-col items-center justify-center text-center gap-6">
+              <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-white/20">
+                <AlertCircle size={40} />
+              </div>
+              <p className="text-sm uppercase tracking-widest text-white/40">
+                {suppliers.length === 0 ? 'No suppliers yet' : 'No suppliers found matching your criteria'}
+              </p>
+            </div>
+          ) : (
+            <AnimatePresence mode="popLayout">
+              {filteredSuppliers.map((supplier) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  key={supplier.id}
+                  className="glass-panel rounded-[40px] overflow-hidden group border-white/5 hover:border-gold/30 transition-all flex flex-col"
+                >
+                  <div className="p-8 space-y-6 flex-1">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center text-gold font-serif text-2xl">
+                          {supplier.business_name.charAt(0)}
                         </div>
-                      </td>
-                      <td className="px-8 py-6">
+                        <div>
+                          <h3 className="text-xl font-serif text-white">{supplier.business_name}</h3>
+                          <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">{supplier.contact_name}</p>
+                        </div>
+                      </div>
+                      <span className={`text-[8px] px-3 py-1 rounded-full border uppercase tracking-widest font-bold ${getStatusColor(supplier.status)}`}>
+                        {supplier.status}
+                      </span>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <Package size={16} className="text-gold" />
                         <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">{supplier.asset_type}</span>
-                      </td>
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2 text-xs text-white/60">
-                          <MapPin size={12} className="text-gold" />
-                          {supplier.location}
-                        </div>
-                      </td>
-                      <td className="px-8 py-6">
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <MapPin size={16} className="text-gold" />
+                        <span className="text-xs text-white/60">{supplier.location}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <MessageSquare size={16} className="text-emerald-400" />
                         <a 
                           href={`https://wa.me/${supplier.whatsapp.replace(/\D/g, '')}`} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-2 text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+                          className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors underline underline-offset-4"
                         >
-                          <MessageSquare size={14} />
                           {supplier.whatsapp}
                         </a>
-                      </td>
-                      <td className="px-8 py-6">
-                        <span className={`text-[8px] px-2 py-1 rounded-full border uppercase tracking-widest font-bold ${getStatusColor(supplier.status)}`}>
-                          {supplier.status}
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Clock size={16} className="text-white/20" />
+                        <span className="text-[10px] text-white/40 uppercase tracking-widest">
+                          Submitted: {new Date(supplier.created_at).toLocaleDateString()}
                         </span>
-                      </td>
-                      <td className="px-8 py-6 text-xs text-white/40">
-                        {new Date(supplier.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-8 py-6 text-right" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center justify-end gap-2">
-                          {supplier.status === 'PENDING' && (
-                            <>
-                              <button 
-                                onClick={() => handleStatusUpdate(supplier.id, 'APPROVED')}
-                                disabled={actionLoading === supplier.id}
-                                className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20"
-                              >
-                                {actionLoading === supplier.id ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
-                              </button>
-                              <button 
-                                onClick={() => handleStatusUpdate(supplier.id, 'REJECTED')}
-                                disabled={actionLoading === supplier.id}
-                                className="p-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-all border border-red-500/20"
-                              >
-                                {actionLoading === supplier.id ? <Loader2 size={14} className="animate-spin" /> : <X size={14} />}
-                              </button>
-                            </>
-                          )}
-                          <button className="p-2 text-white/20 hover:text-white transition-colors">
-                            {expandedId === supplier.id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <AnimatePresence>
-                      {expandedId === supplier.id && (
-                        <tr>
-                          <td colSpan={7} className="px-8 py-0 bg-white/5">
-                            <motion.div 
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="py-8 grid grid-cols-1 lg:grid-cols-3 gap-12 border-t border-white/5">
-                                <div className="lg:col-span-2 space-y-6">
-                                  <div className="space-y-2">
-                                    <h4 className="text-[10px] uppercase tracking-widest text-gold font-bold">Partner Description</h4>
-                                    <p className="text-sm text-white/70 leading-relaxed font-light">{supplier.description}</p>
-                                  </div>
-                                  <div className="grid grid-cols-2 gap-8">
-                                    <div className="space-y-2">
-                                      <h4 className="text-[10px] uppercase tracking-widest text-gold font-bold">Contact Email</h4>
-                                      <div className="flex items-center gap-2 text-sm text-white/60">
-                                        <ExternalLink size={14} />
-                                        {supplier.email}
-                                      </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                      <h4 className="text-[10px] uppercase tracking-widest text-gold font-bold">Calendar Integration</h4>
-                                      <div className="flex items-center gap-2 text-sm text-white/60">
-                                        <Calendar size={14} />
-                                        {supplier.google_calendar_id ? 'Connected' : 'Not Connected'}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="space-y-6 flex flex-col justify-center">
-                                  <button 
-                                    onClick={() => onViewAssets(supplier.id)}
-                                    className="w-full py-4 bg-gold text-luxury-black rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-white transition-all"
-                                  >
-                                    <Package size={16} /> View Assets
-                                  </button>
-                                  <div className="p-6 bg-white/5 rounded-3xl border border-white/10 flex items-center gap-4">
-                                    <div className="w-10 h-10 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center">
-                                      <Info size={20} />
-                                    </div>
-                                    <p className="text-[10px] text-white/40 leading-relaxed uppercase tracking-widest">
-                                      All assets from this supplier are currently {supplier.status.toLowerCase()}.
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          </td>
-                        </tr>
-                      )}
-                    </AnimatePresence>
-                  </React.Fragment>
-                ))
-              ) : (
-                filteredBookings.map((booking) => (
+                      </div>
+                    </div>
+
+                    <div className="pt-4">
+                      <p className="text-xs text-white/50 font-light leading-relaxed line-clamp-3 italic">
+                        "{supplier.description}"
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-8 pt-0 flex gap-3">
+                    {supplier.status === 'PENDING' ? (
+                      <>
+                        <button 
+                          onClick={() => handleStatusUpdate(supplier.id, 'APPROVED')}
+                          disabled={actionLoading === supplier.id}
+                          className="flex-1 py-4 bg-emerald-500/10 text-emerald-400 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20 font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
+                        >
+                          {actionLoading === supplier.id ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+                          Approve
+                        </button>
+                        <button 
+                          onClick={() => handleStatusUpdate(supplier.id, 'REJECTED')}
+                          disabled={actionLoading === supplier.id}
+                          className="flex-1 py-4 bg-red-500/10 text-red-400 rounded-2xl hover:bg-red-500 hover:text-white transition-all border border-red-500/20 font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
+                        >
+                          {actionLoading === supplier.id ? <Loader2 size={14} className="animate-spin" /> : <X size={14} />}
+                          Reject
+                        </button>
+                      </>
+                    ) : (
+                      <button 
+                        onClick={() => onViewAssets(supplier.id)}
+                        className="w-full py-4 bg-white/5 text-white/60 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-white/10 transition-all border border-white/10"
+                      >
+                        <Package size={16} /> View Inventory
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
+        </div>
+      ) : (
+        <div className="glass-panel rounded-[40px] overflow-hidden border-white/5">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-white/5 bg-white/5">
+                  <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Guest</th>
+                  <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Asset</th>
+                  <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Dates</th>
+                  <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Total</th>
+                  <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold">Status</th>
+                  <th className="px-8 py-6 text-[10px] uppercase tracking-widest text-white/40 font-bold text-right">Details</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {filteredBookings.map((booking) => (
                   <tr key={booking.id} className="hover:bg-white/5 transition-colors cursor-pointer" onClick={() => {
                     setSelectedBooking(booking);
                     setBookingNotes(booking.notes || '');
@@ -578,27 +553,24 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                       </button>
                     </td>
                   </tr>
-                ))
-              )}
-              {((activeView === 'SUPPLIERS' && filteredSuppliers.length === 0) || (activeView === 'BOOKINGS' && filteredBookings.length === 0)) && (
-                <tr>
-                  <td colSpan={7} className="px-8 py-20 text-center">
-                    <div className="flex flex-col items-center gap-4 text-white/20">
-                      <AlertCircle size={48} />
-                      <p className="text-sm uppercase tracking-widest">
-                        {activeView === 'SUPPLIERS' 
-                          ? (suppliers.length === 0 ? 'No suppliers yet' : 'No suppliers found matching your criteria')
-                          : (bookings.length === 0 ? 'No bookings yet' : 'No bookings found matching your criteria')
-                        }
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                ))}
+                {filteredBookings.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-8 py-20 text-center">
+                      <div className="flex flex-col items-center gap-4 text-white/20">
+                        <AlertCircle size={48} />
+                        <p className="text-sm uppercase tracking-widest">
+                          {bookings.length === 0 ? 'No bookings yet' : 'No bookings found matching your criteria'}
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
       <AnimatePresence>
         {selectedBooking && renderBookingModal()}
       </AnimatePresence>

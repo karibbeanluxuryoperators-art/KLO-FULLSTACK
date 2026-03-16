@@ -120,7 +120,7 @@ export const SupplierPortal: React.FC = () => {
     setSubmitError(null);
 
     try {
-      // 1. Register Supplier
+      // STEP 1: Register Supplier
       const supplierRes = await fetch('/api/suppliers/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -143,13 +143,12 @@ export const SupplierPortal: React.FC = () => {
       const sid = supplierData.supplier_id;
       setSupplierId(sid);
 
-      // Map asset type
+      // STEP 2: Create Asset
       const mappedType = type === 'VILLA' ? 'LODGING' : 
                          type === 'YACHT' ? 'VESSEL' :
                          type === 'AVIATION' ? 'AIRCRAFT' :
                          'STAFF';
 
-      // 2. Create Asset
       const assetPayload = {
         supplier_id: sid,
         name: formData.business_name,
@@ -164,11 +163,9 @@ export const SupplierPortal: React.FC = () => {
                     type === 'YACHT' ? 'PER_DAY' :
                     type === 'AVIATION' ? 'PER_HOUR' :
                     'PER_DAY',
-        capacity: parseInt(formData.max_guests || formData.max_passengers || '0'),
-        amenities: type === 'VILLA' ? formData.amenities : 
-                   type === 'YACHT' ? formData.features : 
-                   [],
-        images: formData.photo_url ? [formData.photo_url] : [],
+        capacity: parseInt(formData.max_guests || formData.max_passengers || (type === 'STAFF' ? '1' : '0')),
+        amenities: formData.amenities.length > 0 ? formData.amenities : (formData.features.length > 0 ? formData.features : []),
+        images: [formData.photo_url].filter(Boolean),
         status: 'PENDING'
       };
 
@@ -183,8 +180,8 @@ export const SupplierPortal: React.FC = () => {
         throw new Error(assetData.error || 'Failed to create asset');
       }
 
+      // Optional: Save Availability if any
       if (formData.manual_availability.length > 0) {
-        // 3. Save Availability
         await fetch(`/api/assets/${assetData.asset_id}/availability`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -195,18 +192,20 @@ export const SupplierPortal: React.FC = () => {
         });
       }
 
-      // WhatsApp notification
+      // STEP 3: On success, advance to Step 5 (success screen)
+      // Also open WhatsApp notification
       window.open('https://wa.me/573243132500?text=' +
-      encodeURIComponent(
-        `New KLO supplier application:\n` +
-        `Business: ${formData.business_name}\n` +
-        `Type: ${type}\n` +
-        `Location: ${formData.location}\n` +
-        `WhatsApp: ${formData.whatsapp}`
-      ), '_blank');
+        encodeURIComponent(
+          `New KLO supplier application:\n` +
+          `Business: ${formData.business_name}\n` +
+          `Type: ${type}\n` +
+          `Location: ${formData.location}\n` +
+          `WhatsApp: ${formData.whatsapp}`
+        ), '_blank');
 
-      nextStep();
+      setStep(5);
     } catch (error: any) {
+      // STEP 4: On any error, show the error message in the UI without crashing
       console.error("Submission failed", error);
       setSubmitError(error.message || 'An unexpected error occurred during submission.');
     } finally {

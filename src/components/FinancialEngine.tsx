@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { DollarSign, TrendingUp, TrendingDown, PieChart, ArrowUpRight, ArrowDownRight, Wallet, CreditCard, ShieldCheck, Loader2, Users, Target } from 'lucide-react';
 import { FinancialDeepDive, Language } from '../types';
-import { ResponsiveContainer, PieChart as RePieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, PieChart as RePieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 interface FinancialEngineProps {
   financials: FinancialDeepDive;
@@ -151,6 +151,55 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
             transition={{ duration: 1, ease: "easeOut" }}
             className="h-full bg-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]"
           />
+        </div>
+      </div>
+
+      {/* Monthly Revenue Performance */}
+      <div className="glass-panel p-8 rounded-[40px] border-white/5">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h3 className="text-xl font-serif uppercase tracking-wider">Monthly Revenue Performance</h3>
+            <p className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">Real-time GMV Tracking</p>
+          </div>
+          <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold">
+            <TrendingUp size={16} />
+            +24% vs Last Period
+          </div>
+        </div>
+        <div className="h-[300px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={adminStats?.revenueData || []}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+              <XAxis 
+                dataKey="name" 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fill: '#ffffff40', fontSize: 10 }}
+                dy={10}
+              />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fill: '#ffffff40', fontSize: 10 }}
+                tickFormatter={(value) => `$${value / 1000}k`}
+              />
+              <Tooltip 
+                cursor={{ fill: '#ffffff05' }}
+                contentStyle={{ 
+                  backgroundColor: '#1C1C1C', 
+                  border: '1px solid #ffffff10',
+                  borderRadius: '12px',
+                  fontSize: '12px'
+                }}
+              />
+              <Bar 
+                dataKey="value" 
+                fill="#D4AF37" 
+                radius={[4, 4, 0, 0]} 
+                barSize={40}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 

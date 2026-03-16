@@ -104,7 +104,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
       markClosed: 'Mark Closed',
       markLost: 'Mark Lost',
       advance: 'Advance Status',
-      whatsappMsg: (name: string, exp: string) => `Hi ${name}, this is KLO. Thank you for your inquiry about ${exp}. I would love to discuss your trip to the Caribbean.`
+      whatsappMsg: (name: string, exp: string) => `Hi ${name}, this is KLO. Thank you for your inquiry about ${exp}. I would love to discuss your trip.`
     },
     ES: {
       title: 'Gestión de Leads',
@@ -123,7 +123,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
       markClosed: 'Marcar como Cerrado',
       markLost: 'Marcar como Perdido',
       advance: 'Avanzar Estado',
-      whatsappMsg: (name: string, exp: string) => `Hola ${name}, te escribe KLO. Gracias por tu consulta sobre ${exp}. Me encantaría hablar sobre tu viaje al Caribe.`
+      whatsappMsg: (name: string, exp: string) => `Hola ${name}, te escribe KLO. Gracias por tu consulta sobre ${exp}. Me encantaría hablar sobre tu viaje.`
     },
     PT: {
       title: 'Gestão de Leads',
@@ -142,7 +142,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
       markClosed: 'Marcar Fechado',
       markLost: 'Marcar Perdido',
       advance: 'Avançar Status',
-      whatsappMsg: (name: string, exp: string) => `Olá ${name}, aqui é a KLO. Obrigado pelo seu interesse em ${exp}. Adoraria conversar sobre sua viagem ao Caribe.`
+      whatsappMsg: (name: string, exp: string) => `Olá ${name}, aqui é a KLO. Obrigado pelo seu interesse em ${exp}. Adoraria conversar sobre sua viagem.`
     }
   }[lang];
 
@@ -266,7 +266,10 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                     <button 
                       onClick={() => {
                         const msg = t.whatsappMsg(lead.name, lead.experience_type || 'luxury services');
-                        window.open(`https://wa.me/${lead.whatsapp || lead.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+                        const phone = lead.whatsapp || lead.phone;
+                        // Clean phone number: remove non-digits
+                        const cleanPhone = phone.replace(/\D/g, '');
+                        window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
                       }}
                       className="p-4 bg-emerald-500/10 text-emerald-500 rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
                       title="WhatsApp Quick Reply"

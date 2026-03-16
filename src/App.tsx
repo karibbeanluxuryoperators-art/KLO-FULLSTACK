@@ -519,7 +519,7 @@ export default function App() {
             <span className="text-gold uppercase tracking-[0.5em] text-xs mb-6 block">
               {lang === 'EN' ? 'Tech-Enabled Lifestyle Brokerage' : lang === 'ES' ? 'Corretaje de Estilo de Vida Basado en Tecnología' : 'Corretagem de Estilo de Vida Baseada em Tecnologia'}
             </span>
-            <h1 className="text-6xl md:text-8xl font-serif mb-8 leading-tight uppercase">
+            <h1 className="text-5xl md:text-8xl font-serif mb-8 leading-tight uppercase">
               Karibbean Luxury <br />
               <span className="italic font-light">Operators</span>
             </h1>
@@ -530,7 +530,7 @@ export default function App() {
                 ? 'Middleware de IA Agéntica para UHNWI. Viajes sin fricción a través de Aviación, Marítimo, Estancia y Tierra.'
                 : 'Middleware de IA Agêntica para UHNWI. Viagens sem fricção através de Aviação, Marítimo, Estadia e Terra.'}
             </p>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 px-4">
               <button 
                 onClick={() => setChatOpen(true)}
                 className="group px-10 py-4 bg-gold text-luxury-black rounded-full font-medium flex items-center gap-3 hover:bg-white transition-all duration-300"
@@ -791,15 +791,6 @@ export default function App() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <button 
-              onClick={() => {
-                setShowMarketplace(true);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="flex items-center gap-2 text-luxury-black/60 hover:text-luxury-black mb-8 uppercase tracking-widest text-[10px] font-bold transition-colors"
-            >
-              <ArrowLeft size={14} /> {lang === 'EN' ? 'Back to Marketplace' : lang === 'ES' ? 'Volver al Mercado' : 'Voltar ao Mercado'}
-            </button>
             <h2 className="text-4xl md:text-6xl font-serif mb-8 uppercase leading-tight">
               {lang === 'EN' ? 'Join the KLO Partner Network' : lang === 'ES' ? 'Únase a la Red de Socios de KLO' : 'Junte-se à Rede de Parceiros KLO'}
             </h2>
@@ -1129,10 +1120,96 @@ export default function App() {
                 </button>
               </div>
 
-              <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                {isMenuOpen ? <X /> : <Menu />}
+              <button className="md:hidden text-luxury-black" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="fixed inset-0 z-[60] bg-luxury-paper flex flex-col p-8"
+                >
+                  <div className="flex items-center justify-between mb-12">
+                    <div className="flex items-center gap-2">
+                      <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
+                        <span className="text-luxury-black font-bold text-xl">K</span>
+                      </div>
+                      <span className="font-serif text-xl tracking-widest uppercase font-light">KLO</span>
+                    </div>
+                    <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-black/5 rounded-full transition-colors">
+                      <X size={24} />
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col gap-8 text-lg uppercase tracking-[0.2em] font-light">
+                    <button onClick={() => {
+                      setViewMode('CLIENT');
+                      setShowMarketplace(false);
+                      setIsMenuOpen(false);
+                    }} className="text-left hover:text-gold transition-colors">
+                      {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
+                    </button>
+                    <button onClick={() => {
+                      setViewMode('CLIENT');
+                      setShowMarketplace(true);
+                      setIsMenuOpen(false);
+                    }} className="text-left hover:text-gold transition-colors">
+                      {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
+                    </button>
+                    <button onClick={() => {
+                      window.history.pushState({}, '', '/supplier');
+                      setViewMode('SUPPLIER');
+                      setIsMenuOpen(false);
+                    }} className="text-left hover:text-gold transition-colors">
+                      {lang === 'EN' ? 'Become a Partner' : lang === 'ES' ? 'Ser Socio' : 'Ser Parceiro'}
+                    </button>
+                    {!user && (
+                      <button onClick={() => {
+                        setShowAuth(true);
+                        setIsMenuOpen(false);
+                      }} className="text-left hover:text-gold transition-colors">
+                        {lang === 'EN' ? 'Sign In' : lang === 'ES' ? 'Iniciar Sesión' : 'Entrar'}
+                      </button>
+                    )}
+                    <a 
+                      href="https://wa.me/573243132500" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-emerald-600 font-bold"
+                    >
+                      <MessageSquare size={20} />
+                      WHATSAPP
+                    </a>
+                  </div>
+
+                  <div className="mt-auto pt-8 border-t border-black/5 flex items-center justify-between">
+                    <button 
+                      onClick={() => {
+                        if (lang === 'EN') setLang('ES');
+                        else if (lang === 'ES') setLang('PT');
+                        else setLang('EN');
+                      }}
+                      className="px-6 py-3 border border-black/10 rounded-xl font-bold"
+                    >
+                      LANGUAGE: {lang}
+                    </button>
+                    {user && (
+                      <button onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }} className="text-red-500 font-bold uppercase tracking-widest">
+                        {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </nav>
 
           {/* Main Content */}
@@ -1151,7 +1228,7 @@ export default function App() {
         {chatOpen && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setChatOpen(false)} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]" />
-            <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed top-0 right-0 h-full w-full max-w-md bg-luxury-slate z-[70] shadow-2xl flex flex-col">
+            <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed top-0 right-0 h-full w-full md:max-w-md bg-luxury-slate z-[70] shadow-2xl flex flex-col">
               <div className="p-8 border-b border-white/10 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center text-luxury-black">
@@ -1195,7 +1272,7 @@ export default function App() {
                     value={message} 
                     onChange={(e) => setMessage(e.target.value)} 
                     placeholder={lang === 'EN' ? 'Plan a 360° experience...' : lang === 'ES' ? 'Planifica una experiencia 360°...' : 'Planeje uma experiência 360°...'} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-6 pr-14 focus:outline-none focus:border-gold/50 transition-colors font-light" 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-6 pr-14 focus:outline-none focus:border-gold/50 transition-colors font-light" 
                   />
                   <button type="submit" disabled={isPlanning} className="absolute right-2 top-2 bottom-2 w-10 bg-gold text-luxury-black rounded-xl flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50"><Send size={18} /></button>
                 </div>

@@ -313,7 +313,7 @@ Please let me know the availability and next steps.`;
   };
 
   const renderBookingModal = () => (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-0 md:p-6">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -326,7 +326,7 @@ Please let me know the availability and next steps.`;
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-[40px] p-10 shadow-2xl overflow-hidden"
+        className="relative w-full h-full md:h-auto md:max-w-2xl bg-luxury-black border border-white/10 rounded-none md:rounded-[40px] p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
       >
         <div className="absolute top-0 right-0 p-10 opacity-5 text-white">
           <Shield size={160} />
@@ -495,12 +495,12 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
   );
 
   const renderCart = () => (
-    <motion.div
-      initial={{ x: '100%' }}
-      animate={{ x: 0 }}
-      exit={{ x: '100%' }}
-      className="fixed top-0 right-0 h-full w-full max-w-md bg-luxury-black z-[150] shadow-2xl flex flex-col border-l border-white/10"
-    >
+      <motion.div
+        initial={{ x: '100%' }}
+        animate={{ x: 0 }}
+        exit={{ x: '100%' }}
+        className="fixed top-0 right-0 h-full w-full md:max-w-md bg-luxury-black z-[150] shadow-2xl flex flex-col border-l border-white/10"
+      >
       <div className="p-8 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center text-luxury-black">
@@ -568,17 +568,17 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       exit={{ opacity: 0, x: 50 }}
       className="fixed inset-0 z-[100] bg-luxury-black overflow-y-auto custom-scrollbar"
     >
-      <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-20">
         <button 
           onClick={() => setSelectedAsset(null)}
-          className="flex items-center gap-2 text-white/40 hover:text-gold transition-colors mb-12 uppercase tracking-widest text-xs font-bold"
+          className="flex items-center gap-2 text-white/40 hover:text-gold transition-colors mb-8 md:mb-12 uppercase tracking-widest text-xs font-bold min-h-[44px]"
         >
           <ChevronRight className="rotate-180" size={16} /> {t.back}
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           <div>
-            <div className="relative aspect-video rounded-[40px] overflow-hidden mb-8 group">
+            <div className="relative aspect-video rounded-3xl md:rounded-[40px] overflow-hidden mb-8 group">
               <img 
                 src={asset.image || `https://picsum.photos/seed/${asset.id}/1200/800`} 
                 alt={asset.name}
@@ -586,15 +586,15 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-60" />
-              <div className="absolute bottom-8 left-8">
+              <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8">
                 <span className="px-4 py-2 bg-gold text-luxury-black rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">
                   {asset.type}
                 </span>
-                <h2 className="text-5xl font-serif text-white">{asset.name}</h2>
+                <h2 className="text-3xl md:text-5xl font-serif text-white">{asset.name}</h2>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
               <div className="glass-panel p-6 rounded-3xl text-center">
                 <MapPin size={20} className="text-gold mx-auto mb-2" />
                 <span className="text-[10px] text-white/40 uppercase block mb-1">{t.location}</span>
@@ -699,13 +699,13 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               </h3>
               <MiniCalendar bookedDates={assetAvailability.length > 0 ? assetAvailability : (asset.bookedDates || [])} lang={lang} />
               
-              <div className="flex flex-wrap gap-4 mt-8">
+              <div className="flex flex-col sm:flex-row gap-4 mt-8">
                 <button 
                   onClick={() => {
                     addToCart(asset);
                     setSelectedAsset(null);
                   }}
-                  className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
+                  className="w-full sm:flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3 min-h-[44px]"
                 >
                   {t.addToJourney} <ArrowRight size={16} />
                 </button>
@@ -716,9 +716,9 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
 \nCapacity: ${asset.capacity} PAX\n\nPlease confirm availability.`
                   )}`}
                   target='_blank' rel='noopener noreferrer'
-                  className='w-full mt-4 py-5 bg-[#25D366] text-white rounded-full font-bold
+                  className='w-full py-5 bg-[#25D366] text-white rounded-full font-bold
                   uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all
-                  flex items-center justify-center gap-2'
+                  flex items-center justify-center gap-2 min-h-[44px]'
                 >
                   <MessageSquare size={18} /> Confirm via WhatsApp
                 </a>
@@ -815,7 +815,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
         </div>
 
         {/* Categories */}
-        <div className="flex flex-wrap gap-4 mb-12">
+        <div className="flex overflow-x-auto flex-nowrap gap-4 mb-12 pb-4 custom-scrollbar">
           {[
             { id: 'ALL', label: t.all, icon: <Filter size={16} /> },
             { id: 'STAFF', label: t.staff, icon: <Users size={16} /> },
@@ -827,7 +827,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-8 py-4 rounded-full text-[10px] uppercase tracking-widest transition-all border ${
+              className={`flex items-center gap-2 px-8 py-4 rounded-full text-[10px] uppercase tracking-widest transition-all border shrink-0 min-h-[44px] ${
                 activeTab === tab.id ? 'bg-gold text-luxury-black font-bold border-gold shadow-lg shadow-gold/20' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
               }`}
             >
@@ -839,9 +839,9 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
-            <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
-              <Loader2 className="animate-spin text-gold" size={48} />
-              <p className="text-xs uppercase tracking-[0.2em] text-white/40">Loading Exclusive Inventory...</p>
+            <div className="col-span-full py-20 flex flex-col items-center justify-center gap-3">
+              <Loader2 className="animate-spin text-gold/50" size={32} />
+              <p className="text-[10px] uppercase tracking-[0.3em] text-white/20 font-bold">Refining Inventory...</p>
             </div>
           ) : filteredAssets.length === 0 ? (
             <div className="col-span-full py-20 flex flex-col items-center justify-center text-center gap-6">
