@@ -209,7 +209,7 @@ export const SupplierPortal: React.FC = () => {
 
       // STEP 4: On success, advance to Step 5 (success screen)
       // Also open WhatsApp notification
-      window.open('https://wa.me/573243132500?text=' +
+      window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=` +
         encodeURIComponent(
           `New KLO supplier application:\n` +
           `Business: ${formData.business_name}\n` +
@@ -787,7 +787,7 @@ export const SupplierPortal: React.FC = () => {
 
       <div className="grid grid-cols-1 gap-6 pt-12">
         <a 
-          href="https://wa.me/573243132500" 
+          href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} 
           target="_blank" 
           rel="noopener noreferrer"
           className="w-full py-6 bg-emerald-500 text-white rounded-3xl font-bold uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-500/20"

@@ -237,6 +237,7 @@ export default function App() {
   const [activePillar, setActivePillar] = useState(0);
   const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [adminActiveTab, setAdminActiveTab] = useState('OCC');
   const [assets, setAssets] = useState<Asset[]>(MOCK_ASSETS);
   const [isMissionControl, setIsMissionControl] = useState(false);
@@ -388,6 +389,7 @@ export default function App() {
       const data = await res.json();
       setTimeout(() => {
         setIsProcessingPayment(false);
+        setPaymentConfirmed(true);
       }, 2000);
     } catch (error) {
       setIsProcessingPayment(false);
@@ -440,18 +442,17 @@ export default function App() {
             transition={{ duration: 1 }}
           >
             <span className="text-gold uppercase tracking-[0.5em] text-xs mb-6 block">
-              {lang === 'EN' ? 'Tech-Enabled Lifestyle Brokerage' : lang === 'ES' ? 'Corretaje de Estilo de Vida Basado en Tecnología' : 'Corretagem de Estilo de Vida Baseada em Tecnologia'}
+              {lang === 'EN' ? 'Caribbean Ultra-Luxury · AI-Orchestrated' : lang === 'ES' ? 'Ultra-Lujo del Caribe · Orquestado por IA' : 'Ultra-Luxo do Caribe · Orquestrado por IA'}
             </span>
             <h1 className="text-5xl md:text-8xl font-serif mb-8 leading-tight uppercase">
-              Karibbean Luxury <br />
-              <span className="italic font-light">Operators</span>
+              {lang === 'EN' ? 'One conversation. Jet to yacht to villa.' : lang === 'ES' ? 'Una conversación. Del jet al yate a la villa.' : 'Uma conversa. Do jato ao iate à vila.'}
             </h1>
             <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed">
               {lang === 'EN' 
-                ? 'Agential AI Middleware for UHNWI. Zero friction journeys across Aviation, Maritime, Stay, and Ground.'
+                ? 'The only platform that moves you from private jet to superyacht to ultra-luxury villa — with your entire Caribbean journey orchestrated in seconds.'
                 : lang === 'ES'
-                ? 'Middleware de IA Agéntica para UHNWI. Viajes sin fricción a través de Aviación, Marítimo, Estancia y Tierra.'
-                : 'Middleware de IA Agêntica para UHNWI. Viagens sem fricção através de Aviação, Marítimo, Estadia e Terra.'}
+                ? 'La única plataforma que lo traslada de un jet privado a un superyate y a una villa de ultra-lujo, con todo su viaje por el Caribe orquestado en segundos.'
+                : 'A única plataforma que o leva de um jato particular a um superiate e a uma vila de ultra-luxo — com toda a sua jornada pelo Caribe orquestrada em segundos.'}
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 px-4">
               <button 
@@ -693,14 +694,31 @@ export default function App() {
                     </div>
                   ))}
                 </div>
-                <button 
-                  onClick={handlePayment}
-                  disabled={isProcessingPayment}
-                  className="w-full mt-10 py-4 bg-white text-luxury-black rounded-full font-medium hover:bg-gold transition-colors flex items-center justify-center gap-3"
-                >
-                  {isProcessingPayment ? <Loader2 className="animate-spin" /> : <CreditCard size={18} />}
-                  {lang === 'EN' ? 'Confirm Invisible Payment' : lang === 'ES' ? 'Confirmar Pago Invisible' : 'Confirmar Pagamento Invisível'}
-                </button>
+                {paymentConfirmed ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="w-full mt-10 py-6 bg-emerald-500/10 border border-emerald-500/20 rounded-3xl flex flex-col items-center justify-center gap-3 text-center"
+                  >
+                    <CheckCircle2 className="text-emerald-500" size={32} />
+                    <p className="text-emerald-500 font-medium px-4">
+                      {lang === 'EN' 
+                        ? 'Payment confirmed — your KLO concierge will contact you within 2 hours' 
+                        : lang === 'ES' 
+                        ? 'Pago confirmado — su conserje de KLO lo contactará en 2 horas' 
+                        : 'Pagamento confirmado — seu concierge KLO entrará em contato em 2 horas'}
+                    </p>
+                  </motion.div>
+                ) : (
+                  <button 
+                    onClick={handlePayment}
+                    disabled={isProcessingPayment}
+                    className="w-full mt-10 py-4 bg-white text-luxury-black rounded-full font-medium hover:bg-gold transition-colors flex items-center justify-center gap-3"
+                  >
+                    {isProcessingPayment ? <Loader2 className="animate-spin" /> : <CreditCard size={18} />}
+                    {lang === 'EN' ? 'Confirm Invisible Payment' : lang === 'ES' ? 'Confirmar Pago Invisible' : 'Confirmar Pagamento Invisível'}
+                  </button>
+                )}
               </div>
             </div>
           </motion.section>
@@ -753,7 +771,7 @@ export default function App() {
                 {lang === 'EN' ? 'Apply to Become a Partner' : lang === 'ES' ? 'Solicitar ser Socio' : 'Candidatar-se a Parceiro'}
               </button>
               <a 
-                href="https://wa.me/573243132500"
+                href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-luxury-black font-bold uppercase tracking-widest hover:underline"
@@ -1100,7 +1118,7 @@ export default function App() {
                       </button>
                     )}
                     <a 
-                      href="https://wa.me/573243132500" 
+                      href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-emerald-600 font-bold"

@@ -204,7 +204,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           <Plus size={16} /> New Lead
         </button>
         <button 
-          onClick={() => window.open('https://wa.me/573243132500', '_blank')}
+          onClick={() => window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`, '_blank')}
           className="flex items-center justify-center gap-3 p-4 bg-emerald-500 text-white rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-emerald-400 transition-all"
         >
           <MessageSquare size={16} /> WhatsApp

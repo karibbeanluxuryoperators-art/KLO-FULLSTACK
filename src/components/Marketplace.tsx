@@ -319,7 +319,7 @@ Rate: ${asset.pricePerUnit}
 
 Please let me know the availability and next steps.`;
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/573243132500?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodedMessage}`, '_blank');
   };
 
   const renderBookingModal = () => (
@@ -484,7 +484,7 @@ Please let me know the availability and next steps.`;
                 Return to Marketplace
               </button>
               <a
-                href={`https://wa.me/573243132500?text=${encodeURIComponent(
+                href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(
                   `Hi KLO, I just completed a booking.\nGuest: ${bookingData.guestName}
 \nEmail: ${bookingData.guestEmail}\nDates: ${bookingData.startDate} to
 ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
@@ -861,7 +861,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 <p className="text-sm text-white/40 font-light">Our concierge team is currently onboarding new exclusive inventory.</p>
               </div>
               <a
-                href="https://wa.me/573243132500?text=Hello%20KLO%2C%20I%20am%20looking%20for%20specific%20luxury%20assets%20not%20listed%20in%20the%20marketplace."
+                href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=Hello%20KLO%2C%20I%20am%20looking%20for%20specific%20luxury%20assets%20not%20listed%20in%20the%20marketplace.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-4 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center gap-2"

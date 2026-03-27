@@ -104,7 +104,7 @@ Budget: ${formData.budget}
 Dates: ${formData.travel_dates}
 Notes: ${formData.special_requests}`;
         const encodedMessage = encodeURIComponent(message);
-        window.open(`https://wa.me/573243132500?text=${encodedMessage}`, '_blank');
+        window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodedMessage}`, '_blank');
 
         setTimeout(() => {
           setIsSuccess(false);
