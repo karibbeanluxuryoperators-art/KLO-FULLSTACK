@@ -7,11 +7,22 @@ import Stripe from "stripe";
 import Database from "better-sqlite3";
 import crypto from "crypto";
 import { google } from "googleapis";
+import { createClient } from "@supabase/supabase-js";
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Supabase Setup
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+
+let supabase: any = null;
+if (supabaseUrl && supabaseServiceKey) {
+  supabase = createClient(supabaseUrl, supabaseServiceKey);
+  console.log('KLO: Supabase client initialized');
+}
 
 let stripe: Stripe | null = null;
 
@@ -265,8 +276,18 @@ async function startServer() {
   });
 
   // Leads API
-  app.get("/api/leads", (req, res) => {
+  app.get("/api/leads", async (req, res) => {
     try {
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('leads')
+          .select('*')
+          .order('timestamp', { ascending: false });
+        
+        if (error) throw error;
+        return res.json(data);
+      }
+      
       const leads = db.prepare("SELECT * FROM leads ORDER BY timestamp DESC").all();
       res.json(leads);
     } catch (error: any) {
@@ -274,13 +295,25 @@ async function startServer() {
     }
   });
 
-  app.post("/api/leads", (req, res) => {
+  app.post("/api/leads", async (req, res) => {
     const { name, email, phone, whatsapp, experience_type, budget, travel_dates, special_requests, message, source } = req.body;
     const id = 'L' + Date.now();
     const timestamp = new Date().toISOString();
     const status = 'NEW';
     
     try {
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('leads')
+          .insert([
+            { id, name, email, phone, whatsapp, experience_type, budget, travel_dates, special_requests, message, status, timestamp, source }
+          ])
+          .select();
+        
+        if (error) throw error;
+        return res.json({ success: true, lead: data[0] });
+      }
+
       const stmt = db.prepare(`
         INSERT INTO leads (id, name, email, phone, whatsapp, experience_type, budget, travel_dates, special_requests, message, status, timestamp, source)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -327,8 +360,30 @@ async function startServer() {
   });
 
   // Bookings API
-  app.get("/api/bookings", (req, res) => {
+  app.get("/api/bookings", async (req, res) => {
     try {
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select(`
+            *,
+            assets (
+              name,
+              type
+            )
+          `)
+          .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        // Transform Supabase response to match SQLite response
+        const transformedData = data.map((b: any) => ({
+          ...b,
+          asset_name: b.assets?.name,
+          asset_type: b.assets?.type
+        }));
+        return res.json(transformedData);
+      }
+
       const bookings = db.prepare(`
         SELECT b.*, a.name as asset_name, a.type as asset_type 
         FROM bookings b
@@ -341,10 +396,22 @@ async function startServer() {
     }
   });
 
-  app.post("/api/bookings", (req, res) => {
+  app.post("/api/bookings", async (req, res) => {
     const { asset_id, guest_name, guest_email, start_date, end_date, total_price, notes } = req.body;
     const id = crypto.randomUUID();
     try {
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('bookings')
+          .insert([
+            { id, asset_id, guest_name, guest_email, start_date, end_date, total_price, notes }
+          ])
+          .select();
+        
+        if (error) throw error;
+        return res.json({ success: true, booking_id: id });
+      }
+
       const stmt = db.prepare(`
         INSERT INTO bookings (id, asset_id, guest_name, guest_email, start_date, end_date, total_price, notes)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -443,10 +510,36 @@ async function startServer() {
   });
 
   // Assets API
-  app.post("/api/assets", (req, res) => {
+  app.post("/api/assets", async (req, res) => {
     const asset = req.body;
     const id = crypto.randomUUID();
     try {
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('assets')
+          .insert([
+            { 
+              id, 
+              supplier_id: asset.supplier_id, 
+              name: asset.name, 
+              type: asset.type, 
+              location: asset.location, 
+              description: asset.description, 
+              price_per_unit: asset.price_per_unit, 
+              price_type: asset.price_type, 
+              capacity: asset.capacity, 
+              amenities: asset.amenities || [], 
+              images: asset.images || [], 
+              status: asset.status || 'ACTIVE', 
+              google_calendar_id: asset.google_calendar_id
+            }
+          ])
+          .select();
+        
+        if (error) throw error;
+        return res.json({ success: true, asset_id: id });
+      }
+
       const stmt = db.prepare(`
         INSERT INTO assets (id, supplier_id, name, type, location, description, price_per_unit, price_type, capacity, amenities, images, status, google_calendar_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -472,25 +565,38 @@ async function startServer() {
     }
   });
 
-  app.get("/api/assets", (req, res) => {
+  app.get("/api/assets", async (req, res) => {
     const { type, status, location } = req.query;
-    let query = "SELECT * FROM assets WHERE 1=1";
-    const params: any[] = [];
-
-    if (type) {
-      query += " AND type = ?";
-      params.push(type);
-    }
-    if (status) {
-      query += " AND status = ?";
-      params.push(status);
-    }
-    if (location) {
-      query += " AND location LIKE ?";
-      params.push(`%${location}%`);
-    }
-
+    
     try {
+      if (supabase) {
+        let query = supabase.from('assets').select('*');
+        
+        if (type) query = query.eq('type', type);
+        if (status) query = query.eq('status', status);
+        if (location) query = query.ilike('location', `%${location}%`);
+        
+        const { data, error } = await query;
+        if (error) throw error;
+        return res.json(data);
+      }
+
+      let query = "SELECT * FROM assets WHERE 1=1";
+      const params: any[] = [];
+
+      if (type) {
+        query += " AND type = ?";
+        params.push(type);
+      }
+      if (status) {
+        query += " AND status = ?";
+        params.push(status);
+      }
+      if (location) {
+        query += " AND location LIKE ?";
+        params.push(`%${location}%`);
+      }
+
       const assets = db.prepare(query).all(params);
       res.json(assets.map((a: any) => ({
         ...a,
