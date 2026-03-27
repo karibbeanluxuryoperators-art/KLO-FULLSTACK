@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 import Database from "better-sqlite3";
 import crypto from "crypto";
+import { google } from "googleapis";
 
 dotenv.config();
 
@@ -97,6 +98,22 @@ async function startServer() {
       notes TEXT,
       created_at TEXT DEFAULT current_timestamp
     );
+
+    CREATE TABLE IF NOT EXISTS leads (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      email TEXT,
+      phone TEXT,
+      whatsapp TEXT,
+      experience_type TEXT,
+      budget TEXT,
+      travel_dates TEXT,
+      special_requests TEXT,
+      message TEXT,
+      status TEXT DEFAULT 'NEW',
+      timestamp TEXT DEFAULT current_timestamp,
+      source TEXT
+    );
   `);
 
   const seedAssets = () => {
@@ -175,6 +192,59 @@ async function startServer() {
 
   seedAssets();
 
+  const seedLeads = () => {
+    const count = db.prepare('SELECT COUNT(*) as c FROM leads').get() as any;
+    if (count.c > 0) return;
+    const insert = db.prepare(`
+      INSERT INTO leads (id, name, email, phone, whatsapp, experience_type, message, status, timestamp, source)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    const leads = [
+      { 
+        id: 'L1', 
+        name: 'Julian Casablancas', 
+        email: 'julian@thestrokes.com', 
+        phone: '+1 212 555 0192', 
+        whatsapp: '12125550192',
+        experience_type: 'VILLA',
+        message: 'Interested in a private villa in Anguilla for April.', 
+        status: 'NEW', 
+        timestamp: new Date(Date.now() - 3600000).toISOString(), 
+        source: 'WHATSAPP' 
+      },
+      { 
+        id: 'L2', 
+        name: 'Sofia Coppola', 
+        email: 'sofia@lostintranslation.com', 
+        phone: '+1 310 555 0183', 
+        whatsapp: '13105550183',
+        experience_type: 'JET',
+        message: 'Need a Gulfstream G650 for a trip to Tokyo.', 
+        status: 'CONTACTED', 
+        timestamp: new Date(Date.now() - 10800000).toISOString(), 
+        source: 'CONCIERGE' 
+      },
+      { 
+        id: 'L3', 
+        name: 'Wes Anderson', 
+        email: 'wes@grandbudapest.com', 
+        phone: '+1 212 555 0174', 
+        whatsapp: '12125550174',
+        experience_type: 'YACHT',
+        message: 'Looking for a symmetrical yacht for a Mediterranean tour.', 
+        status: 'QUALIFIED', 
+        timestamp: new Date(Date.now() - 86400000).toISOString(), 
+        source: 'MARKETPLACE' 
+      },
+    ];
+    for (const l of leads) {
+      insert.run(l.id, l.name, l.email, l.phone, l.whatsapp, l.experience_type, l.message, l.status, l.timestamp, l.source);
+    }
+    console.log('KLO: Seeded', leads.length, 'leads');
+  };
+
+  seedLeads();
+
   // Mock Users
   const MOCK_USERS = {
     'admin@klo.com': { id: 'admin_1', email: 'admin@klo.com', role: 'ADMIN', name: 'KLO Administrator' },
@@ -194,67 +264,66 @@ async function startServer() {
     }
   });
 
-  // Mock Leads
-  let MOCK_LEADS: any[] = [
-    { 
-      id: 'L1', 
-      name: 'Julian Casablancas', 
-      email: 'julian@thestrokes.com', 
-      phone: '+1 212 555 0192', 
-      whatsapp: '12125550192',
-      experience_type: 'VILLA',
-      message: 'Interested in a private villa in Anguilla for April.', 
-      status: 'NEW', 
-      timestamp: new Date(Date.now() - 3600000).toISOString(), 
-      source: 'WHATSAPP' 
-    },
-    { 
-      id: 'L2', 
-      name: 'Sofia Coppola', 
-      email: 'sofia@lostintranslation.com', 
-      phone: '+1 310 555 0183', 
-      whatsapp: '13105550183',
-      experience_type: 'JET',
-      message: 'Need a Gulfstream G650 for a trip to Tokyo.', 
-      status: 'CONTACTED', 
-      timestamp: new Date(Date.now() - 10800000).toISOString(), 
-      source: 'CONCIERGE' 
-    },
-    { 
-      id: 'L3', 
-      name: 'Wes Anderson', 
-      email: 'wes@grandbudapest.com', 
-      phone: '+1 212 555 0174', 
-      whatsapp: '12125550174',
-      experience_type: 'YACHT',
-      message: 'Looking for a symmetrical yacht for a Mediterranean tour.', 
-      status: 'QUALIFIED', 
-      timestamp: new Date(Date.now() - 86400000).toISOString(), 
-      source: 'MARKETPLACE' 
-    },
-  ];
-
   // Leads API
   app.get("/api/leads", (req, res) => {
-    res.json(MOCK_LEADS);
+    try {
+      const leads = db.prepare("SELECT * FROM leads ORDER BY timestamp DESC").all();
+      res.json(leads);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
   app.post("/api/leads", (req, res) => {
-    const lead = {
-      ...req.body,
-      id: 'L' + (MOCK_LEADS.length + 1),
-      timestamp: new Date().toISOString(),
-      status: 'NEW'
-    };
-    MOCK_LEADS = [lead, ...MOCK_LEADS];
-    res.json({ success: true, lead });
+    const { name, email, phone, whatsapp, experience_type, budget, travel_dates, special_requests, message, source } = req.body;
+    const id = 'L' + Date.now();
+    const timestamp = new Date().toISOString();
+    const status = 'NEW';
+    
+    try {
+      const stmt = db.prepare(`
+        INSERT INTO leads (id, name, email, phone, whatsapp, experience_type, budget, travel_dates, special_requests, message, status, timestamp, source)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      stmt.run(
+        id, 
+        name, 
+        email, 
+        phone, 
+        whatsapp, 
+        experience_type, 
+        budget || null, 
+        travel_dates || null, 
+        special_requests || null, 
+        message, 
+        status, 
+        timestamp, 
+        source
+      );
+      
+      const lead = { id, name, email, phone, whatsapp, experience_type, budget, travel_dates, special_requests, message, status, timestamp, source };
+      res.json({ success: true, lead });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
   app.patch("/api/leads/:id", (req, res) => {
     const { id } = req.params;
     const updates = req.body;
-    MOCK_LEADS = MOCK_LEADS.map(l => l.id === id ? { ...l, ...updates } : l);
-    res.json({ success: true });
+    
+    try {
+      const fields = Object.keys(updates);
+      if (fields.length === 0) return res.json({ success: true });
+      
+      const setClause = fields.map(f => `${f} = ?`).join(', ');
+      const values = [...Object.values(updates), id];
+      
+      db.prepare(`UPDATE leads SET ${setClause} WHERE id = ?`).run(...values);
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
   // Bookings API
@@ -306,15 +375,24 @@ async function startServer() {
 
   // Supplier API
   app.post("/api/suppliers/register", (req, res) => {
-    const { business_name, contact_name, email, whatsapp, location, asset_type, description, google_calendar_id } = req.body;
-    const id = crypto.randomUUID();
+    const { id: providedId, business_name, contact_name, email, whatsapp, location, asset_type, description, google_calendar_id } = req.body;
+    const id = providedId || crypto.randomUUID();
     
     try {
       const stmt = db.prepare(`
         INSERT INTO suppliers (id, business_name, contact_name, email, whatsapp, location, asset_type, description, google_calendar_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET
+          business_name = excluded.business_name,
+          contact_name = excluded.contact_name,
+          email = excluded.email,
+          whatsapp = excluded.whatsapp,
+          location = excluded.location,
+          asset_type = excluded.asset_type,
+          description = excluded.description,
+          google_calendar_id = COALESCE(excluded.google_calendar_id, suppliers.google_calendar_id)
       `);
-      stmt.run(id, business_name, contact_name, email, whatsapp, location, asset_type, description, google_calendar_id);
+      stmt.run(id, business_name, contact_name, email, whatsapp, location, asset_type, description, google_calendar_id || null);
       res.json({ success: true, supplier_id: id });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -458,25 +536,29 @@ async function startServer() {
   // Google Calendar Sync
   const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
   const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-  const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || "http://localhost:3000/api/calendar/callback";
+  const APP_URL = process.env.APP_URL || `http://localhost:${PORT}`;
+  const GOOGLE_REDIRECT_URI = `${APP_URL}/api/calendar/callback`;
 
-  app.get("/api/calendar/auth/:supplier_id", (req, res) => {
-    const { supplier_id } = req.params;
-    if (!GOOGLE_CLIENT_ID) {
-      return res.redirect(`/supplier?connected=mock&supplier_id=${supplier_id}`);
+  const oauth2Client = new google.auth.OAuth2(
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_REDIRECT_URI
+  );
+
+  app.get("/api/calendar/auth-url", (req, res) => {
+    const { supplier_id } = req.query;
+    if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+      return res.json({ url: null, mock: true });
     }
 
-    const params = new URLSearchParams({
-      client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: GOOGLE_REDIRECT_URI,
-      response_type: "code",
-      scope: "https://www.googleapis.com/auth/calendar.readonly",
+    const url = oauth2Client.generateAuthUrl({
       access_type: "offline",
+      scope: ["https://www.googleapis.com/auth/calendar.readonly"],
       prompt: "consent",
-      state: supplier_id
+      state: supplier_id as string
     });
 
-    res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+    res.json({ url });
   });
 
   app.get("/api/calendar/callback", async (req, res) => {
@@ -484,29 +566,34 @@ async function startServer() {
     if (!code) return res.status(400).send("No code provided");
 
     try {
-      const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          code: code as string,
-          client_id: GOOGLE_CLIENT_ID!,
-          client_secret: GOOGLE_CLIENT_SECRET!,
-          redirect_uri: GOOGLE_REDIRECT_URI,
-          grant_type: "authorization_code"
-        })
-      });
-
-      const tokens = await tokenRes.json() as any;
-      if (tokens.error) throw new Error(tokens.error_description || tokens.error);
-
-      const expiry = Date.now() + (tokens.expires_in * 1000);
+      const { tokens } = await oauth2Client.getToken(code as string);
+      
+      const expiry = tokens.expiry_date || (Date.now() + 3600000);
+      
+      // Ensure supplier exists if they connected before finishing registration
+      db.prepare(`INSERT OR IGNORE INTO suppliers (id, status) VALUES (?, 'PENDING')`).run(supplier_id);
+      
       db.prepare(`
         UPDATE suppliers 
         SET google_access_token = ?, google_refresh_token = ?, google_token_expiry = ?
         WHERE id = ?
       `).run(tokens.access_token, tokens.refresh_token, expiry, supplier_id);
 
-      res.redirect("/supplier?connected=true");
+      res.send(`
+        <html>
+          <body>
+            <script>
+              if (window.opener) {
+                window.opener.postMessage({ type: 'GOOGLE_CALENDAR_AUTH_SUCCESS', supplier_id: '${supplier_id}' }, '*');
+                window.close();
+              } else {
+                window.location.href = '/supplier?connected=true';
+              }
+            </script>
+            <p>Authentication successful. This window should close automatically.</p>
+          </body>
+        </html>
+      `);
     } catch (error: any) {
       res.status(500).send(`Auth failed: ${error.message}`);
     }
@@ -517,31 +604,28 @@ async function startServer() {
       return supplier.google_access_token;
     }
 
-    const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        client_id: GOOGLE_CLIENT_ID!,
-        client_secret: GOOGLE_CLIENT_SECRET!,
-        refresh_token: supplier.google_refresh_token,
-        grant_type: "refresh_token"
-      })
-    });
+    if (!supplier.google_refresh_token) {
+      throw new Error("No refresh token available");
+    }
 
-    const tokens = await tokenRes.json() as any;
-    const expiry = Date.now() + (tokens.expires_in * 1000);
+    const client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI);
+    client.setCredentials({ refresh_token: supplier.google_refresh_token });
+    
+    const { credentials } = await client.refreshAccessToken();
+    const expiry = credentials.expiry_date || (Date.now() + 3600000);
+    
     db.prepare(`
       UPDATE suppliers 
       SET google_access_token = ?, google_token_expiry = ?
       WHERE id = ?
-    `).run(tokens.access_token, expiry, supplier.id);
+    `).run(credentials.access_token, expiry, supplier.id);
 
-    return tokens.access_token;
+    return credentials.access_token;
   }
 
   async function syncSupplierCalendar(supplier_id: string) {
     const supplier = db.prepare("SELECT * FROM suppliers WHERE id = ?").get(supplier_id) as any;
-    if (!supplier || (!supplier.google_access_token && !GOOGLE_CLIENT_ID)) return 0;
+    if (!supplier) return 0;
 
     const assets = db.prepare("SELECT * FROM assets WHERE supplier_id = ?").all(supplier_id) as any[];
     let totalSynced = 0;
@@ -555,13 +639,11 @@ async function startServer() {
   }
 
   async function syncAssetCalendar(asset: any, supplier: any) {
-    const calendarId = asset.google_calendar_id || supplier.google_calendar_id;
-    if (!calendarId) return 0;
-
+    const calendarId = asset.google_calendar_id || supplier.google_calendar_id || 'primary';
     let events = [];
 
-    if (!GOOGLE_CLIENT_ID) {
-      // Mock Sync
+    if (!GOOGLE_CLIENT_ID || !supplier.google_access_token) {
+      // Mock Sync if no real credentials
       const today = new Date();
       for (let i = 0; i < 5; i++) {
         const randomDay = Math.floor(Math.random() * 30);
@@ -573,33 +655,54 @@ async function startServer() {
         });
       }
     } else {
-      const accessToken = await getValidAccessToken(supplier);
-      const timeMin = new Date().toISOString();
-      const timeMax = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString();
-      
-      const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true`, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      const data = await res.json() as any;
-      events = data.items || [];
+      try {
+        const accessToken = await getValidAccessToken(supplier);
+        const client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI);
+        client.setCredentials({ access_token: accessToken });
+        
+        const calendar = google.calendar({ version: 'v3', auth: client });
+        const timeMin = new Date().toISOString();
+        const timeMax = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString();
+        
+        const res = await calendar.events.list({
+          calendarId: calendarId,
+          timeMin: timeMin,
+          timeMax: timeMax,
+          singleEvents: true,
+          orderBy: 'startTime',
+        });
+        
+        events = res.data.items || [];
+      } catch (error: any) {
+        console.error(`Failed to sync calendar for asset ${asset.id}:`, error.message);
+        return 0;
+      }
     }
 
     const insert = db.prepare("INSERT OR REPLACE INTO asset_availability (id, asset_id, date, status, source) VALUES (?, ?, ?, ?, ?)");
     let count = 0;
 
     for (const event of events) {
-      const start = event.start.date || event.start.dateTime.split('T')[0];
-      const end = event.end.date || event.end.dateTime.split('T')[0];
+      const startStr = event.start?.date || event.start?.dateTime?.split('T')[0];
+      const endStr = event.end?.date || event.end?.dateTime?.split('T')[0];
       
-      let current = new Date(start);
-      const endDate = new Date(end);
+      if (!startStr || !endStr) continue;
 
-      while (current < endDate || (event.start.date && current <= endDate)) {
+      let current = new Date(startStr);
+      const endDate = new Date(endStr);
+
+      // Google Calendar end date is exclusive for all-day events
+      while (current < endDate) {
         const dateStr = current.toISOString().split('T')[0];
         insert.run(crypto.randomUUID(), asset.id, dateStr, 'BLOCKED', 'GOOGLE_CALENDAR');
         count++;
         current.setDate(current.getDate() + 1);
-        if (event.start.dateTime && current >= endDate) break;
+      }
+      
+      // If it's a single day event (start == end in some cases or just one day)
+      if (startStr === endStr) {
+        insert.run(crypto.randomUUID(), asset.id, startStr, 'BLOCKED', 'GOOGLE_CALENDAR');
+        count++;
       }
     }
 
@@ -800,6 +903,47 @@ app.post('/api/ai/chat', async (req, res) => {
       plan: null });
   }
 });
+
+  app.post("/api/calendar/disconnect/:supplier_id", (req, res) => {
+    const { supplier_id } = req.params;
+    try {
+      db.prepare(`
+        UPDATE suppliers 
+        SET google_access_token = NULL, google_refresh_token = NULL, google_token_expiry = NULL, google_calendar_id = NULL
+        WHERE id = ?
+      `).run(supplier_id);
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Periodic Calendar Sync (Every 6 hours)
+  setInterval(async () => {
+    console.log('Starting periodic calendar sync...');
+    const suppliers = db.prepare("SELECT id FROM suppliers WHERE google_refresh_token IS NOT NULL").all() as any[];
+    for (const supplier of suppliers) {
+      try {
+        await syncSupplierCalendar(supplier.id);
+      } catch (error: any) {
+        console.error(`Periodic sync failed for supplier ${supplier.id}:`, error.message);
+      }
+    }
+    console.log(`Periodic sync completed for ${suppliers.length} suppliers.`);
+  }, 6 * 60 * 60 * 1000);
+
+  app.post("/api/calendar/sync-all", async (req, res) => {
+    try {
+      const suppliers = db.prepare("SELECT id FROM suppliers WHERE google_refresh_token IS NOT NULL").all() as any[];
+      let totalSynced = 0;
+      for (const supplier of suppliers) {
+        totalSynced += await syncSupplierCalendar(supplier.id);
+      }
+      res.json({ success: true, message: `Synced ${suppliers.length} suppliers, ${totalSynced} events updated.` });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {

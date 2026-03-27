@@ -31,6 +31,19 @@ export const SupplierPortal: React.FC = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [supplierId, setSupplierId] = useState<string | null>(null);
+  const [isGoogleConnected, setIsGoogleConnected] = useState(false);
+  const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'GOOGLE_CALENDAR_AUTH_SUCCESS') {
+        setIsGoogleConnected(true);
+        setIsConnectingGoogle(false);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const [formData, setFormData] = useState<any>({
     // Common
@@ -120,11 +133,15 @@ export const SupplierPortal: React.FC = () => {
     setSubmitError(null);
 
     try {
+      // Use existing supplierId if generated during Google Auth, otherwise let server generate
+      const sid_to_use = supplierId;
+
       // STEP 1: POST to /api/suppliers/register
       const supplierRes = await fetch('/api/suppliers/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          id: sid_to_use,
           business_name: formData.business_name,
           contact_name: formData.contact_name,
           email: formData.email,
@@ -179,7 +196,18 @@ export const SupplierPortal: React.FC = () => {
         throw new Error(assetData.error || 'Failed to create asset');
       }
 
-      // STEP 3: On success, advance to Step 5 (success screen)
+      const aid = assetData.asset_id;
+
+      // STEP 3: Trigger Calendar Sync if connected
+      if (isGoogleConnected) {
+        try {
+          await fetch(`/api/calendar/sync/${aid}`);
+        } catch (e) {
+          console.error('Initial sync failed', e);
+        }
+      }
+
+      // STEP 4: On success, advance to Step 5 (success screen)
       // Also open WhatsApp notification
       window.open('https://wa.me/573243132500?text=' +
         encodeURIComponent(
@@ -506,6 +534,45 @@ export const SupplierPortal: React.FC = () => {
       );
     };
 
+    const handleConnectGoogle = async () => {
+      setIsConnectingGoogle(true);
+      try {
+        let sid = supplierId;
+        if (!sid) {
+          sid = crypto.randomUUID();
+          setSupplierId(sid);
+        }
+
+        const res = await fetch(`/api/calendar/auth-url?supplier_id=${sid}`);
+        const data = await res.json();
+        
+        if (data.url) {
+          window.open(data.url, 'google_auth', 'width=600,height=700');
+        } else if (data.mock) {
+          // Mock success for development if no keys
+          setTimeout(() => {
+            setIsGoogleConnected(true);
+            setIsConnectingGoogle(false);
+          }, 1500);
+        }
+      } catch (error) {
+        console.error('Failed to get auth URL', error);
+        setIsConnectingGoogle(false);
+      }
+    };
+
+    const handleDisconnectGoogle = async () => {
+      if (!supplierId) return;
+      try {
+        const response = await fetch(`/api/calendar/disconnect/${supplierId}`, { method: 'POST' });
+        if (response.ok) {
+          setIsGoogleConnected(false);
+        }
+      } catch (error) {
+        console.error('Failed to disconnect Google Calendar', error);
+      }
+    };
+
     return (
       <div className="max-w-4xl mx-auto space-y-12">
         <div className="text-center space-y-4">
@@ -514,8 +581,8 @@ export const SupplierPortal: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-8 flex flex-col items-center text-center">
-            <div className="w-20 h-20 bg-blue-500/10 text-blue-500 rounded-3xl flex items-center justify-center">
+          <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-8 flex flex-col items-center text-center opacity-60">
+            <div className="w-20 h-20 rounded-3xl flex items-center justify-center bg-blue-500/10 text-blue-500">
               <Globe size={40} />
             </div>
             <div className="space-y-2">
@@ -525,11 +592,15 @@ export const SupplierPortal: React.FC = () => {
               </p>
             </div>
             <button 
-              onClick={() => window.location.href = `/api/calendar/auth/new_supplier`}
-              className="w-full py-4 border border-blue-500/30 text-blue-500 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center gap-3"
+              disabled
+              className="w-full py-4 border border-black/5 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-3 text-luxury-black/20 cursor-not-allowed"
             >
-              <ExternalLink size={16} /> Connect Google
+              <ExternalLink size={16} />
+              Connect Google
             </button>
+            <p className="text-[10px] text-gold font-bold uppercase tracking-widest">
+              You can connect Google Calendar after your application is approved
+            </p>
           </div>
 
           <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-8">

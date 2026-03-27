@@ -71,7 +71,7 @@ export class KLOBrain {
     try {
       const ai = this.getAI();
       const response = await ai.models.generateContent({
-        model: "gemini-3.1-pro-preview",
+        model: "gemini-1.5-pro",
         contents: `[Language: ${lang}] ${prompt}`,
         config: {
           systemInstruction: `${SYSTEM_INSTRUCTION} 
@@ -166,7 +166,7 @@ export class KLOBrain {
     try {
       const ai = this.getAI();
       const chat = ai.chats.create({
-        model: "gemini-3-flash-preview",
+        model: "gemini-1.5-flash",
         config: {
           systemInstruction: `${SYSTEM_INSTRUCTION} [Current Language: ${lang}]`,
         }

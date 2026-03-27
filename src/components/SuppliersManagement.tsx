@@ -5,7 +5,7 @@ import {
   Check, X, MessageSquare, ExternalLink, Package,
   MapPin, Calendar, Info, Loader2, AlertCircle,
   ClipboardList, Clock, DollarSign, User, Mail,
-  FileText, Save
+  FileText, Save, RefreshCw
 } from 'lucide-react';
 import { Language } from '../types';
 
@@ -56,6 +56,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [bookingNotes, setBookingNotes] = useState('');
   const [isSavingNotes, setIsSavingNotes] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
     setFilter('ALL');
@@ -92,6 +93,22 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
       setBookings([]);
     } finally {
       setBookingsLoading(false);
+    }
+  };
+
+  const handleSyncAll = async () => {
+    setIsSyncing(true);
+    try {
+      const res = await fetch('/api/calendar/sync-all', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Failed to sync all calendars', error);
+      alert('Failed to sync calendars');
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -381,6 +398,14 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
               </button>
             ))}
           </div>
+          <button 
+            onClick={handleSyncAll}
+            disabled={isSyncing}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-500/10 text-blue-500 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all disabled:opacity-50"
+          >
+            {isSyncing ? <Loader2 className="animate-spin" size={14} /> : <RefreshCw size={14} />}
+            Sync All
+          </button>
         </div>
       </div>
 
@@ -418,7 +443,14 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                           {supplier.business_name.charAt(0)}
                         </div>
                         <div>
-                          <h3 className="text-xl font-serif text-white">{supplier.business_name}</h3>
+                          <h3 className="text-xl font-serif text-white flex items-center gap-2">
+                            {supplier.business_name}
+                            {supplier.google_calendar_id && (
+                              <div title="Google Calendar Connected">
+                                <Calendar size={14} className="text-blue-400" />
+                              </div>
+                            )}
+                          </h3>
                           <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">{supplier.contact_name}</p>
                         </div>
                       </div>

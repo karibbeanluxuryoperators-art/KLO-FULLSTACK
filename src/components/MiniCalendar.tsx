@@ -7,7 +7,7 @@ interface MiniCalendarProps {
 }
 
 export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang }) => {
-  const today = new Date('2026-03-05');
+  const today = new Date();
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
 
