@@ -130,19 +130,6 @@ Notes: ${formData.special_requests}`;
 
   return (
     <>
-      <motion.button
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-28 right-8 w-16 h-16 bg-emerald-500 text-white rounded-full shadow-2xl flex items-center justify-center z-50 group"
-      >
-        <MessageSquare className="group-hover:rotate-12 transition-transform" />
-        <span className="absolute right-full mr-4 px-4 py-2 bg-white text-luxury-black text-[10px] font-bold rounded-full shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
-          {t.cta}
-        </span>
-      </motion.button>
-
       <AnimatePresence>
         {isOpen && (
           <>

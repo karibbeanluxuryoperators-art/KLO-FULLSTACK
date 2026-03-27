@@ -246,6 +246,7 @@ export default function App() {
   const [guestProfiles, setGuestProfiles] = useState<GuestProfile[]>(MOCK_GUEST_PROFILES);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
   
   useEffect(() => {
     if (window.location.pathname === '/supplier') {
@@ -1176,13 +1177,73 @@ export default function App() {
         onPlanGenerated={setPlannedExperience}
       />
 
-      {/* Floating Action Button */}
-      {!chatOpen && (
-        <motion.button initial={{ scale: 0 }} animate={{ scale: 1 }} whileHover={{ scale: 1.1 }} onClick={() => setChatOpen(true)} className="fixed bottom-8 right-8 w-16 h-16 bg-gold text-luxury-black rounded-full shadow-2xl flex items-center justify-center z-50 group">
-          <MessageSquare className="group-hover:rotate-12 transition-transform" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-luxury-black animate-pulse" />
+      {/* Speed Dial FAB */}
+      <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-4">
+        <AnimatePresence>
+          {isSpeedDialOpen && (
+            <>
+              {/* WhatsApp Sub-button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                className="flex items-center gap-3 group cursor-pointer"
+                onClick={() => {
+                  window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`, '_blank');
+                  setIsSpeedDialOpen(false);
+                }}
+              >
+                <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-bold rounded-full shadow-xl uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                  WhatsApp
+                </span>
+                <div className="w-12 h-12 bg-[#25D366] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+                  <MessageSquare size={20} />
+                </div>
+              </motion.div>
+
+              {/* AI Concierge Sub-button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                transition={{ delay: 0.05 }}
+                className="flex items-center gap-3 group cursor-pointer"
+                onClick={() => {
+                  setChatOpen(true);
+                  setIsSpeedDialOpen(false);
+                }}
+              >
+                <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-bold rounded-full shadow-xl uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                  AI Concierge
+                </span>
+                <div className="w-12 h-12 bg-gold text-luxury-black rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+                  <Sparkles size={20} />
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Main Toggle Button */}
+        <motion.button
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.1 }}
+          onClick={() => setIsSpeedDialOpen(!isSpeedDialOpen)}
+          className="w-16 h-16 bg-gold text-luxury-black rounded-full shadow-2xl flex items-center justify-center relative group"
+        >
+          <motion.div
+            animate={{ rotate: isSpeedDialOpen ? 45 : 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          >
+            <MessageSquare className="group-hover:rotate-12 transition-transform" />
+          </motion.div>
+          
+          {!isSpeedDialOpen && (
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-luxury-black animate-pulse" />
+          )}
         </motion.button>
-      )}
+      </div>
 
       {/* Footer */}
       <footer className="py-20 px-6 border-t border-white/5">
