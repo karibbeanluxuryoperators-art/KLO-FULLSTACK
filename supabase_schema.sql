@@ -66,3 +66,15 @@ CREATE TABLE IF NOT EXISTS suppliers (
   google_token_expiry BIGINT,
   created_at TIMESTAMPTZ DEFAULT now()
 );
+
+-- Asset Availability Table
+CREATE TABLE IF NOT EXISTS asset_availability (
+  id TEXT PRIMARY KEY,
+  asset_id TEXT REFERENCES assets(id),
+  date TEXT,
+  status TEXT,
+  price_override TEXT,
+  source TEXT DEFAULT 'MANUAL',
+  created_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(asset_id, date)
+);
