@@ -415,6 +415,7 @@ export default function App() {
           initialSuccess={bookingSuccess}
           setChatOpen={setChatOpen}
           setChatPreload={setChatPreload}
+          onBack={() => setShowMarketplace(false)}
           onBookAssets={(selectedAssets) => {
             setChatOpen(true);
             const assetNames = selectedAssets.map(a => a.name).join(', ');
@@ -882,6 +883,17 @@ export default function App() {
             <div className="fixed inset-0 z-[200] bg-luxury-paper p-8 overflow-y-auto custom-scrollbar text-luxury-black">
               <div className="flex justify-between items-center mb-12">
                 <div className="flex items-center gap-6">
+                  <button 
+                    onClick={() => {
+                      setIsMissionControl(false);
+                      setViewMode('CLIENT');
+                      setShowMarketplace(false);
+                    }}
+                    className="p-4 bg-white/5 border border-white/10 rounded-3xl text-white hover:bg-white/10 transition-all"
+                    title="Back to Home"
+                  >
+                    <Home size={24} />
+                  </button>
                   <div className="p-4 bg-red-500/10 text-red-500 rounded-3xl border border-red-500/20">
                     <Zap size={32} />
                   </div>
@@ -989,7 +1001,10 @@ export default function App() {
   );
 
   const renderSupplierView = () => (
-    <SupplierPortal />
+    <SupplierPortal onBack={() => {
+      window.history.pushState({}, '', '/');
+      setViewMode('CLIENT');
+    }} />
   );
 
   return (
@@ -1006,9 +1021,9 @@ export default function App() {
             }}
           >
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 cursor-pointer" onClick={() => { setViewMode('CLIENT'); setShowMarketplace(false); }}>
                 <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
-                  <span className="text-luxury-black font-bold text-xl">K</span>
+                  <Home size={20} className="text-luxury-black" />
                 </div>
                 <span className={`font-serif text-xl md:text-2xl tracking-widest uppercase font-light ${isHeroNav ? 'text-white' : 'text-luxury-black'}`}>
                   <span className="hidden lg:inline">Karibbean Luxury Operators</span>

@@ -14,6 +14,7 @@ interface MarketplaceProps {
   assets: Asset[];
   lang: Language;
   initialSuccess?: boolean;
+  onBack?: () => void;
   onBookAssets: (assets: Asset[]) => void;
   setChatOpen: (open: boolean) => void;
   setChatPreload: (msg: string | null) => void;
@@ -23,6 +24,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
   assets: initialAssets, 
   lang, 
   initialSuccess, 
+  onBack,
   onBookAssets,
   setChatOpen,
   setChatPreload
@@ -803,6 +805,19 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
 
   return (
     <div className="min-h-screen bg-luxury-black pt-32 pb-20 px-6">
+      {/* Home Button */}
+      {onBack && (
+        <div className="fixed top-8 left-8 z-[140]">
+          <button 
+            onClick={onBack}
+            className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold text-white hover:bg-white/10 transition-all shadow-sm group"
+          >
+            <Home size={14} className="group-hover:text-gold transition-colors" /> 
+            {lang === 'EN' ? 'Back to Home' : lang === 'ES' ? 'Volver al Inicio' : 'Voltar ao Início'}
+          </button>
+        </div>
+      )}
+
       {/* Floating Cart Button */}
       <button 
         onClick={() => setIsCartOpen(true)}

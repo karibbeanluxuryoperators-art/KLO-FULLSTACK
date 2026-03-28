@@ -30,7 +30,11 @@ const DRIVER_LANGUAGES = ['ES', 'EN', 'PT', 'FR', 'IT'];
 const VILLA_AMENITIES = ["Pool", "Beach Access", "Chef's Kitchen", "Gym", "Helipad", "Security Room", "Private Dock", "Cinema Room"];
 const YACHT_FEATURES = ["Water toys", "Jet ski", "Dive equipment", "Fishing gear", "Tender"];
 
-export const SupplierPortal: React.FC = () => {
+interface SupplierPortalProps {
+  onBack?: () => void;
+}
+
+export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(0);
   const [type, setType] = useState<string | null>(null);
@@ -925,7 +929,7 @@ export const SupplierPortal: React.FC = () => {
       {/* Home Button */}
       <div className="absolute top-8 left-8 z-[70]">
         <button 
-          onClick={() => window.location.href = '/'}
+          onClick={() => onBack ? onBack() : window.location.href = '/'}
           className="flex items-center gap-2 px-6 py-3 bg-white/50 backdrop-blur-md border border-black/5 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white transition-all shadow-sm"
         >
           <Home size={14} /> Back to Home
