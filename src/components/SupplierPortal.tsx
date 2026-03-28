@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Home, Ship, Plane, Users, ChevronLeft, ChevronRight, 
+  Home, Ship, Plane, Users, Car, ChevronLeft, ChevronRight, 
   Check, Calendar, Globe, Shield, DollarSign, Camera, 
   MapPin, Clock, Star, Info, MessageSquare, ExternalLink,
   Loader2, CheckCircle2, ArrowRight
@@ -19,6 +19,13 @@ const LOCATIONS = ["Cartagena", "Santa Marta", "Bogotá", "Barranquilla", "San A
 const AIRCRAFT_TYPES = ["Turboprop", "Light Jet", "Midsize Jet", "Heavy Jet", "Ultra Long Range", "Helicopter"];
 const STAFF_ROLES = ["Private Chef", "Security", "DJ", "Driver", "Butler", "Medical", "Photographer", "Other"];
 const LANGUAGES = ["ES", "EN", "PT", "FR", "IT"];
+
+const VEHICLE_TYPES = [
+  'SUV', 'Sedan', 'Van', 'Minibus', 
+  'Motorcycle', 'Speedboat', 'Other'
+];
+
+const DRIVER_LANGUAGES = ['ES', 'EN', 'PT', 'FR', 'IT'];
 
 const VILLA_AMENITIES = ["Pool", "Beach Access", "Chef's Kitchen", "Gym", "Helipad", "Security Room", "Private Dock", "Cinema Room"];
 const YACHT_FEATURES = ["Water toys", "Jet ski", "Dive equipment", "Fishing gear", "Tender"];
@@ -78,6 +85,14 @@ export const SupplierPortal: React.FC = () => {
     languages: [],
     daily_rate: '',
     certifications: '',
+    // Ground Transport
+    vehicle_type: 'SUV',
+    is_armored: false,
+    max_passengers_ground: '',
+    driver_included: 'yes',
+    price_per_day_ground: '',
+    license_plate: '',
+    driver_languages: [],
     // Calendar
     seasonal_pricing: false,
     high_season_price: '',
@@ -164,6 +179,7 @@ export const SupplierPortal: React.FC = () => {
       const mappedType = type === 'VILLA' ? 'LODGING' : 
                          type === 'YACHT' ? 'VESSEL' :
                          type === 'AVIATION' ? 'AIRCRAFT' :
+                         type === 'GROUND' ? 'VEHICLE' :
                          'STAFF';
 
       const assetPayload = {
@@ -175,12 +191,19 @@ export const SupplierPortal: React.FC = () => {
         price_per_unit: type === 'VILLA' ? formData.price_per_night : 
                         type === 'YACHT' ? formData.price_per_day :
                         type === 'AVIATION' ? formData.price_per_hour :
+                        type === 'GROUND' ? formData.price_per_day_ground :
                         formData.daily_rate,
         price_type: type === 'VILLA' ? 'PER_NIGHT' : 
                     type === 'YACHT' ? 'PER_DAY' :
                     type === 'AVIATION' ? 'PER_HOUR' :
+                    type === 'GROUND' ? 'PER_DAY' :
                     'PER_DAY',
-        capacity: parseInt(formData.max_guests || formData.max_passengers || (type === 'STAFF' ? '1' : '0')),
+        capacity: parseInt(
+          formData.max_guests || 
+          formData.max_passengers || 
+          formData.max_passengers_ground || 
+          (type === 'STAFF' ? '1' : '0')
+        ),
         amenities: formData.amenities.length > 0 ? formData.amenities : (formData.features.length > 0 ? formData.features : []),
         images: [formData.photo_url].filter(Boolean)
       };
@@ -257,16 +280,17 @@ export const SupplierPortal: React.FC = () => {
         </motion.div>
         <h1 className="text-5xl font-serif text-luxury-black uppercase tracking-tight">Become a KLO Verified Partner</h1>
         <p className="text-luxury-black/60 font-light text-xl max-w-2xl mx-auto">
-          Join the Caribbean's premier ultra-luxury network. Reach UHNW clients worldwide.
+          List your villa, yacht, aircraft, vehicle fleet, or staff with the Caribbean's premier ultra-luxury platform.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {[
           { id: 'VILLA', label: 'Villa Owner', icon: Home, color: 'bg-emerald-500/10 text-emerald-500' },
           { id: 'YACHT', label: 'Yacht / Boat Operator', icon: Ship, color: 'bg-blue-500/10 text-blue-500' },
           { id: 'AVIATION', label: 'Private Aviation', icon: Plane, color: 'bg-purple-500/10 text-purple-500' },
           { id: 'STAFF', label: 'Staffing & Services', icon: Users, color: 'bg-amber-500/10 text-amber-500' },
+          { id: 'GROUND', label: 'Ground Transport', icon: Car, color: 'bg-emerald-500/10 text-emerald-500' },
         ].map((item) => (
           <motion.button
             key={item.id}
@@ -480,6 +504,79 @@ export const SupplierPortal: React.FC = () => {
               <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Certifications</label>
               <input name="certifications" value={formData.certifications} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="e.g. Michelin Star, PADI Instructor..." />
             </div>
+          </div>
+        )}
+
+        {type === 'GROUND' && (
+          <div className="space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Vehicle Type</label>
+                <select name="vehicle_type" value={formData.vehicle_type} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light appearance-none">
+                  {VEHICLE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Number of Passengers</label>
+                <input name="max_passengers_ground" type="number" value={formData.max_passengers_ground} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Price per Day (USD)</label>
+                <input name="price_per_day_ground" type="number" value={formData.price_per_day_ground} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">License Plate</label>
+                <input name="license_plate" value={formData.license_plate} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="e.g. ABC-1234" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Driver Included?</label>
+                <div className="flex gap-4">
+                  {['yes', 'no'].map(o => (
+                    <button key={o} onClick={() => setFormData((prev: any) => ({ ...prev, driver_included: o }))} className={`flex-1 py-4 rounded-2xl border text-xs uppercase tracking-widest transition-all ${formData.driver_included === o ? 'bg-gold border-gold text-luxury-black font-bold' : 'border-black/5'}`}>
+                      {o}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Is this vehicle armored?</label>
+                    {formData.is_armored && (
+                      <span className="px-2 py-0.5 bg-gold/10 text-gold rounded text-[8px] font-bold uppercase tracking-widest border border-gold/20">
+                        Vianco Protocol Eligible
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-luxury-black/40 font-light">Does the vehicle have ballistic protection?</p>
+                </div>
+                <button 
+                  onClick={() => setFormData((prev: any) => ({ ...prev, is_armored: !prev.is_armored }))}
+                  className={`w-16 h-8 rounded-full transition-all relative ${formData.is_armored ? 'bg-gold' : 'bg-black/10'}`}
+                >
+                  <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-all ${formData.is_armored ? 'left-9' : 'left-1'}`} />
+                </button>
+              </div>
+            </div>
+
+            {formData.driver_included === 'yes' && (
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Driver Languages Spoken</label>
+                <div className="flex flex-wrap gap-4">
+                  {DRIVER_LANGUAGES.map(l => (
+                    <button key={l} onClick={() => handleCheckboxChange('driver_languages', l)} className={`w-16 h-16 rounded-2xl border text-xs font-bold transition-all ${formData.driver_languages.includes(l) ? 'bg-gold border-gold text-luxury-black' : 'border-black/5 hover:border-gold/30'}`}>
+                      {l}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -723,6 +820,25 @@ export const SupplierPortal: React.FC = () => {
               <>
                 <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Role</span><span className="text-sm font-medium">{formData.role}</span></div>
                 <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Rate</span><span className="text-sm font-medium">${formData.daily_rate}/day</span></div>
+              </>
+            )}
+            {type === 'GROUND' && (
+              <>
+                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Vehicle</span><span className="text-sm font-medium">{formData.vehicle_type}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Passengers</span><span className="text-sm font-medium">{formData.max_passengers_ground}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Plate</span><span className="text-sm font-medium">{formData.license_plate}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Price</span><span className="text-sm font-medium">${formData.price_per_day_ground}/day</span></div>
+                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Driver</span><span className="text-sm font-medium uppercase">{formData.driver_included}</span></div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Armored</span>
+                  <span className="text-sm font-medium flex items-center gap-2">
+                    {formData.is_armored ? 'YES' : 'NO'}
+                    {formData.is_armored && <span className="text-[8px] text-gold font-bold uppercase tracking-widest">Vianco Protocol Eligible</span>}
+                  </span>
+                </div>
+                {formData.driver_included === 'yes' && (
+                  <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Languages</span><span className="text-sm font-medium">{formData.driver_languages.join(', ')}</span></div>
+                )}
               </>
             )}
           </div>

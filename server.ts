@@ -669,11 +669,11 @@ async function startServer() {
       return res.json({ id: "cs_simulated_" + Math.random().toString(36).substring(7), url: `${req.headers.origin}?booking=success` });
     }
 
-    const { items, successUrl, cancelUrl } = req.body;
+    const { items, successUrl, cancelUrl, paymentMethod } = req.body;
 
     try {
-      const session = await stripeClient.checkout.sessions.create({
-        payment_method_types: ['card'],
+      const sessionParams: any = {
+        payment_method_types: paymentMethod === 'usdc' ? ['card', 'us_bank_account'] : ['card'],
         line_items: items.map((item: any) => ({
           price_data: {
             currency: 'usd',
@@ -685,7 +685,13 @@ async function startServer() {
         mode: 'payment',
         success_url: successUrl,
         cancel_url: cancelUrl,
-      });
+      };
+
+      if (paymentMethod === 'usdc') {
+        sessionParams.crypto = { enabled: true };
+      }
+
+      const session = await stripeClient.checkout.sessions.create(sessionParams);
       res.json({ id: session.id, url: session.url });
     } catch (error: any) {
       res.status(400).json({ error: error.message });

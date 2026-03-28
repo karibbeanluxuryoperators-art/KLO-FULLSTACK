@@ -4,7 +4,8 @@ import {
   Users, Plane, Ship, Car, Home, 
   Search, Filter, Star, MapPin, 
   ChevronRight, ArrowRight, Shield, Sparkles,
-  Calendar, Clock, DollarSign, ShoppingBag, Trash2, X, Loader2, MessageSquare
+  Calendar, Clock, DollarSign, ShoppingBag, Trash2, X, Loader2, MessageSquare,
+  CreditCard, Hexagon
 } from 'lucide-react';
 import { Asset, AssetType, Language } from '../types';
 import { MiniCalendar } from './MiniCalendar';
@@ -46,6 +47,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
     specialRequests: '',
     pax: 1
   });
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'usdc'>('card');
 
   React.useEffect(() => {
     setLoading(true);
@@ -289,6 +291,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
           items: cart,
           successUrl: `${window.location.origin}?booking=success`,
           cancelUrl: `${window.location.origin}?booking=cancel`,
+          paymentMethod: paymentMethod,
         }),
       });
       const data = await res.json();
@@ -446,6 +449,41 @@ Please let me know the availability and next steps.`;
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
                 <span className="text-[10px] text-white/40 uppercase tracking-widest">Investment</span>
                 <span className="text-xl text-gold font-light">{calculateTotal()}</span>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-[10px] uppercase tracking-widest text-white/40">Payment Method</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  onClick={() => setPaymentMethod('card')}
+                  className={`flex items-center gap-4 p-4 rounded-2xl border transition-all text-left ${
+                    paymentMethod === 'card' ? 'border-gold bg-gold/10' : 'border-white/10 bg-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  <div className={`p-2 rounded-lg ${paymentMethod === 'card' ? 'bg-gold text-luxury-black' : 'bg-white/10 text-white'}`}>
+                    <CreditCard size={20} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Pay by card</p>
+                    <p className="text-[10px] text-white/40 uppercase tracking-tight">Visa, Mastercard, Amex</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setPaymentMethod('usdc')}
+                  className={`flex items-center gap-4 p-4 rounded-2xl border transition-all text-left ${
+                    paymentMethod === 'usdc' ? 'border-gold bg-gold/10' : 'border-white/10 bg-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  <div className={`p-2 rounded-lg ${paymentMethod === 'usdc' ? 'bg-purple-500 text-white' : 'bg-white/10 text-white'}`}>
+                    <Hexagon size={20} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Pay with USDC</p>
+                    <p className="text-[10px] text-white/40 uppercase tracking-tight">Digital dollar · instant settlement</p>
+                  </div>
+                </button>
               </div>
             </div>
 

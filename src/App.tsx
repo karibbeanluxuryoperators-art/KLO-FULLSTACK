@@ -247,6 +247,15 @@ export default function App() {
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
+  const [isHeroNav, setIsHeroNav] = useState(true);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsHeroNav(window.scrollY < 80);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   useEffect(() => {
     if (window.location.pathname === '/supplier') {
@@ -765,7 +774,7 @@ export default function App() {
               <button 
                 onClick={() => {
                   window.history.pushState({}, '', '/supplier');
-                  window.location.reload();
+                  setViewMode('SUPPLIER');
                 }}
                 className="w-full sm:w-auto px-10 py-4 bg-luxury-black text-gold rounded-full font-bold uppercase tracking-widest hover:bg-white hover:text-luxury-black transition-all shadow-2xl"
               >
@@ -988,81 +997,128 @@ export default function App() {
       {viewMode === 'SUPPLIER' ? renderSupplierView() : (showAuth && !user) ? renderAuth() : (
         <>
           {/* Navigation */}
-          <nav className="fixed top-0 w-full z-50 glass-panel border-none">
+          <nav 
+            className="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-md"
+            style={{
+              background: isHeroNav ? 'rgba(0,0,0,0.3)' : 'rgba(250,248,244,0.95)',
+              borderBottom: isHeroNav ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
+              color: isHeroNav ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.6)'
+            }}
+          >
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
                   <span className="text-luxury-black font-bold text-xl">K</span>
                 </div>
-                <span className="font-serif text-xl md:text-2xl tracking-widest uppercase font-light">
+                <span className={`font-serif text-xl md:text-2xl tracking-widest uppercase font-light ${isHeroNav ? 'text-white' : 'text-luxury-black'}`}>
                   <span className="hidden lg:inline">Karibbean Luxury Operators</span>
                   <span className="lg:hidden">KLO</span>
                 </span>
               </div>
               
-              <div className="hidden md:flex items-center gap-8 text-[10px] uppercase tracking-[0.2em] font-light">
-                {user?.role === 'ADMIN' && (
-                  <button onClick={() => setViewMode('ADMIN')} className={`hover:text-gold transition-colors ${viewMode === 'ADMIN' ? 'text-gold' : ''}`}>
-                    {lang === 'EN' ? 'Admin Portal' : lang === 'ES' ? 'Portal Admin' : 'Portal Admin'}
-                  </button>
-                )}
-                {user?.role === 'PROVIDER' && (
-                  <button onClick={() => setViewMode('PROVIDER')} className={`hover:text-gold transition-colors ${viewMode === 'PROVIDER' ? 'text-gold' : ''}`}>
-                    {lang === 'EN' ? 'Provider Portal' : lang === 'ES' ? 'Portal Proveedor' : 'Portal do Provedor'}
-                  </button>
-                )}
-                <button onClick={() => {
-                  setViewMode('CLIENT');
-                  setShowMarketplace(false);
-                }} className={`hover:text-gold transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : ''}`}>
+              <div className="hidden md:flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] font-light">
+                <button 
+                  onClick={() => {
+                    setViewMode('CLIENT');
+                    setShowMarketplace(false);
+                  }} 
+                  style={{ color: (viewMode === 'CLIENT' && !showMarketplace) ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: (viewMode === 'CLIENT' && !showMarketplace) ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors"
+                >
                   {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
                 </button>
-                <button onClick={() => {
-                  setViewMode('CLIENT');
-                  setShowMarketplace(true);
-                }} className={`hover:text-gold transition-colors ${viewMode === 'CLIENT' && showMarketplace ? 'text-gold' : ''}`}>
+                <button 
+                  onClick={() => {
+                    setViewMode('CLIENT');
+                    setShowMarketplace(true);
+                  }} 
+                  style={{ color: (viewMode === 'CLIENT' && showMarketplace) ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: (viewMode === 'CLIENT' && showMarketplace) ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors"
+                >
                   {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
                 </button>
-                
                 <button 
                   onClick={() => {
                     window.history.pushState({}, '', '/supplier');
                     setViewMode('SUPPLIER');
                   }} 
-                  className="hover:text-gold transition-colors text-luxury-black/60"
+                  style={{ color: viewMode === 'SUPPLIER' ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: viewMode === 'SUPPLIER' ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors"
                 >
                   {lang === 'EN' ? 'Become a Partner' : lang === 'ES' ? 'Ser Socio' : 'Ser Parceiro'}
                 </button>
 
-                <div className="w-[1px] h-4 bg-white/20 mx-2" />
+                <div className="w-[1px] h-4 bg-current opacity-10 mx-1" />
                 
-                {!user && (
-                  <button onClick={() => setShowAuth(true)} className="hover:text-gold transition-colors">
-                    {lang === 'EN' ? 'Sign In' : lang === 'ES' ? 'Iniciar Sesión' : 'Entrar'}
-                  </button>
-                )}
+                <button 
+                  onClick={() => setViewMode('ADMIN')} 
+                  style={{ color: viewMode === 'ADMIN' ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: viewMode === 'ADMIN' ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors"
+                >
+                  {lang === 'EN' ? 'Admin' : 'Admin'}
+                </button>
+                <button 
+                  onClick={() => {
+                    setViewMode('CLIENT');
+                    setShowMarketplace(false);
+                  }} 
+                  style={{ color: (viewMode === 'CLIENT' && !showMarketplace) ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: (viewMode === 'CLIENT' && !showMarketplace) ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors"
+                >
+                  {lang === 'EN' ? 'Client' : 'Client'}
+                </button>
+                <button 
+                  onClick={() => {
+                    window.history.pushState({}, '', '/supplier');
+                    setViewMode('SUPPLIER');
+                  }} 
+                  style={{ color: viewMode === 'SUPPLIER' ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: viewMode === 'SUPPLIER' ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors"
+                >
+                  {lang === 'EN' ? 'Supplier' : 'Supplier'}
+                </button>
+                <button 
+                  onClick={() => setViewMode('PROVIDER')} 
+                  style={{ color: viewMode === 'PROVIDER' ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: viewMode === 'PROVIDER' ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors"
+                >
+                  {lang === 'EN' ? 'Provider' : 'Provider'}
+                </button>
 
+                <div className="w-[1px] h-4 bg-current opacity-10 mx-1" />
+                
                 <button 
                   onClick={() => {
                     if (lang === 'EN') setLang('ES');
                     else if (lang === 'ES') setLang('PT');
                     else setLang('EN');
                   }}
-                  className="px-3 py-1 border border-white/10 rounded-md hover:border-gold/50 transition-colors text-[10px] font-bold"
+                  className="px-2 py-1 border border-current opacity-40 rounded hover:opacity-100 transition-colors text-[9px] font-bold"
                 >
                   {lang}
                 </button>
-                {user && (
-                  <button onClick={handleLogout} className="hover:text-red-400 transition-colors">
-                    {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
-                  </button>
-                )}
-                <button onClick={() => setChatOpen(true)} className="px-6 py-2 border border-gold/50 rounded-full hover:bg-gold hover:text-luxury-black transition-all duration-300">
+
+                <div className="flex items-center gap-4">
+                  {user ? (
+                    <div className="flex items-center gap-3">
+                      <span className="text-[8px] opacity-50 lowercase tracking-normal">{user.name}</span>
+                      <button onClick={handleLogout} className="hover:text-red-400 transition-colors opacity-60 hover:opacity-100">
+                        {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
+                      </button>
+                    </div>
+                  ) : (
+                    <button onClick={() => setShowAuth(true)} className="hover:text-gold transition-colors opacity-60 hover:opacity-100">
+                      {lang === 'EN' ? 'Sign In' : lang === 'ES' ? 'Iniciar Sesión' : 'Entrar'}
+                    </button>
+                  )}
+                </div>
+
+                <button onClick={() => setChatOpen(true)} className="px-5 py-2 border border-gold/50 rounded-full hover:bg-gold hover:text-luxury-black transition-all duration-300 text-gold">
                   {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
                 </button>
               </div>
 
-              <button className="md:hidden text-luxury-black" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              <button className={`md:hidden ${isHeroNav ? 'text-white' : 'text-luxury-black'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
@@ -1088,29 +1144,54 @@ export default function App() {
                     </button>
                   </div>
 
-                  <div className="flex flex-col gap-8 text-lg uppercase tracking-[0.2em] font-light">
+                  <div className="flex flex-col gap-6 text-lg uppercase tracking-[0.2em] font-light">
                     <button onClick={() => {
                       setViewMode('CLIENT');
                       setShowMarketplace(false);
                       setIsMenuOpen(false);
-                    }} className="text-left hover:text-gold transition-colors">
+                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
                       {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
                     </button>
                     <button onClick={() => {
                       setViewMode('CLIENT');
                       setShowMarketplace(true);
                       setIsMenuOpen(false);
-                    }} className="text-left hover:text-gold transition-colors">
+                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
                       {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
                     </button>
                     <button onClick={() => {
                       window.history.pushState({}, '', '/supplier');
                       setViewMode('SUPPLIER');
                       setIsMenuOpen(false);
-                    }} className="text-left hover:text-gold transition-colors">
+                    }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
                       {lang === 'EN' ? 'Become a Partner' : lang === 'ES' ? 'Ser Socio' : 'Ser Parceiro'}
                     </button>
-                    {!user && (
+
+                    <div className="h-[1px] w-full bg-black/5 my-2" />
+
+                    <button onClick={() => { setViewMode('ADMIN'); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'ADMIN' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                      Admin
+                    </button>
+                    <button onClick={() => { setViewMode('CLIENT'); setShowMarketplace(false); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
+                      Client
+                    </button>
+                    <button onClick={() => { window.history.pushState({}, '', '/supplier'); setViewMode('SUPPLIER'); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                      Supplier
+                    </button>
+                    <button onClick={() => { setViewMode('PROVIDER'); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'PROVIDER' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                      Provider
+                    </button>
+
+                    <div className="h-[1px] w-full bg-black/5 my-2" />
+
+                    {user ? (
+                      <div className="flex flex-col gap-2">
+                        <span className="text-[10px] opacity-40 lowercase">{user.name}</span>
+                        <button onClick={() => { handleLogout(); setIsMenuOpen(false); }} className="text-left text-red-500 font-bold">
+                          {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
+                        </button>
+                      </div>
+                    ) : (
                       <button onClick={() => {
                         setShowAuth(true);
                         setIsMenuOpen(false);
@@ -1140,14 +1221,6 @@ export default function App() {
                     >
                       LANGUAGE: {lang}
                     </button>
-                    {user && (
-                      <button onClick={() => {
-                        handleLogout();
-                        setIsMenuOpen(false);
-                      }} className="text-red-500 font-bold uppercase tracking-widest">
-                        {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
-                      </button>
-                    )}
                   </div>
                 </motion.div>
               )}
