@@ -265,7 +265,7 @@ export default function App() {
     fetch('/api/assets')
       .then(res => res.json())
       .then(data => {
-        if (data && data.length > 0) {
+        if (Array.isArray(data) && data.length > 0) {
           setAssets(data);
         }
       })

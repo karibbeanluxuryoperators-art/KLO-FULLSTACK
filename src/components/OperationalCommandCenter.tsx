@@ -30,9 +30,15 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
       try {
         const res = await fetch('/api/assets');
         const data = await res.json();
-        setAssets(data);
+        if (Array.isArray(data)) {
+          setAssets(data);
+        } else {
+          console.warn('Assets API did not return an array:', data);
+          setAssets([]);
+        }
       } catch (error) {
         console.error('Failed to fetch assets:', error);
+        setAssets([]);
       }
     };
 
@@ -324,7 +330,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">{assets.length} Total Assets</span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {assets.slice(0, 8).map((asset) => (
+              {Array.isArray(assets) && assets.slice(0, 8).map((asset) => (
                 <div key={asset.id} className="p-4 bg-white/5 rounded-2xl border border-white/10">
                   <div className="flex justify-between items-start mb-2">
                     <div className="p-1.5 rounded-lg bg-white/5 text-gold">

@@ -141,7 +141,7 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
         
         {/* Overlay Info */}
         <div className="absolute bottom-6 left-6 space-y-2">
-          {assets.slice(0, 3).map((asset, i) => (
+          {Array.isArray(assets) && assets.slice(0, 3).map((asset, i) => (
             <div key={i} className="flex items-center gap-3 bg-luxury-black/80 backdrop-blur-md p-3 rounded-2xl border border-white/10">
               <div className="p-2 bg-gold/10 text-gold rounded-xl">
                 {asset.type === 'AIRCRAFT' ? <Plane size={14} /> : asset.type === 'VESSEL' ? <Ship size={14} /> : <Car size={14} />}
