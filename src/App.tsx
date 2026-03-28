@@ -330,7 +330,7 @@ export default function App() {
           <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-luxury-black font-bold text-3xl">K</span>
           </div>
-          <h2 className="text-3xl font-serif mb-2 uppercase tracking-widest">
+          <h2 className="text-2xl font-sans font-medium mb-2 tracking-tight">
             {lang === 'EN' ? 'Access KLO' : lang === 'ES' ? 'Acceder a KLO' : 'Acessar KLO'}
           </h2>
           <p className="text-luxury-black/40 text-sm font-light">
@@ -344,7 +344,7 @@ export default function App() {
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="text-[10px] uppercase tracking-widest text-gold mb-2 block">
+            <label className="text-[11px] font-sans uppercase tracking-tight text-gold/60 mb-1 block">
               {lang === 'EN' ? 'Email Address' : lang === 'ES' ? 'Correo Electrónico' : 'Endereço de E-mail'}
             </label>
             <input 
@@ -357,7 +357,7 @@ export default function App() {
             />
           </div>
           <div>
-            <label className="text-[10px] uppercase tracking-widest text-gold mb-2 block">
+            <label className="text-[11px] font-sans uppercase tracking-tight text-gold/60 mb-1 block">
               {lang === 'EN' ? 'Password' : lang === 'ES' ? 'Contraseña' : 'Senha'}
             </label>
             <input 
@@ -372,14 +372,14 @@ export default function App() {
           {authError && <p className="text-red-400 text-xs text-center">{authError}</p>}
           <button 
             type="submit"
-            className="w-full py-4 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest hover:bg-white transition-all duration-300"
+            className="w-full py-4 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight hover:bg-white transition-all duration-300"
           >
             {lang === 'EN' ? 'Sign In' : lang === 'ES' ? 'Iniciar Sesión' : 'Entrar'}
           </button>
         </form>
 
         <div className="mt-8 pt-8 border-t border-white/5 text-center">
-          <p className="text-[10px] text-luxury-black/20 uppercase tracking-widest">
+          <p className="text-[10px] font-sans uppercase tracking-tight text-luxury-black/40">
             {lang === 'EN' ? 'Demo Credentials' : lang === 'ES' ? 'Credenciales de Demostración' : 'Credenciais de Demonstração'}:<br />
             admin@klo.com | provider@klo.com | client@klo.com
           </p>
@@ -452,13 +452,13 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <span className="text-gold uppercase tracking-[0.5em] text-xs mb-6 block">
+            <span className="text-gold font-sans uppercase tracking-tight text-[11px] font-semibold mb-4 block">
               {lang === 'EN' ? 'Caribbean Ultra-Luxury · AI-Orchestrated' : lang === 'ES' ? 'Ultra-Lujo del Caribe · Orquestado por IA' : 'Ultra-Luxo do Caribe · Orquestrado por IA'}
             </span>
-            <h1 className="text-5xl md:text-8xl font-serif mb-8 leading-tight uppercase">
+            <h1 className="text-5xl md:text-8xl font-serif italic mb-8 leading-tight tracking-wide">
               {lang === 'EN' ? 'One conversation. Jet to yacht to villa.' : lang === 'ES' ? 'Una conversación. Del jet al yate a la villa.' : 'Uma conversa. Do jato ao iate à vila.'}
             </h1>
-            <p className="text-white/60 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p className="text-white/60 text-lg md:text-xl font-sans font-light max-w-2xl mx-auto mb-12 leading-relaxed">
               {lang === 'EN' 
                 ? 'The only platform that moves you from private jet to superyacht to ultra-luxury villa — with your entire Caribbean journey orchestrated in seconds.'
                 : lang === 'ES'
@@ -502,7 +502,7 @@ export default function App() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-6xl font-serif text-white mb-6 uppercase tracking-tight">
+            <h2 className="text-4xl md:text-6xl font-serif italic text-white mb-6 tracking-wide">
               {lang === 'EN' ? 'The Standard for' : lang === 'ES' ? 'El Estándar para' : 'O Padrão para'} <br />
               <span className="text-gold italic">{lang === 'EN' ? 'Caribbean Ultra-Luxury' : lang === 'ES' ? 'Ultra-Lujo del Caribe' : 'Ultra-Luxo do Caribe'}</span>
             </h2>
@@ -526,7 +526,7 @@ export default function App() {
                 className="glass-panel p-8 rounded-3xl text-center border border-white/5 hover:border-gold/30 transition-all group"
               >
                 <stat.icon className="mx-auto mb-4 text-gold/50 group-hover:text-gold transition-colors" size={32} />
-                <p className="text-white font-serif text-lg md:text-xl">{stat.label}</p>
+                <p className="text-white font-sans font-medium text-base">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -573,8 +573,8 @@ export default function App() {
                 <div className="w-16 h-16 bg-gold/10 rounded-2xl flex items-center justify-center text-gold mb-8">
                   <feature.icon size={32} />
                 </div>
-                <h3 className="text-2xl font-serif text-white mb-4">{feature.title}</h3>
-                <p className="text-white/50 leading-relaxed">{feature.desc}</p>
+                <h3 className="text-xl font-sans font-medium text-white mb-2">{feature.title}</h3>
+                <p className="text-white/50 font-sans font-light leading-relaxed">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -598,16 +598,16 @@ export default function App() {
           >
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
               <div>
-                <span className="text-gold uppercase tracking-widest text-xs mb-2 block">
+                <span className="text-gold font-sans uppercase tracking-tight text-[11px] font-semibold mb-1 block">
                   {lang === 'EN' ? 'Central Guest Profile' : lang === 'ES' ? 'Perfil Central del Huésped' : 'Perfil Central do Hóspede'}: UHNWI_001
                 </span>
-                <h2 className="text-4xl md:text-5xl font-serif">{plannedExperience.title}</h2>
+                <h2 className="text-4xl md:text-5xl font-serif italic tracking-wide">{plannedExperience.title}</h2>
               </div>
               <div className="text-right">
-                <span className="text-luxury-black/40 text-sm block mb-1">
+                <span className="text-luxury-black/40 text-sm font-sans block mb-1">
                   {lang === 'EN' ? 'Total Investment' : lang === 'ES' ? 'Inversión Total' : 'Investimento Total'} (incl. {plannedExperience.managementFee} {lang === 'EN' ? 'fee' : lang === 'ES' ? 'tarifa' : 'taxa'})
                 </span>
-                <span className="text-3xl font-light text-gold">{plannedExperience.estimatedTotal}</span>
+                <span className="text-3xl font-sans font-light text-gold">{plannedExperience.estimatedTotal}</span>
               </div>
             </div>
 
@@ -625,11 +625,11 @@ export default function App() {
                         <div className={`p-3 rounded-2xl bg-white/5 ${pillarInfo?.color}`}>
                           {pillarInfo && <pillarInfo.icon size={24} />}
                         </div>
-                        <h3 className="text-xl font-serif capitalize">
+                        <h3 className="text-lg font-sans font-medium">
                           {lang === 'EN' ? key : lang === 'ES' ? (key === 'stay' ? 'estancia' : key === 'ground' ? 'tierra' : key) : (key === 'stay' ? 'estadia' : key === 'ground' ? 'terra' : key)}
                         </h3>
                       </div>
-                      <p className="text-luxury-black/70 font-light leading-relaxed">{value}</p>
+                      <p className="text-luxury-black/70 font-sans font-light leading-relaxed">{value}</p>
                     </motion.div>
                   );
                 })}
@@ -637,20 +637,20 @@ export default function App() {
                 {/* Legal & Security */}
                 <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="glass-panel p-8 rounded-3xl border-gold/20">
-                    <h3 className="text-xl font-serif mb-4 flex items-center gap-3">
+                    <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <Shield size={20} className="text-gold" /> {lang === 'EN' ? 'Security Brief' : 'Resumen de Seguridad'}
                     </h3>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-[10px] text-luxury-black/40 uppercase tracking-widest">Level</span>
-                        <span className="text-xs font-bold text-gold">{plannedExperience.securityBrief.level}</span>
+                        <span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Level</span>
+                        <span className="text-xs font-sans font-semibold text-gold">{plannedExperience.securityBrief.level}</span>
                       </div>
-                      <p className="text-xs text-luxury-black/60 italic leading-relaxed">
+                      <p className="text-xs font-sans text-luxury-black/60 italic leading-relaxed">
                         "{plannedExperience.securityBrief.riskAssessment}"
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {plannedExperience.securityBrief.protocols.map((p, i) => (
-                          <span key={i} className="px-3 py-1 bg-white/5 rounded-full text-[8px] uppercase tracking-widest border border-white/10">
+                          <span key={i} className="px-3 py-1 bg-white/5 rounded-full text-[10px] font-sans font-semibold uppercase tracking-tight border border-white/10">
                             {p}
                           </span>
                         ))}
@@ -659,12 +659,12 @@ export default function App() {
                   </div>
 
                   <div className="glass-panel p-8 rounded-3xl border-white/10">
-                    <h3 className="text-xl font-serif mb-4 flex items-center gap-3">
+                    <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <UserCheck size={20} className="text-gold" /> {lang === 'EN' ? 'Compliance' : 'Cumplimiento'}
                     </h3>
                     <div className="flex flex-wrap gap-3">
                       {plannedExperience.legalRequirements.map((req, i) => (
-                        <span key={i} className="px-4 py-2 bg-white/5 rounded-full text-xs font-light border border-white/10">
+                        <span key={i} className="px-4 py-2 bg-white/5 rounded-full text-xs font-sans font-light border border-white/10">
                           {req}
                         </span>
                       ))}
@@ -674,7 +674,7 @@ export default function App() {
               </div>
 
               <div className="glass-panel p-8 rounded-3xl">
-                <h3 className="text-xl font-serif mb-8 flex items-center gap-3">
+                <h3 className="text-lg font-sans font-medium mb-8 flex items-center gap-3">
                   <Clock size={20} className="text-gold" /> {lang === 'EN' ? 'Agential Timeline' : 'Cronograma Agéntico'}
                 </h3>
                 <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white/10">
@@ -687,20 +687,20 @@ export default function App() {
                       </div>
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-gold font-mono uppercase tracking-widest block mb-1">{item.time}</span>
-                          <span className="text-[8px] text-emerald-400 font-mono">TTE: {item.tte}</span>
+                          <span className="text-[11px] text-gold font-sans font-semibold uppercase tracking-tight block mb-1">{item.time}</span>
+                          <span className="text-[9px] text-emerald-400 font-sans">TTE: {item.tte}</span>
                         </div>
-                        <span className={`text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-full ${
+                        <span className={`text-[10px] font-sans font-semibold uppercase tracking-tight px-2 py-0.5 rounded-full ${
                           item.status === 'Auto-Scheduled' ? 'bg-cyan-400/10 text-cyan-400' : 'bg-gold/10 text-gold'
                         }`}>
                           {lang === 'EN' ? item.status : lang === 'ES' ? (item.status === 'Auto-Scheduled' ? 'Auto-Programado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendiente') : (item.status === 'Auto-Scheduled' ? 'Auto-Agendado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendente')}
                         </span>
                       </div>
-                      <p className="text-sm font-light text-luxury-black/90">{item.activity}</p>
+                      <p className="text-sm font-sans font-light text-luxury-black/90">{item.activity}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] text-luxury-black/30 uppercase tracking-tighter">{item.pillar}</span>
-                        <span className="text-[10px] text-luxury-black/20">•</span>
-                        <span className="text-[10px] text-luxury-black/30 uppercase tracking-tighter">{item.location}</span>
+                        <span className="text-[11px] font-sans font-semibold text-luxury-black/30 uppercase tracking-tight">{item.pillar}</span>
+                        <span className="text-[11px] text-luxury-black/20">•</span>
+                        <span className="text-[11px] font-sans font-semibold text-luxury-black/30 uppercase tracking-tight">{item.location}</span>
                       </div>
                     </div>
                   ))}
@@ -712,7 +712,7 @@ export default function App() {
                     className="w-full mt-10 py-6 bg-emerald-500/10 border border-emerald-500/20 rounded-3xl flex flex-col items-center justify-center gap-3 text-center"
                   >
                     <CheckCircle2 className="text-emerald-500" size={32} />
-                    <p className="text-emerald-500 font-medium px-4">
+                    <p className="text-emerald-500 font-sans font-medium px-4">
                       {lang === 'EN' 
                         ? 'Payment confirmed — your KLO concierge will contact you within 2 hours' 
                         : lang === 'ES' 
@@ -724,7 +724,7 @@ export default function App() {
                   <button 
                     onClick={handlePayment}
                     disabled={isProcessingPayment}
-                    className="w-full mt-10 py-4 bg-white text-luxury-black rounded-full font-medium hover:bg-gold transition-colors flex items-center justify-center gap-3"
+                    className="w-full mt-10 py-4 bg-white text-luxury-black rounded-full font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-gold transition-colors flex items-center justify-center gap-3"
                   >
                     {isProcessingPayment ? <Loader2 className="animate-spin" /> : <CreditCard size={18} />}
                     {lang === 'EN' ? 'Confirm Invisible Payment' : lang === 'ES' ? 'Confirmar Pago Invisible' : 'Confirmar Pagamento Invisível'}
@@ -737,16 +737,16 @@ export default function App() {
       </AnimatePresence>
       {/* Become a Partner Section */}
       <section className="py-24 px-6 bg-gradient-to-br from-gold via-gold/80 to-gold/60 text-luxury-black">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-6xl font-serif mb-8 uppercase leading-tight">
+            <h2 className="text-4xl md:text-6xl font-serif italic mb-8 tracking-wide">
               {lang === 'EN' ? 'Join the KLO Partner Network' : lang === 'ES' ? 'Únase a la Red de Socios de KLO' : 'Junte-se à Rede de Parceiros KLO'}
             </h2>
-            <p className="text-luxury-black/70 text-lg font-light mb-12 leading-relaxed">
+            <p className="text-luxury-black/70 text-lg font-sans font-light mb-12 leading-relaxed">
               {lang === 'EN' 
                 ? "List your villa, yacht, aircraft, or services with the Caribbean's premier ultra-luxury platform. Reach UHNW clients globally with zero upfront cost."
                 : lang === 'ES'
@@ -764,7 +764,7 @@ export default function App() {
                   <div className="w-6 h-6 rounded-full bg-luxury-black/10 flex items-center justify-center">
                     <CheckCircle2 size={14} className="text-luxury-black" />
                   </div>
-                  <span className="text-sm font-medium uppercase tracking-widest">
+                  <span className="text-[11px] font-sans font-semibold uppercase tracking-tight">
                     {lang === 'EN' ? point.en : lang === 'ES' ? point.es : point.pt}
                   </span>
                 </div>
@@ -777,7 +777,7 @@ export default function App() {
                   window.history.pushState({}, '', '/supplier');
                   setViewMode('SUPPLIER');
                 }}
-                className="w-full sm:w-auto px-10 py-4 bg-luxury-black text-gold rounded-full font-bold uppercase tracking-widest hover:bg-white hover:text-luxury-black transition-all shadow-2xl"
+                className="w-full sm:w-auto px-10 py-4 bg-luxury-black text-gold rounded-full font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white hover:text-luxury-black transition-all shadow-2xl"
               >
                 {lang === 'EN' ? 'Apply to Become a Partner' : lang === 'ES' ? 'Solicitar ser Socio' : 'Candidatar-se a Parceiro'}
               </button>
@@ -785,7 +785,7 @@ export default function App() {
                 href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-luxury-black font-bold uppercase tracking-widest hover:underline"
+                className="flex items-center gap-2 text-luxury-black font-sans font-semibold uppercase tracking-tight text-[11px] hover:underline"
               >
                 <MessageSquare size={18} />
                 {lang === 'EN' ? 'WhatsApp Us First' : lang === 'ES' ? 'WhatsApp Primero' : 'WhatsApp Primeiro'}
@@ -816,7 +816,7 @@ export default function App() {
                     </div>
                   ))}
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest">500+ Active Partners</span>
+                <span className="text-[10px] font-sans uppercase tracking-tight font-semibold">500+ Active Partners</span>
               </div>
               <p className="text-xs italic font-light">"KLO changed our business model."</p>
             </div>
@@ -857,7 +857,7 @@ export default function App() {
                     }`}
                   >
                     <tab.icon size={18} />
-                    <span className="text-[10px] uppercase tracking-widest">{tab.label}</span>
+                    <span className="text-[11px] font-sans uppercase tracking-tight font-semibold">{tab.label}</span>
                   </button>
                 ))}
               </div>
@@ -868,7 +868,7 @@ export default function App() {
                   className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all"
                 >
                   <Zap size={18} />
-                  <span className="text-[10px] uppercase tracking-widest font-bold">
+                  <span className="text-[11px] font-sans uppercase tracking-tight font-semibold">
                     {lang === 'EN' ? 'Mission Control' : lang === 'ES' ? 'Control de Misión' : 'Controle de Missão'}
                   </span>
                 </button>
@@ -898,17 +898,17 @@ export default function App() {
                     <Zap size={32} />
                   </div>
                   <div>
-                    <h2 className="text-5xl font-serif text-white uppercase tracking-tighter">
+                    <h2 className="text-5xl font-serif italic tracking-wide text-white">
                       {lang === 'EN' ? 'Mission Control Mode' : lang === 'ES' ? 'Modo Control de Misión' : 'Modo Controle de Missão'}
                     </h2>
-                    <p className="text-red-500/60 font-mono text-xs uppercase tracking-[0.5em]">
+                    <p className="text-red-500/60 font-sans text-[11px] uppercase tracking-tight font-semibold">
                       {lang === 'EN' ? 'High-Density Orchestration Active' : lang === 'ES' ? 'Orquestación de Alta Densidad Activa' : 'Orquestração de Alta Densidade Ativa'}
                     </p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsMissionControl(false)}
-                  className="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-white/10 transition-all uppercase tracking-widest text-xs font-bold"
+                  className="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-white/10 transition-all font-sans uppercase tracking-tight text-[11px] font-semibold"
                 >
                   {lang === 'EN' ? 'Exit Control Mode' : lang === 'ES' ? 'Salir del Modo Control' : 'Sair do Modo Controle'}
                 </button>
@@ -1025,13 +1025,23 @@ export default function App() {
                 <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
                   <Home size={20} className="text-luxury-black" />
                 </div>
-                <span className={`font-serif text-xl md:text-2xl tracking-widest uppercase font-light ${isHeroNav ? 'text-white' : 'text-luxury-black'}`}>
+                <span className={`font-serif text-xl md:text-2xl tracking-wide uppercase font-light ${isHeroNav ? 'text-white' : 'text-luxury-black'}`}>
                   <span className="hidden lg:inline">Karibbean Luxury Operators</span>
                   <span className="lg:hidden">KLO</span>
                 </span>
               </div>
               
               <div className="hidden md:flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] font-light">
+                <button 
+                  onClick={() => {
+                    setViewMode('CLIENT');
+                    setShowMarketplace(false);
+                  }} 
+                  style={{ color: (viewMode === 'CLIENT' && !showMarketplace) ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: (viewMode === 'CLIENT' && !showMarketplace) ? 1 : 0.6 }}
+                  className="hover:text-gold transition-colors flex items-center gap-1"
+                >
+                  <Home size={12} /> {lang === 'EN' ? 'Home' : lang === 'ES' ? 'Inicio' : 'Início'}
+                </button>
                 <button 
                   onClick={() => {
                     setViewMode('CLIENT');
@@ -1152,7 +1162,7 @@ export default function App() {
                       <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
                         <span className="text-luxury-black font-bold text-xl">K</span>
                       </div>
-                      <span className="font-serif text-xl tracking-widest uppercase font-light">KLO</span>
+                      <span className="font-serif text-xl tracking-wide uppercase font-light">KLO</span>
                     </div>
                     <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-black/5 rounded-full transition-colors">
                       <X size={24} />
@@ -1281,7 +1291,7 @@ export default function App() {
                   setIsSpeedDialOpen(false);
                 }}
               >
-                <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-bold rounded-full shadow-xl uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-sans font-semibold rounded-full shadow-xl uppercase tracking-tight opacity-0 group-hover:opacity-100 transition-opacity">
                   WhatsApp
                 </span>
                 <div className="w-12 h-12 bg-[#25D366] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
@@ -1301,7 +1311,7 @@ export default function App() {
                   setIsSpeedDialOpen(false);
                 }}
               >
-                <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-bold rounded-full shadow-xl uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-sans font-semibold rounded-full shadow-xl uppercase tracking-tight opacity-0 group-hover:opacity-100 transition-opacity">
                   AI Concierge
                 </span>
                 <div className="w-12 h-12 bg-gold text-luxury-black rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
@@ -1341,7 +1351,7 @@ export default function App() {
               <div className="w-8 h-8 bg-gold rounded-full flex items-center justify-center shrink-0">
                 <span className="text-luxury-black font-bold text-sm">K</span>
               </div>
-              <span className="font-serif text-xl tracking-widest uppercase">Karibbean Luxury Operators</span>
+              <span className="font-serif text-xl tracking-wide uppercase">Karibbean Luxury Operators</span>
             </div>
             <p className="text-luxury-black/40 font-light max-w-sm leading-relaxed">
               {lang === 'EN' 
@@ -1391,7 +1401,7 @@ export default function App() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-xs text-luxury-black/20 uppercase tracking-widest">
+          <span className="text-[10px] font-sans text-luxury-black/20 uppercase tracking-tight">
             © 2026 Karibbean Luxury Operators. {lang === 'EN' ? 'All rights reserved.' : lang === 'ES' ? 'Todos los derechos reservados.' : 'Todos os direitos reservados.'}
           </span>
         </div>

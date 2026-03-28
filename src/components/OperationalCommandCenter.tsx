@@ -183,10 +183,10 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             { label: 'Dubai', tz: 'Asia/Dubai', code: 'GST', offset: '' },
           ].map((city) => (
             <div key={city.code} className="text-center lg:text-left">
-              <span className="text-[8px] text-luxury-cream/40 uppercase tracking-[0.2em] block mb-1">
+              <span className="text-[8px] text-luxury-cream/40 uppercase tracking-wide block mb-1">
                 {city.label} ({city.code}{city.offset ? `, ${city.offset}` : ''})
               </span>
-              <span className="text-xl font-mono text-white tracking-wider">{formatTime(city.tz)}</span>
+              <span className="text-xl font-mono text-white tracking-tight">{formatTime(city.tz)}</span>
             </div>
           ))}
         </div>
@@ -194,7 +194,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
         <div className="flex items-center gap-6 border-l border-white/10 pl-6">
           <div className="flex items-center gap-3">
             <div className={`w-2 h-2 rounded-full animate-pulse ${serverStatus === 'OPERATIONAL' ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' : 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]'}`} />
-            <span className={`text-[10px] uppercase tracking-[0.2em] font-bold ${serverStatus === 'OPERATIONAL' ? 'text-emerald-400' : 'text-red-500'}`}>
+            <span className={`text-[10px] uppercase tracking-wide font-bold ${serverStatus === 'OPERATIONAL' ? 'text-emerald-400' : 'text-red-500'}`}>
               {serverStatus}
             </span>
           </div>
@@ -205,19 +205,19 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <button 
           onClick={() => setShowLeadForm(true)}
-          className="flex items-center justify-center gap-3 p-4 bg-gold text-luxury-black rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-white transition-all"
+          className="flex items-center justify-center gap-3 p-4 bg-gold text-luxury-black rounded-2xl font-medium uppercase text-[10px] tracking-tight hover:bg-white transition-all"
         >
           <Plus size={16} /> New Lead
         </button>
         <button 
           onClick={() => window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`, '_blank')}
-          className="flex items-center justify-center gap-3 p-4 bg-emerald-500 text-white rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-emerald-400 transition-all"
+          className="flex items-center justify-center gap-3 p-4 bg-emerald-500 text-white rounded-2xl font-medium uppercase text-[10px] tracking-tight hover:bg-emerald-400 transition-all"
         >
           <MessageSquare size={16} /> WhatsApp
         </button>
         <button 
           onClick={() => setShowAssetMgmt(true)}
-          className="flex items-center justify-center gap-3 p-4 bg-white/5 text-white rounded-2xl border border-white/10 font-bold uppercase text-[10px] tracking-widest hover:bg-white/10 transition-all"
+          className="flex items-center justify-center gap-3 p-4 bg-white/5 text-white rounded-2xl border border-white/10 font-medium uppercase text-[10px] tracking-tight hover:bg-white/10 transition-all"
         >
           <Plus size={16} /> Add Asset
         </button>
@@ -232,8 +232,8 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             </div>
             <span className="text-[10px] text-emerald-400 font-mono animate-pulse">LIVE</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-widest block mb-1">{t.globalHealth}</span>
-          <span className="text-3xl font-serif">98.4%</span>
+          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.globalHealth}</span>
+          <span className="text-3xl font-serif italic">98.4%</span>
         </div>
 
         <div className="glass-panel p-6 rounded-3xl border-gold/20">
@@ -243,8 +243,8 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             </div>
             <span className="text-[10px] text-gold font-mono">AVG MARGIN</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-widest block mb-1">{t.unitEconomics}</span>
-          <span className="text-3xl font-serif">$12,450</span>
+          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.unitEconomics}</span>
+          <span className="text-3xl font-serif italic">$12,450</span>
         </div>
 
         <div className="glass-panel p-6 rounded-3xl border-blue-500/20">
@@ -254,8 +254,8 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             </div>
             <span className="text-[10px] text-blue-400 font-mono">{t.secured}</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-widest block mb-1">{t.securityStatus}</span>
-          <span className="text-3xl font-serif">ELITE</span>
+          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.securityStatus}</span>
+          <span className="text-3xl font-serif italic">ELITE</span>
         </div>
 
         <div className="glass-panel p-6 rounded-3xl border-purple-500/20">
@@ -265,8 +265,8 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             </div>
             <span className="text-[10px] text-purple-400 font-mono">AGENTIAL</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-widest block mb-1">{t.autoResolutions}</span>
-          <span className="text-3xl font-serif">14</span>
+          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.autoResolutions}</span>
+          <span className="text-3xl font-serif italic">14</span>
         </div>
       </div>
 
@@ -275,9 +275,9 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
         <div className="lg:col-span-2 space-y-8">
           <div className="glass-panel p-8 rounded-[40px]">
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-serif">{t.activeMissions}</h3>
+              <h3 className="text-2xl font-serif italic">{t.activeMissions}</h3>
               <div className="flex gap-2">
-                <span className="px-3 py-1 bg-emerald-400/10 text-emerald-400 text-[10px] uppercase tracking-widest rounded-full border border-emerald-400/20">
+                <span className="px-3 py-1 bg-emerald-400/10 text-emerald-400 text-[10px] uppercase tracking-tight rounded-full border border-emerald-400/20">
                   {bookings.length} {t.executing}
                 </span>
               </div>
@@ -288,12 +288,12 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                 <div key={booking.id} className="p-6 bg-white/5 rounded-3xl border border-white/10 hover:border-gold/30 transition-all group">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h4 className="text-lg font-serif group-hover:text-gold transition-colors">{booking.title}</h4>
+                      <h4 className="text-lg font-sans font-medium group-hover:text-gold transition-colors">{booking.title}</h4>
                       <div className="flex items-center gap-3 mt-1">
-                        <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest flex items-center gap-1">
+                        <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tight flex items-center gap-1">
                           <MapPin size={10} /> {booking.itinerary[0]?.location || 'N/A'}
                         </span>
-                        <span className="text-[10px] text-gold uppercase tracking-widest flex items-center gap-1">
+                        <span className="text-[10px] text-gold uppercase tracking-tight flex items-center gap-1">
                           <Shield size={10} /> {booking.securityBrief.level}
                         </span>
                       </div>
@@ -305,7 +305,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                   </div>
 
                   <div className="grid grid-cols-4 gap-4">
-                    {booking.itinerary.slice(0, 4).map((step, i) => (
+                    {Array.isArray(booking.itinerary) && booking.itinerary.slice(0, 4).map((step, i) => (
                       <div key={i} className="relative">
                         <div className={`h-1 rounded-full mb-2 ${
                           step.status === 'COMPLETED' ? 'bg-emerald-400' : 
@@ -326,8 +326,8 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           {/* Asset Status Monitor */}
           <div className="glass-panel p-8 rounded-[40px]">
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-serif">Asset Status Monitor</h3>
-              <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">{assets.length} Total Assets</span>
+              <h3 className="text-2xl font-serif italic">Asset Status Monitor</h3>
+              <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tight">{Array.isArray(assets) ? assets.length : 0} Total Assets</span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Array.isArray(assets) && assets.slice(0, 8).map((asset) => (
@@ -341,8 +341,8 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                       asset.status === 'BOOKED' ? 'bg-gold' : 'bg-red-400'
                     }`} />
                   </div>
-                  <span className="text-[10px] font-bold block truncate">{asset.name}</span>
-                  <span className="text-[8px] text-luxury-cream/40 uppercase tracking-widest">{asset.status}</span>
+                  <span className="text-[10px] font-medium block truncate">{asset.name}</span>
+                  <span className="text-[8px] text-luxury-cream/40 uppercase tracking-tight">{asset.status}</span>
                 </div>
               ))}
             </div>
@@ -350,17 +350,17 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
 
           {/* Environmental Intel */}
           <div className="glass-panel p-8 rounded-[40px]">
-            <h3 className="text-2xl font-serif mb-8">{t.environmentalIntel}</h3>
+            <h3 className="text-2xl font-serif italic mb-8">{t.environmentalIntel}</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-blue-400/10 text-blue-400 rounded-xl">
                     <Wind size={18} />
                   </div>
-                  <span className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.weather}</span>
+                  <span className="text-[10px] uppercase tracking-tight text-luxury-cream/40">{t.weather}</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl font-serif">28°C</span>
+                  <span className="text-2xl font-serif italic">28°C</span>
                   <span className="text-[10px] text-emerald-400 mb-1">Optimal</span>
                 </div>
                 <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Wind: 12kts NE</p>
@@ -371,10 +371,10 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                   <div className="p-2 bg-cyan-400/10 text-cyan-400 rounded-xl">
                     <Droplets size={18} />
                   </div>
-                  <span className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.tides}</span>
+                  <span className="text-[10px] uppercase tracking-tight text-luxury-cream/40">{t.tides}</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl font-serif">HIGH</span>
+                  <span className="text-2xl font-serif italic">HIGH</span>
                   <span className="text-[10px] text-gold mb-1">+1.2m</span>
                 </div>
                 <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Next Low: 18:45</p>
@@ -385,10 +385,10 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                   <div className="p-2 bg-amber-400/10 text-amber-400 rounded-xl">
                     <Car size={18} />
                   </div>
-                  <span className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.traffic}</span>
+                  <span className="text-[10px] uppercase tracking-tight text-luxury-cream/40">{t.traffic}</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl font-serif">LIGHT</span>
+                  <span className="text-2xl font-serif italic">LIGHT</span>
                   <span className="text-[10px] text-emerald-400 mb-1">Optimal</span>
                 </div>
                 <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Route: CTG {'->'} Villa</p>
@@ -400,7 +400,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
         {/* Incident Feed & Security Monitor */}
         <div className="space-y-8">
           <div className="glass-panel p-8 rounded-[40px] border-red-500/20">
-            <h3 className="text-xl font-serif mb-6 flex items-center gap-3">
+            <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3">
               <AlertCircle size={20} className="text-red-400" /> {t.incidentFeed}
             </h3>
             <div className="space-y-6">
@@ -411,12 +411,12 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                     incident.severity === 'HIGH' ? 'bg-orange-500' : 'bg-amber-500'
                   }`} />
                   <div className="flex justify-between items-start mb-2">
-                    <span className={`text-[8px] px-2 py-0.5 rounded-full border uppercase tracking-widest font-bold ${getSeverityColor(incident.severity)}`}>
+                    <span className={`text-[8px] px-2 py-0.5 rounded-full border uppercase tracking-tight font-bold ${getSeverityColor(incident.severity)}`}>
                       {incident.severity}
                     </span>
                     <span className="text-[8px] text-luxury-cream/30">{incident.timestamp}</span>
                   </div>
-                  <h4 className="text-xs font-bold mb-1">{incident.type}: {incident.description}</h4>
+                  <h4 className="text-xs font-medium mb-1">{incident.type}: {incident.description}</h4>
                   <p className="text-[10px] text-luxury-cream/50 leading-relaxed">
                     {incident.status === 'RESOLVING' ? (
                       <span className="flex items-center gap-1 text-cyan-400">
@@ -430,7 +430,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           </div>
 
           <div className="glass-panel p-8 rounded-[40px] border-gold/20">
-            <h3 className="text-xl font-serif mb-6 flex items-center gap-3">
+            <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3">
               <DollarSign size={20} className="text-gold" /> {t.unitEconomics}
             </h3>
             <div className="space-y-6">
@@ -453,8 +453,8 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               </div>
               <div className="pt-4 border-t border-white/5">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">{t.marginProtection}</span>
-                  <span className="text-xs font-bold text-emerald-400">{t.optimized}</span>
+                  <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tight">{t.marginProtection}</span>
+                  <span className="text-xs font-medium text-emerald-400">{t.optimized}</span>
                 </div>
                 <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
                   <div className="h-full bg-emerald-400 w-[92%]" />
@@ -483,7 +483,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               className="relative w-full max-w-2xl bg-luxury-paper rounded-[40px] overflow-hidden border border-white/10"
             >
               <div className="p-8 border-b border-white/5 flex justify-between items-center">
-                <h3 className="text-2xl font-serif text-white">New Lead Capture</h3>
+                <h3 className="text-2xl font-sans font-medium text-white">New Lead Capture</h3>
                 <button onClick={() => setShowLeadForm(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
                   <Plus size={24} className="rotate-45 text-white" />
                 </button>
@@ -511,7 +511,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               className="relative w-full max-w-5xl bg-luxury-paper rounded-[40px] overflow-hidden border border-white/10"
             >
               <div className="p-8 border-b border-white/5 flex justify-between items-center">
-                <h3 className="text-2xl font-serif text-white">Asset Management</h3>
+                <h3 className="text-2xl font-sans font-medium text-white">Asset Management</h3>
                 <button onClick={() => setShowAssetMgmt(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
                   <Plus size={24} className="rotate-45 text-white" />
                 </button>

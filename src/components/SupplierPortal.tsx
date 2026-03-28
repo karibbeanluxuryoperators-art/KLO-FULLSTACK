@@ -282,8 +282,8 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         >
           <span className="text-luxury-black font-bold text-3xl">K</span>
         </motion.div>
-        <h1 className="text-5xl font-serif text-luxury-black uppercase tracking-tight">Become a KLO Verified Partner</h1>
-        <p className="text-luxury-black/60 font-light text-xl max-w-2xl mx-auto">
+        <h1 className="text-5xl font-serif italic tracking-wide text-luxury-black">Become a KLO Verified Partner</h1>
+        <p className="text-luxury-black/60 font-sans font-light text-xl max-w-2xl mx-auto leading-relaxed">
           List your villa, yacht, aircraft, vehicle fleet, or staff with the Caribbean's premier ultra-luxury platform.
         </p>
       </div>
@@ -306,7 +306,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
             <div className={`w-20 h-20 ${item.color} rounded-3xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform`}>
               <item.icon size={40} />
             </div>
-            <h3 className="text-xl font-serif uppercase tracking-wider">{item.label}</h3>
+            <h3 className="text-xl font-sans font-medium">{item.label}</h3>
             <div className="w-10 h-1 bg-gold/20 mx-auto group-hover:w-20 transition-all" />
           </motion.button>
         ))}
@@ -317,8 +317,8 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
   const renderStep2 = () => (
     <div className="max-w-4xl mx-auto space-y-12">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-serif uppercase">Business Profile</h2>
-        <div className="px-4 py-1 bg-gold/10 text-gold rounded-full text-[10px] font-bold uppercase tracking-widest">
+        <h2 className="text-3xl font-serif italic tracking-wide">Business Profile</h2>
+        <div className="px-4 py-1 bg-gold/10 text-gold rounded-full text-[11px] font-sans font-semibold uppercase tracking-tight">
           {type} Partner
         </div>
       </div>
@@ -327,45 +327,45 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         {/* Common Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Business / Asset Name</label>
+            <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Business / Asset Name</label>
             <input name="business_name" value={formData.business_name} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="e.g. Villa Serenity" />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Contact Name</label>
+            <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Contact Name</label>
             <input name="contact_name" value={formData.contact_name} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="Full Name" />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Email Address</label>
+            <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Email Address</label>
             <input name="email" type="email" value={formData.email} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="email@example.com" />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">WhatsApp Number</label>
+            <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">WhatsApp Number</label>
             <input name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="+57 300..." />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Location</label>
+            <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Location</label>
             <select name="location" value={formData.location} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light appearance-none">
               {LOCATIONS.map(l => <option key={l} value={l}>{l}</option>)}
             </select>
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Years of Experience</label>
+            <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Years of Experience</label>
             <input name="experience" type="number" value={formData.experience} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="5" />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Description (Max 500 chars)</label>
+          <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Description (Max 500 chars)</label>
           <textarea name="description" maxLength={500} value={formData.description} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light h-32 resize-none" placeholder="Describe your luxury offering..." />
         </div>
 
         <div className="space-y-2">
-          <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Primary Photo URL</label>
+          <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Primary Photo URL</label>
           <div className="relative">
             <input name="photo_url" value={formData.photo_url} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 pl-14 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="https://..." />
             <Camera className="absolute left-6 top-1/2 -translate-y-1/2 text-luxury-black/20" size={20} />
           </div>
-          <p className="text-[10px] text-luxury-black/30 italic">Full photo upload coming soon</p>
+          <p className="text-[11px] text-luxury-black/30 italic font-sans">Full photo upload coming soon</p>
         </div>
 
         <div className="h-[1px] bg-black/5 w-full" />
@@ -375,23 +375,23 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <div className="space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Bedrooms</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Bedrooms</label>
                 <input name="bedrooms" type="number" value={formData.bedrooms} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Max Guests</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Max Guests</label>
                 <input name="max_guests" type="number" value={formData.max_guests} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Price per Night (USD)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price per Night (USD)</label>
                 <input name="price_per_night" type="number" value={formData.price_per_night} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
             </div>
             <div className="space-y-4">
-              <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Amenities</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Amenities</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {VILLA_AMENITIES.map(a => (
-                  <button key={a} onClick={() => handleCheckboxChange('amenities', a)} className={`p-4 rounded-2xl border text-xs transition-all ${formData.amenities.includes(a) ? 'bg-gold border-gold text-luxury-black font-bold' : 'border-black/5 hover:border-gold/30'}`}>
+                  <button key={a} onClick={() => handleCheckboxChange('amenities', a)} className={`p-4 rounded-2xl border text-[11px] font-sans uppercase tracking-tight transition-all ${formData.amenities.includes(a) ? 'bg-gold border-gold text-luxury-black font-semibold' : 'border-black/5 hover:border-gold/30'}`}>
                     {a}
                   </button>
                 ))}
@@ -404,28 +404,28 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <div className="space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Vessel Length (ft)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Vessel Length (ft)</label>
                 <input name="vessel_length" type="number" value={formData.vessel_length} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Max Guests</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Max Guests</label>
                 <input name="max_guests" type="number" value={formData.max_guests} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Price per Day (USD)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price per Day (USD)</label>
                 <input name="price_per_day" type="number" value={formData.price_per_day} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Home Port</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Home Port</label>
                 <input name="home_port" value={formData.home_port} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Crew Included?</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Crew Included?</label>
                 <div className="flex gap-4">
                   {['yes', 'no'].map(o => (
-                    <button key={o} onClick={() => setFormData((prev: any) => ({ ...prev, crew_included: o }))} className={`flex-1 py-4 rounded-2xl border text-xs uppercase tracking-widest transition-all ${formData.crew_included === o ? 'bg-gold border-gold text-luxury-black font-bold' : 'border-black/5'}`}>
+                    <button key={o} onClick={() => setFormData((prev: any) => ({ ...prev, crew_included: o }))} className={`flex-1 py-4 rounded-2xl border text-[11px] font-sans uppercase tracking-tight transition-all ${formData.crew_included === o ? 'bg-gold border-gold text-luxury-black font-semibold' : 'border-black/5'}`}>
                       {o}
                     </button>
                   ))}
@@ -433,10 +433,10 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
               </div>
             </div>
             <div className="space-y-4">
-              <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Features</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Features</label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {YACHT_FEATURES.map(f => (
-                  <button key={f} onClick={() => handleCheckboxChange('features', f)} className={`p-4 rounded-2xl border text-xs transition-all ${formData.features.includes(f) ? 'bg-gold border-gold text-luxury-black font-bold' : 'border-black/5 hover:border-gold/30'}`}>
+                  <button key={f} onClick={() => handleCheckboxChange('features', f)} className={`p-4 rounded-2xl border text-[11px] font-sans uppercase tracking-tight transition-all ${formData.features.includes(f) ? 'bg-gold border-gold text-luxury-black font-semibold' : 'border-black/5 hover:border-gold/30'}`}>
                     {f}
                   </button>
                 ))}
@@ -449,31 +449,31 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <div className="space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Aircraft Type</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Aircraft Type</label>
                 <select name="aircraft_type" value={formData.aircraft_type} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light appearance-none">
                   {AIRCRAFT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Tail Number</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Tail Number</label>
                 <input name="tail_number" value={formData.tail_number} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Max Passengers</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Max Passengers</label>
                 <input name="max_passengers" type="number" value={formData.max_passengers} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Price per Hour (USD)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price per Hour (USD)</label>
                 <input name="price_per_hour" type="number" value={formData.price_per_hour} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Home Base (IATA)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Home Base (IATA)</label>
                 <input name="home_base" value={formData.home_base} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="CTG" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Range (nm)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Range (nm)</label>
                 <input name="range" type="number" value={formData.range} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
             </div>
@@ -484,28 +484,28 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <div className="space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Role</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Role</label>
                 <select name="role" value={formData.role} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light appearance-none">
                   {STAFF_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Daily Rate (USD)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Daily Rate (USD)</label>
                 <input name="daily_rate" type="number" value={formData.daily_rate} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
             </div>
             <div className="space-y-4">
-              <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Languages Spoken</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Languages Spoken</label>
               <div className="flex flex-wrap gap-4">
                 {LANGUAGES.map(l => (
-                  <button key={l} onClick={() => handleCheckboxChange('languages', l)} className={`w-16 h-16 rounded-2xl border text-xs font-bold transition-all ${formData.languages.includes(l) ? 'bg-gold border-gold text-luxury-black' : 'border-black/5 hover:border-gold/30'}`}>
+                  <button key={l} onClick={() => handleCheckboxChange('languages', l)} className={`w-16 h-16 rounded-2xl border text-[11px] font-sans font-semibold transition-all ${formData.languages.includes(l) ? 'bg-gold border-gold text-luxury-black' : 'border-black/5 hover:border-gold/30'}`}>
                     {l}
                   </button>
                 ))}
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Certifications</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Certifications</label>
               <input name="certifications" value={formData.certifications} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="e.g. Michelin Star, PADI Instructor..." />
             </div>
           </div>
@@ -515,31 +515,31 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <div className="space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Vehicle Type</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Vehicle Type</label>
                 <select name="vehicle_type" value={formData.vehicle_type} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light appearance-none">
                   {VEHICLE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Number of Passengers</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Number of Passengers</label>
                 <input name="max_passengers_ground" type="number" value={formData.max_passengers_ground} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Price per Day (USD)</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price per Day (USD)</label>
                 <input name="price_per_day_ground" type="number" value={formData.price_per_day_ground} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">License Plate</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">License Plate</label>
                 <input name="license_plate" value={formData.license_plate} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="e.g. ABC-1234" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Driver Included?</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Driver Included?</label>
                 <div className="flex gap-4">
                   {['yes', 'no'].map(o => (
-                    <button key={o} onClick={() => setFormData((prev: any) => ({ ...prev, driver_included: o }))} className={`flex-1 py-4 rounded-2xl border text-xs uppercase tracking-widest transition-all ${formData.driver_included === o ? 'bg-gold border-gold text-luxury-black font-bold' : 'border-black/5'}`}>
+                    <button key={o} onClick={() => setFormData((prev: any) => ({ ...prev, driver_included: o }))} className={`flex-1 py-4 rounded-2xl border text-[11px] font-sans uppercase tracking-tight transition-all ${formData.driver_included === o ? 'bg-gold border-gold text-luxury-black font-semibold' : 'border-black/5'}`}>
                       {o}
                     </button>
                   ))}
@@ -551,9 +551,9 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Is this vehicle armored?</label>
+                    <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Is this vehicle armored?</label>
                     {formData.is_armored && (
-                      <span className="px-2 py-0.5 bg-gold/10 text-gold rounded text-[8px] font-bold uppercase tracking-widest border border-gold/20">
+                      <span className="px-2 py-0.5 bg-gold/10 text-gold rounded text-[10px] font-sans font-semibold uppercase tracking-tight border border-gold/20">
                         Vianco Protocol Eligible
                       </span>
                     )}
@@ -571,10 +571,10 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
 
             {formData.driver_included === 'yes' && (
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Driver Languages Spoken</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Driver Languages Spoken</label>
                 <div className="flex flex-wrap gap-4">
                   {DRIVER_LANGUAGES.map(l => (
-                    <button key={l} onClick={() => handleCheckboxChange('driver_languages', l)} className={`w-16 h-16 rounded-2xl border text-xs font-bold transition-all ${formData.driver_languages.includes(l) ? 'bg-gold border-gold text-luxury-black' : 'border-black/5 hover:border-gold/30'}`}>
+                    <button key={l} onClick={() => handleCheckboxChange('driver_languages', l)} className={`w-16 h-16 rounded-2xl border text-[11px] font-sans font-semibold transition-all ${formData.driver_languages.includes(l) ? 'bg-gold border-gold text-luxury-black' : 'border-black/5 hover:border-gold/30'}`}>
                       {l}
                     </button>
                   ))}
@@ -585,14 +585,14 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         )}
       </div>
 
-      <div className="flex justify-between pt-8">
-        <button onClick={prevStep} className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-luxury-black/40 hover:text-luxury-black transition-colors">
-          <ChevronLeft size={16} /> Back
-        </button>
-        <button onClick={nextStep} className="px-12 py-4 bg-gold text-luxury-black rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center gap-3 hover:bg-white transition-all">
-          Continue <ChevronRight size={16} />
-        </button>
-      </div>
+        <div className="flex justify-between pt-8">
+          <button onClick={prevStep} className="flex items-center gap-2 text-[11px] font-sans uppercase tracking-tight font-semibold text-luxury-black/40 hover:text-luxury-black transition-colors">
+            <ChevronLeft size={16} /> Back
+          </button>
+          <button onClick={nextStep} className="px-12 py-4 bg-gold text-luxury-black rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center gap-3 hover:bg-white transition-all">
+            Continue <ChevronRight size={16} />
+          </button>
+        </div>
     </div>
   );
 
@@ -612,9 +612,9 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
       
       return (
         <div className="space-y-4">
-          <h4 className="text-sm font-serif uppercase tracking-wider text-center">{monthName} {year}</h4>
+          <h4 className="text-sm font-sans font-medium uppercase tracking-tight text-center">{monthName} {year}</h4>
           <div className="grid grid-cols-7 gap-2">
-            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => <div key={d} className="text-[8px] text-center text-luxury-black/20 font-bold">{d}</div>)}
+            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => <div key={d} className="text-[10px] text-center text-luxury-black/20 font-medium">{d}</div>)}
             {Array.from({ length: firstDay }).map((_, i) => <div key={`empty-${i}`} />)}
             {Array.from({ length: days }).map((_, i) => {
               const day = i + 1;
@@ -694,12 +694,12 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
             </div>
             <button 
               disabled
-              className="w-full py-4 border border-black/5 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-3 text-luxury-black/20 cursor-not-allowed"
+              className="w-full py-4 border border-black/5 rounded-2xl text-[11px] font-sans font-semibold uppercase tracking-tight transition-all flex items-center justify-center gap-3 text-luxury-black/20 cursor-not-allowed"
             >
               <ExternalLink size={16} />
               Connect Google
             </button>
-            <p className="text-[10px] text-gold font-bold uppercase tracking-widest">
+            <p className="text-[11px] text-gold font-sans font-semibold uppercase tracking-tight">
               You can connect Google Calendar after your application is approved
             </p>
           </div>
@@ -724,7 +724,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-8">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <h3 className="text-xl font-serif uppercase">Seasonal Pricing</h3>
+              <h3 className="text-xl font-sans font-medium uppercase">Seasonal Pricing</h3>
               <p className="text-xs text-luxury-black/40 font-light">Do you have different pricing by season?</p>
             </div>
             <button 
@@ -739,14 +739,14 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
             {formData.seasonal_pricing && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">High Season (Dec-Apr)</label>
+                  <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">High Season (Dec-Apr)</label>
                   <div className="relative">
                     <input name="high_season_price" type="number" value={formData.high_season_price} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 pl-12 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="0" />
                     <DollarSign className="absolute left-6 top-1/2 -translate-y-1/2 text-luxury-black/20" size={16} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">Low Season (May-Nov)</label>
+                  <label className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Low Season (May-Nov)</label>
                   <div className="relative">
                     <input name="low_season_price" type="number" value={formData.low_season_price} onChange={handleInputChange} className="w-full bg-black/5 border border-black/5 rounded-2xl py-4 px-6 pl-12 focus:outline-none focus:border-gold/50 transition-all font-light" placeholder="0" />
                     <DollarSign className="absolute left-6 top-1/2 -translate-y-1/2 text-luxury-black/20" size={16} />
@@ -758,10 +758,10 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         </div>
 
         <div className="flex justify-between pt-8">
-          <button onClick={prevStep} className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-luxury-black/40 hover:text-luxury-black transition-colors">
+          <button onClick={prevStep} className="flex items-center gap-2 text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 hover:text-luxury-black transition-colors">
             <ChevronLeft size={16} /> Back
           </button>
-          <button onClick={nextStep} className="px-12 py-4 bg-gold text-luxury-black rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center gap-3 hover:bg-white transition-all">
+          <button onClick={nextStep} className="px-12 py-4 bg-gold text-luxury-black rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center gap-3 hover:bg-white transition-all">
             Continue <ChevronRight size={16} />
           </button>
         </div>
@@ -789,7 +789,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
               { label: 'Type', value: type },
             ].map(i => (
               <div key={i.label} className="flex justify-between items-center">
-                <span className="text-[10px] uppercase tracking-widest text-luxury-black/40">{i.label}</span>
+                <span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">{i.label}</span>
                 <span className="text-sm font-medium">{i.value}</span>
               </div>
             ))}
@@ -797,51 +797,51 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         </div>
 
         <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-8">
-          <h3 className="text-xl font-serif uppercase border-b border-black/5 pb-4">Asset Details</h3>
+          <h3 className="text-xl font-sans font-medium border-b border-black/5 pb-4">Asset Details</h3>
           <div className="space-y-4">
             {type === 'VILLA' && (
               <>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Bedrooms</span><span className="text-sm font-medium">{formData.bedrooms}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Guests</span><span className="text-sm font-medium">{formData.max_guests}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Price</span><span className="text-sm font-medium">${formData.price_per_night}/night</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Bedrooms</span><span className="text-sm font-medium">{formData.bedrooms}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Guests</span><span className="text-sm font-medium">{formData.max_guests}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price</span><span className="text-sm font-medium">${formData.price_per_night}/night</span></div>
               </>
             )}
             {type === 'YACHT' && (
               <>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Length</span><span className="text-sm font-medium">{formData.vessel_length}ft</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Guests</span><span className="text-sm font-medium">{formData.max_guests}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Price</span><span className="text-sm font-medium">${formData.price_per_day}/day</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Length</span><span className="text-sm font-medium">{formData.vessel_length}ft</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Guests</span><span className="text-sm font-medium">{formData.max_guests}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price</span><span className="text-sm font-medium">${formData.price_per_day}/day</span></div>
               </>
             )}
             {type === 'AVIATION' && (
               <>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Type</span><span className="text-sm font-medium">{formData.aircraft_type}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Tail #</span><span className="text-sm font-medium">{formData.tail_number}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Price</span><span className="text-sm font-medium">${formData.price_per_hour}/hour</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Type</span><span className="text-sm font-medium">{formData.aircraft_type}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Tail #</span><span className="text-sm font-medium">{formData.tail_number}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price</span><span className="text-sm font-medium">${formData.price_per_hour}/hour</span></div>
               </>
             )}
             {type === 'STAFF' && (
               <>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Role</span><span className="text-sm font-medium">{formData.role}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Rate</span><span className="text-sm font-medium">${formData.daily_rate}/day</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Role</span><span className="text-sm font-medium">{formData.role}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Rate</span><span className="text-sm font-medium">${formData.daily_rate}/day</span></div>
               </>
             )}
             {type === 'GROUND' && (
               <>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Vehicle</span><span className="text-sm font-medium">{formData.vehicle_type}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Passengers</span><span className="text-sm font-medium">{formData.max_passengers_ground}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Plate</span><span className="text-sm font-medium">{formData.license_plate}</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Price</span><span className="text-sm font-medium">${formData.price_per_day_ground}/day</span></div>
-                <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Driver</span><span className="text-sm font-medium uppercase">{formData.driver_included}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Vehicle</span><span className="text-sm font-medium">{formData.vehicle_type}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Passengers</span><span className="text-sm font-medium">{formData.max_passengers_ground}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Plate</span><span className="text-sm font-medium">{formData.license_plate}</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Price</span><span className="text-sm font-medium">${formData.price_per_day_ground}/day</span></div>
+                <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Driver</span><span className="text-sm font-medium font-sans">{formData.driver_included}</span></div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Armored</span>
+                  <span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Armored</span>
                   <span className="text-sm font-medium flex items-center gap-2">
                     {formData.is_armored ? 'YES' : 'NO'}
-                    {formData.is_armored && <span className="text-[8px] text-gold font-bold uppercase tracking-widest">Vianco Protocol Eligible</span>}
+                    {formData.is_armored && <span className="text-[9px] text-gold font-sans font-semibold uppercase tracking-tight">Vianco Protocol Eligible</span>}
                   </span>
                 </div>
                 {formData.driver_included === 'yes' && (
-                  <div className="flex justify-between items-center"><span className="text-[10px] uppercase tracking-widest text-luxury-black/40">Languages</span><span className="text-sm font-medium">{formData.driver_languages.join(', ')}</span></div>
+                  <div className="flex justify-between items-center"><span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Languages</span><span className="text-sm font-medium">{formData.driver_languages.join(', ')}</span></div>
                 )}
               </>
             )}
@@ -854,7 +854,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <div className="w-12 h-12 bg-gold/10 text-gold rounded-2xl flex items-center justify-center">
             <Shield size={24} />
           </div>
-          <h3 className="text-xl font-serif uppercase">KLO Partnership Terms</h3>
+          <h3 className="text-xl font-sans font-medium">KLO Partnership Terms</h3>
         </div>
         <p className="text-sm text-luxury-black/60 font-light leading-relaxed">
           KLO charges a 20% commission on all bookings. You receive 80% of the booking value. Payment is processed within 48 hours of check-in.
@@ -866,7 +866,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           >
             {agreedToTerms && <Check size={16} className="text-luxury-black" />}
           </div>
-          <span className="text-xs uppercase tracking-widest font-bold">I agree to KLO Partnership Terms</span>
+          <span className="text-[11px] font-sans uppercase tracking-tight font-semibold">I agree to KLO Partnership Terms</span>
         </label>
       </div>
 
@@ -877,13 +877,13 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
       )}
 
       <div className="flex justify-between pt-8">
-        <button onClick={prevStep} className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-luxury-black/40 hover:text-luxury-black transition-colors">
+        <button onClick={prevStep} className="flex items-center gap-2 text-[11px] font-sans uppercase tracking-tight font-semibold text-luxury-black/40 hover:text-luxury-black transition-colors">
           <ChevronLeft size={16} /> Back
         </button>
         <button 
           onClick={handleSubmit}
           disabled={!agreedToTerms || isSubmitting}
-          className="px-16 py-6 bg-gold text-luxury-black rounded-3xl font-bold uppercase tracking-[0.2em] text-xs flex items-center gap-3 hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-gold/20"
+          className="px-16 py-6 bg-gold text-luxury-black rounded-3xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center gap-3 hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-gold/20"
         >
           {isSubmitting ? <Loader2 className="animate-spin" /> : <Star size={18} />}
           Submit for Verification
@@ -899,9 +899,9 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
       </motion.div>
       
       <div className="space-y-4">
-        <h1 className="text-5xl font-serif uppercase tracking-tight">Application Received</h1>
-        <p className="text-luxury-black/60 font-light text-xl leading-relaxed">
-          Our team will verify your assets within 48 hours. You will receive a WhatsApp confirmation at <span className="text-gold font-bold">{formData.whatsapp}</span>.
+        <h1 className="text-5xl font-serif italic tracking-wide">Application Received</h1>
+        <p className="text-luxury-black/60 font-sans font-light text-xl leading-relaxed">
+          Our team will verify your assets within 48 hours. You will receive a WhatsApp confirmation at <span className="text-gold font-semibold">{formData.whatsapp}</span>.
         </p>
       </div>
 
@@ -910,13 +910,13 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="w-full py-6 bg-emerald-500 text-white rounded-3xl font-bold uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-500/20"
+          className="w-full py-6 bg-emerald-500 text-white rounded-3xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center justify-center gap-3 hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-500/20"
         >
           <MessageSquare size={18} /> Contact via WhatsApp
         </a>
         <button 
           onClick={() => window.location.href = '/'}
-          className="w-full py-6 glass-panel border-white/10 text-luxury-black rounded-3xl font-bold uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 hover:bg-white transition-all"
+          className="w-full py-6 glass-panel border-white/10 text-luxury-black rounded-3xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center justify-center gap-3 hover:bg-white transition-all"
         >
           Explore KLO Marketplace <ArrowRight size={18} />
         </button>
@@ -930,7 +930,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
       <div className="absolute top-8 left-8 z-[70]">
         <button 
           onClick={() => onBack ? onBack() : window.location.href = '/'}
-          className="flex items-center gap-2 px-6 py-3 bg-white/50 backdrop-blur-md border border-black/5 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white transition-all shadow-sm"
+          className="flex items-center gap-2 px-6 py-3 bg-white/50 backdrop-blur-md border border-black/5 rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold hover:bg-white transition-all shadow-sm"
         >
           <Home size={14} /> Back to Home
         </button>

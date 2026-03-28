@@ -150,30 +150,30 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-end gap-6">
         <div>
-          <h2 className="text-4xl font-serif text-white mb-2 uppercase tracking-tight">{t.title}</h2>
-          <p className="text-xs text-white/40 uppercase tracking-widest font-light">{t.subtitle}</p>
+          <h2 className="text-4xl font-serif italic tracking-wide text-white mb-2">{t.title}</h2>
+          <p className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">{t.subtitle}</p>
         </div>
         
         <div className="flex flex-wrap gap-3">
           <div className="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
-            <span className="text-[10px] text-white/40 uppercase tracking-widest">Total</span>
-            <span className="text-lg font-serif text-white">{stats.total}</span>
+            <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">Total</span>
+            <span className="text-lg font-serif italic text-white">{stats.total}</span>
           </div>
           <div className="px-4 py-2 bg-blue-500/10 rounded-xl border border-blue-500/20 flex items-center gap-3">
-            <span className="text-[10px] text-blue-500 uppercase tracking-widest">{t.new}</span>
-            <span className="text-lg font-serif text-blue-500">{stats.new}</span>
+            <span className="text-[11px] font-sans font-semibold text-blue-500 uppercase tracking-tight">{t.new}</span>
+            <span className="text-lg font-serif italic text-blue-500">{stats.new}</span>
           </div>
           <div className="px-4 py-2 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
-            <span className="text-[10px] text-amber-500 uppercase tracking-widest">{t.contacted}</span>
-            <span className="text-lg font-serif text-amber-500">{stats.contacted}</span>
+            <span className="text-[11px] font-sans font-semibold text-amber-500 uppercase tracking-tight">{t.contacted}</span>
+            <span className="text-lg font-serif italic text-amber-500">{stats.contacted}</span>
           </div>
           <div className="px-4 py-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20 flex items-center gap-3">
-            <span className="text-[10px] text-emerald-500 uppercase tracking-widest">{t.qualified}</span>
-            <span className="text-lg font-serif text-emerald-500">{stats.qualified}</span>
+            <span className="text-[11px] font-sans font-semibold text-emerald-500 uppercase tracking-tight">{t.qualified}</span>
+            <span className="text-lg font-serif italic text-emerald-500">{stats.qualified}</span>
           </div>
           <div className="px-4 py-2 bg-purple-500/10 rounded-xl border border-purple-500/20 flex items-center gap-3">
-            <span className="text-[10px] text-purple-500 uppercase tracking-widest">{t.closed}</span>
-            <span className="text-lg font-serif text-purple-500">{stats.closed}</span>
+            <span className="text-[11px] font-sans font-semibold text-purple-500 uppercase tracking-tight">{t.closed}</span>
+            <span className="text-lg font-serif italic text-purple-500">{stats.closed}</span>
           </div>
         </div>
       </div>
@@ -195,8 +195,8 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
             <button 
               key={s}
               onClick={() => setFilter(s as any)}
-              className={`px-4 py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all border ${
-                filter === s ? 'bg-gold text-luxury-black font-bold border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+              className={`px-4 py-3 rounded-xl text-[11px] font-sans uppercase tracking-tight transition-all border ${
+                filter === s ? 'bg-gold text-luxury-black font-semibold border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
               }`}
             >
               {s === 'ALL' ? t.all : t[s.toLowerCase() as keyof typeof t]}
@@ -240,12 +240,12 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                     </div>
                     <div>
                       <div className="flex items-center gap-3 mb-1">
-                        <h3 className="text-xl font-serif text-white">{lead.name}</h3>
-                        <span className={`px-3 py-1 rounded-full text-[8px] uppercase tracking-widest border font-bold ${getStatusColor(lead.status)}`}>
+                        <h3 className="text-xl font-serif italic text-white">{lead.name}</h3>
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-sans font-semibold uppercase tracking-tight border ${getStatusColor(lead.status)}`}>
                           {lead.status}
                         </span>
                       </div>
-                      <div className="flex flex-wrap gap-4 text-[10px] text-white/40 uppercase tracking-widest font-light">
+                      <div className="flex flex-wrap gap-4 text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">
                         <span className="flex items-center gap-1"><Mail size={12} /> {lead.email}</span>
                         <span className="flex items-center gap-1"><Phone size={12} /> {lead.phone}</span>
                         <span className="flex items-center gap-1"><Clock size={12} /> {(() => {

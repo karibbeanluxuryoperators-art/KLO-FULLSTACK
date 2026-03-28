@@ -156,8 +156,8 @@ Notes: ${formData.special_requests}`;
                 >
                   <X size={20} />
                 </button>
-                <h3 className="text-2xl font-serif mb-2">{t.title}</h3>
-                <p className="text-xs text-white/80 font-light">{t.subtitle}</p>
+                <h3 className="text-2xl font-serif italic mb-2">{t.title}</h3>
+                <p className="text-[11px] font-sans font-semibold text-white/80 uppercase tracking-tight">{t.subtitle}</p>
               </div>
 
               <div className="p-8 max-h-[70vh] overflow-y-auto custom-scrollbar">
@@ -166,13 +166,13 @@ Notes: ${formData.special_requests}`;
                     <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto">
                       <CheckCircle2 size={32} />
                     </div>
-                    <h4 className="text-xl font-serif">{t.success}</h4>
-                    <p className="text-xs text-luxury-black/40 font-light">{t.successSub}</p>
+                    <h4 className="text-xl font-serif italic">{t.success}</h4>
+                    <p className="text-[11px] font-sans font-semibold text-luxury-black/40 uppercase tracking-tight">{t.successSub}</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.name}</label>
+                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.name}</label>
                       <input 
                         type="text"
                         value={formData.name}
@@ -180,15 +180,15 @@ Notes: ${formData.special_requests}`;
                           setFormData({...formData, name: e.target.value});
                           if (errors.name) setErrors({...errors, name: ''});
                         }}
-                        className={`w-full bg-black/5 border ${errors.name ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light`}
+                        className={`w-full bg-black/5 border ${errors.name ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light`}
                         placeholder="John Doe"
                       />
-                      {errors.name && <p className="text-[8px] text-red-500 uppercase tracking-widest">{errors.name}</p>}
+                      {errors.name && <p className="text-[10px] font-sans font-semibold text-red-500 uppercase tracking-tight">{errors.name}</p>}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.whatsapp}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.whatsapp}</label>
                         <input 
                           type="tel"
                           value={formData.whatsapp}
@@ -196,18 +196,18 @@ Notes: ${formData.special_requests}`;
                             setFormData({...formData, whatsapp: e.target.value});
                             if (errors.whatsapp) setErrors({...errors, whatsapp: ''});
                           }}
-                          className={`w-full bg-black/5 border ${errors.whatsapp ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light`}
+                          className={`w-full bg-black/5 border ${errors.whatsapp ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light`}
                           placeholder="+1..."
                         />
-                        {errors.whatsapp && <p className="text-[8px] text-red-500 uppercase tracking-widest">{errors.whatsapp}</p>}
+                        {errors.whatsapp && <p className="text-[10px] font-sans font-semibold text-red-500 uppercase tracking-tight">{errors.whatsapp}</p>}
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.email}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.email}</label>
                         <input 
                           type="email"
                           value={formData.email}
                           onChange={(e) => setFormData({...formData, email: e.target.value})}
-                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light"
+                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light"
                           placeholder="john@klo.com"
                         />
                       </div>
@@ -215,11 +215,11 @@ Notes: ${formData.special_requests}`;
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.experience}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.experience}</label>
                         <select 
                           value={formData.experience_type}
                           onChange={(e) => setFormData({...formData, experience_type: e.target.value})}
-                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light appearance-none"
+                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light appearance-none"
                         >
                           <option value="VILLA">Villa</option>
                           <option value="YACHT">Yacht</option>
@@ -229,41 +229,41 @@ Notes: ${formData.special_requests}`;
                         </select>
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.budget}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.budget}</label>
                         <input 
                           type="text"
                           value={formData.budget}
                           onChange={(e) => setFormData({...formData, budget: e.target.value})}
-                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light"
+                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light"
                           placeholder="$10k+"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.dates}</label>
+                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.dates}</label>
                       <input 
                         type="text"
                         value={formData.travel_dates}
                         onChange={(e) => setFormData({...formData, travel_dates: e.target.value})}
-                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light"
+                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light"
                         placeholder="Dec 20 - Jan 5"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-luxury-black/40">{t.requests}</label>
+                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.requests}</label>
                       <textarea 
                         value={formData.special_requests}
                         onChange={(e) => setFormData({...formData, special_requests: e.target.value})}
-                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-light h-20 resize-none"
+                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light h-20 resize-none"
                         placeholder="I'm interested in..."
                       />
                     </div>
                     <button 
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-4 bg-emerald-500 text-white rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-emerald-600 transition-all flex items-center justify-center gap-2"
+                      className="w-full py-4 bg-emerald-500 text-white rounded-xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-emerald-600 transition-all flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <><Send size={14} /> {t.submit}</>}
                     </button>

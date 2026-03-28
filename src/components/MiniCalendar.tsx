@@ -60,13 +60,13 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
   return (
     <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
       <div className="flex justify-between items-center mb-4">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gold">
+        <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-gold">
           {monthNames[currentMonth]} {currentYear}
         </span>
       </div>
       <div className="grid grid-cols-7 gap-1">
         {daysOfWeek.map((day, i) => (
-          <div key={i} className="text-[8px] text-luxury-cream/30 text-center font-bold">
+          <div key={i} className="text-[10px] font-sans font-semibold text-luxury-cream/30 text-center uppercase tracking-tight">
             {day}
           </div>
         ))}
@@ -74,10 +74,10 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
           <div 
             key={i} 
             className={`
-              h-6 flex items-center justify-center text-[10px] rounded-lg transition-all
+              h-6 flex items-center justify-center text-[10px] font-sans rounded-lg transition-all
               ${day === null ? '' : 'hover:bg-white/5 cursor-default'}
               ${day !== null && isBooked(day) ? 'bg-red-500/20 text-red-400 border border-red-500/30' : ''}
-              ${day !== null && isToday(day) ? 'bg-gold text-luxury-black font-bold' : 'text-luxury-cream/60'}
+              ${day !== null && isToday(day) ? 'bg-gold text-luxury-black font-semibold' : 'text-luxury-cream/60'}
               ${day !== null && !isBooked(day) && !isToday(day) ? 'bg-emerald-500/10 text-emerald-400/60' : ''}
             `}
           >
@@ -88,11 +88,11 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
       <div className="mt-4 flex gap-4 justify-center">
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-emerald-500/30" />
-          <span className="text-[8px] text-luxury-cream/40 uppercase tracking-tighter">{t.available}</span>
+          <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{t.available}</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-red-500/30" />
-          <span className="text-[8px] text-luxury-cream/40 uppercase tracking-tighter">{t.booked}</span>
+          <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{t.booked}</span>
         </div>
       </div>
     </div>

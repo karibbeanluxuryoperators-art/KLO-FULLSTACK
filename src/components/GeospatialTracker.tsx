@@ -117,17 +117,17 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
     <div className="glass-panel p-8 rounded-[40px] border-gold/20 overflow-hidden relative">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h3 className="text-2xl font-serif">{t.title}</h3>
-          <p className="text-luxury-cream/40 text-[10px] uppercase tracking-widest">{t.subtitle}</p>
+          <h3 className="text-2xl font-serif italic tracking-wide">{t.title}</h3>
+          <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
         </div>
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span className="text-[10px] text-luxury-cream/60 uppercase tracking-widest">{t.activeAssets}</span>
+            <span className="text-[11px] font-sans font-semibold text-luxury-cream/60 uppercase tracking-tight">{t.activeAssets}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-blue-400" />
-            <span className="text-[10px] text-luxury-cream/60 uppercase tracking-widest">{t.secureZones}</span>
+            <span className="text-[11px] font-sans font-semibold text-luxury-cream/60 uppercase tracking-tight">{t.secureZones}</span>
           </div>
         </div>
       </div>
@@ -147,8 +147,8 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
                 {asset.type === 'AIRCRAFT' ? <Plane size={14} /> : asset.type === 'VESSEL' ? <Ship size={14} /> : <Car size={14} />}
               </div>
               <div>
-                <span className="text-[10px] font-bold block">{asset.name}</span>
-                <span className="text-[8px] text-luxury-cream/40 uppercase tracking-widest">{asset.location} • {t.inTransit}</span>
+                <span className="text-[11px] font-sans font-semibold block">{asset.name}</span>
+                <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{asset.location} • {t.inTransit}</span>
               </div>
             </div>
           ))}

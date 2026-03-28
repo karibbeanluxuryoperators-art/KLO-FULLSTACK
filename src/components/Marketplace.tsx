@@ -350,13 +350,13 @@ Please let me know the availability and next steps.`;
         {bookingStep === 1 && (
           <div className="space-y-8">
             <div>
-              <h3 className="text-3xl font-serif text-white mb-2">{t.guestInfo}</h3>
-              <p className="text-xs text-white/40 uppercase tracking-widest">Step 1 of 2: Personal Details</p>
+              <h3 className="text-3xl font-sans font-medium text-white mb-2">{t.guestInfo}</h3>
+              <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Step 1 of 2: Personal Details</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.fullName}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.fullName}</label>
                 <input 
                   type="text"
                   value={bookingData.guestName}
@@ -366,7 +366,7 @@ Please let me know the availability and next steps.`;
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.email}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.email}</label>
                 <input 
                   type="email"
                   value={bookingData.guestEmail}
@@ -376,7 +376,7 @@ Please let me know the availability and next steps.`;
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.pax}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.pax}</label>
                 <input 
                   type="number"
                   value={bookingData.pax}
@@ -386,7 +386,7 @@ Please let me know the availability and next steps.`;
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40">{t.dates}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.dates}</label>
                 <div className="grid grid-cols-2 gap-2">
                   <input 
                     type="date"
@@ -405,7 +405,7 @@ Please let me know the availability and next steps.`;
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-white/40">{t.requests}</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.requests}</label>
               <textarea 
                 value={bookingData.specialRequests}
                 onChange={(e) => setBookingData({...bookingData, specialRequests: e.target.value})}
@@ -417,14 +417,14 @@ Please let me know the availability and next steps.`;
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setIsBookingModalOpen(false)}
-                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
+                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-sans font-semibold uppercase tracking-tight text-[10px] hover:bg-white/5 transition-all"
               >
                 {t.back}
               </button>
               <button 
                 onClick={() => setBookingStep(2)}
                 disabled={!bookingData.guestName || !bookingData.guestEmail}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all disabled:opacity-50 disabled:hover:bg-gold"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all disabled:opacity-50 disabled:hover:bg-gold"
               >
                 {t.next}
               </button>
@@ -435,27 +435,27 @@ Please let me know the availability and next steps.`;
         {bookingStep === 2 && (
           <div className="space-y-8">
             <div>
-              <h3 className="text-3xl font-serif text-white mb-2">{t.confirmBooking}</h3>
-              <p className="text-xs text-white/40 uppercase tracking-widest">Step 2 of 2: Review Journey</p>
+              <h3 className="text-3xl font-sans font-medium text-white mb-2">{t.confirmBooking}</h3>
+              <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Step 2 of 2: Review Journey</p>
             </div>
 
             <div className="glass-panel p-6 rounded-3xl space-y-4">
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                <span className="text-[10px] text-white/40 uppercase tracking-widest">Guest</span>
+                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Guest</span>
                 <span className="text-sm text-white font-medium">{bookingData.guestName}</span>
               </div>
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                <span className="text-[10px] text-white/40 uppercase tracking-widest">Journey</span>
+                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Journey</span>
                 <span className="text-sm text-white font-medium">{cart.length} {t.items}</span>
               </div>
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                <span className="text-[10px] text-white/40 uppercase tracking-widest">Investment</span>
+                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Investment</span>
                 <span className="text-xl text-gold font-light">{calculateTotal()}</span>
               </div>
             </div>
 
             <div className="space-y-4">
-              <label className="text-[10px] uppercase tracking-widest text-white/40">Payment Method</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">Payment Method</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                   onClick={() => setPaymentMethod('card')}
@@ -492,14 +492,14 @@ Please let me know the availability and next steps.`;
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setBookingStep(1)}
-                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
+                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-sans font-semibold uppercase tracking-tight text-[10px] hover:bg-white/5 transition-all"
               >
                 {t.prev}
               </button>
               <button 
                 onClick={handleConfirmBooking}
                 disabled={isProcessing}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-2"
               >
                 {isProcessing ? <Loader2 className="animate-spin" size={16} /> : t.confirmBooking}
               </button>
@@ -513,13 +513,13 @@ Please let me know the availability and next steps.`;
               <Shield size={48} />
             </div>
             <div>
-              <h3 className="text-4xl font-serif text-white mb-4">{t.success}</h3>
+              <h3 className="text-4xl font-serif italic tracking-wide text-white mb-4">{t.success}</h3>
               <p className="text-sm text-white/60 font-light max-w-md mx-auto">{t.successSub}</p>
             </div>
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setIsBookingModalOpen(false)}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all"
               >
                 Return to Marketplace
               </button>
@@ -532,7 +532,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 )}`}
                 target='_blank' rel='noopener noreferrer'
                 className='px-12 py-5 bg-[#25D366] text-white rounded-full font-bold
-                uppercase tracking-widest text-xs hover:bg-[#20bd5a] transition-all
+                uppercase tracking-tight text-[11px] hover:bg-[#20bd5a] transition-all
                 flex items-center justify-center gap-2 mt-4'
               >
                 <MessageSquare size={16} /> Confirm with Concierge
@@ -557,8 +557,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             <ShoppingBag size={24} />
           </div>
           <div>
-            <h2 className="text-2xl font-serif text-white uppercase tracking-widest">{t.cart}</h2>
-            <p className="text-[10px] text-gold uppercase tracking-widest font-bold">{cart.length} {t.items}</p>
+            <h2 className="text-2xl font-sans font-medium text-white uppercase tracking-tight">{t.cart}</h2>
+            <p className="text-[11px] text-gold font-sans uppercase tracking-tight font-semibold">{cart.length} {t.items}</p>
           </div>
         </div>
         <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
@@ -579,8 +579,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 <img src={`https://picsum.photos/seed/${item.id}/200/200`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-serif text-white truncate">{item.name}</h4>
-                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-2">{item.location}</p>
+                <h4 className="text-sm font-sans font-medium text-white truncate">{item.name}</h4>
+                <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight mb-2">{item.location}</p>
                 <span className="text-xs font-bold text-gold">{item.pricePerUnit}</span>
               </div>
               <button 
@@ -597,12 +597,12 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       {cart.length > 0 && (
         <div className="p-8 border-t border-white/10 bg-white/5">
           <div className="flex justify-between items-end mb-8">
-            <span className="text-[10px] text-white/40 uppercase tracking-widest">{t.total}</span>
+            <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">{t.total}</span>
             <span className="text-2xl font-light text-gold">{calculateTotal()}</span>
           </div>
           <button 
             onClick={handleCheckout}
-            className="w-full py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3"
+            className="w-full py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-3"
           >
             {t.checkout} <ArrowRight size={16} />
           </button>
@@ -621,7 +621,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-20">
         <button 
           onClick={() => setSelectedAsset(null)}
-          className="flex items-center gap-2 text-white/40 hover:text-gold transition-colors mb-8 md:mb-12 uppercase tracking-widest text-xs font-bold min-h-[44px]"
+          className="flex items-center gap-2 text-white/40 hover:text-gold transition-colors mb-8 md:mb-12 uppercase tracking-tight text-[11px] font-semibold min-h-[44px]"
         >
           <ChevronRight className="rotate-180" size={16} /> {t.back}
         </button>
@@ -637,27 +637,27 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-60" />
               <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8">
-                <span className="px-4 py-2 bg-gold text-luxury-black rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">
+                <span className="px-4 py-2 bg-gold text-luxury-black rounded-full text-[11px] font-semibold font-sans uppercase tracking-tight mb-4 inline-block">
                   {asset.type}
                 </span>
-                <h2 className="text-3xl md:text-5xl font-serif text-white">{asset.name}</h2>
+                <h2 className="text-3xl md:text-5xl font-serif italic tracking-wide text-white">{asset.name}</h2>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
               <div className="glass-panel p-6 rounded-3xl text-center">
                 <MapPin size={20} className="text-gold mx-auto mb-2" />
-                <span className="text-[10px] text-white/40 uppercase block mb-1">{t.location}</span>
+                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.location}</span>
                 <span className="text-sm font-medium text-white">{asset.location}</span>
               </div>
               <div className="glass-panel p-6 rounded-3xl text-center">
                 <Users size={20} className="text-gold mx-auto mb-2" />
-                <span className="text-[10px] text-white/40 uppercase block mb-1">{t.capacity}</span>
+                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.capacity}</span>
                 <span className="text-sm font-medium text-white">{asset.capacity} PAX</span>
               </div>
               <div className="glass-panel p-6 rounded-3xl text-center">
                 <DollarSign size={20} className="text-gold mx-auto mb-2" />
-                <span className="text-[10px] text-white/40 uppercase block mb-1">{t.rate}</span>
+                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.rate}</span>
                 <span className="text-sm font-bold text-gold">{asset.pricePerUnit}</span>
               </div>
             </div>
@@ -665,7 +665,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             <div className="space-y-8">
               {asset.description && (
                 <div>
-                  <h3 className="text-xl font-serif mb-4 text-white">{t.description}</h3>
+                  <h3 className="text-xl font-sans font-medium mb-4 text-white">{t.description}</h3>
                   <p className="text-sm text-white/60 leading-relaxed bg-white/5 p-6 rounded-3xl border border-white/10">
                     {asset.description}
                   </p>
@@ -674,7 +674,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
 
               {asset.gallery && asset.gallery.length > 0 && (
                 <div>
-                  <h3 className="text-xl font-serif mb-4 text-white">{t.gallery}</h3>
+                  <h3 className="text-xl font-sans font-medium mb-4 text-white">{t.gallery}</h3>
                   <div className="grid grid-cols-2 gap-4">
                     {asset.gallery.map((img, idx) => (
                       <div key={idx} className="aspect-square rounded-3xl overflow-hidden border border-white/10">
@@ -687,7 +687,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
 
               {asset.videoUrl && (
                 <div>
-                  <h3 className="text-xl font-serif mb-4 text-white">{t.video}</h3>
+                  <h3 className="text-xl font-sans font-medium mb-4 text-white">{t.video}</h3>
                   <div className="aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black">
                     <video 
                       src={asset.videoUrl} 
@@ -699,7 +699,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               )}
 
               <div>
-                <h3 className="text-xl font-serif mb-4 text-white">{t.features}</h3>
+                <h3 className="text-xl font-sans font-medium mb-4 text-white">{t.features}</h3>
                 <div className="grid grid-cols-2 gap-4">
                   {asset.type === 'STAFF' && (
                     <>
@@ -744,7 +744,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
 
           <div className="space-y-8">
             <div className="glass-panel p-8 rounded-[40px] border-gold/20">
-              <h3 className="text-2xl font-serif mb-6 flex items-center gap-3 text-white">
+              <h3 className="text-2xl font-sans font-medium mb-6 flex items-center gap-3 text-white">
                 <Calendar size={24} className="text-gold" /> {t.availability}
               </h3>
               <MiniCalendar bookedDates={assetAvailability.length > 0 ? assetAvailability : (asset.bookedDates || [])} lang={lang} />
@@ -755,7 +755,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                     addToCart(asset);
                     setSelectedAsset(null);
                   }}
-                  className="w-full sm:flex-1 py-5 bg-white/5 border border-white/10 text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-all flex items-center justify-center gap-3 min-h-[44px]"
+                  className="w-full sm:flex-1 py-5 bg-white/5 border border-white/10 text-white rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white/10 transition-all flex items-center justify-center gap-3 min-h-[44px]"
                 >
                   {t.addToJourney} <ArrowRight size={16} />
                 </button>
@@ -765,7 +765,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                     setChatPreload(msg);
                     setChatOpen(true);
                   }}
-                  className="w-full sm:flex-1 py-5 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center justify-center gap-3 min-h-[44px]"
+                  className="w-full sm:flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-3 min-h-[44px]"
                 >
                   <Sparkles size={18} />
                   {lang === 'EN' ? 'Plan this Experience' : lang === 'ES' ? 'Planificar esta Experiencia' : 'Planejar esta Experiência'}
@@ -779,8 +779,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   <Users size={24} />
                 </div>
                 <div>
-                  <h4 className="font-serif text-lg text-white">{t.managedBy}</h4>
-                  <p className="text-xs text-white/40 uppercase tracking-widest">{asset.contactName || 'Elite Operations Team'}</p>
+                  <h4 className="font-sans font-medium text-lg text-white">{t.managedBy}</h4>
+                  <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">{asset.contactName || 'Elite Operations Team'}</p>
                 </div>
               </div>
 
@@ -789,8 +789,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   <Shield size={24} />
                 </div>
                 <div>
-                  <h4 className="font-serif text-lg text-white">Elite Protection</h4>
-                  <p className="text-xs text-white/40 uppercase tracking-widest">Standard Protocol Active</p>
+                  <h4 className="font-sans font-medium text-lg text-white">Elite Protection</h4>
+                  <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Standard Protocol Active</p>
                 </div>
               </div>
               <p className="text-sm text-white/60 leading-relaxed">
@@ -810,7 +810,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
         <div className="fixed top-8 left-8 z-[140]">
           <button 
             onClick={onBack}
-            className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold text-white hover:bg-white/10 transition-all shadow-sm group"
+            className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold text-white hover:bg-white/10 transition-all shadow-sm group"
           >
             <Home size={14} className="group-hover:text-gold transition-colors" /> 
             {lang === 'EN' ? 'Back to Home' : lang === 'ES' ? 'Volver al Inicio' : 'Voltar ao Início'}
@@ -858,8 +858,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             className="flex flex-col md:flex-row justify-between items-end gap-8"
           >
             <div>
-              <span className="text-gold uppercase tracking-[0.3em] text-[10px] mb-4 block font-bold">{t.subtitle}</span>
-              <h1 className="text-5xl md:text-7xl font-serif uppercase leading-tight text-white">{t.title}</h1>
+              <span className="text-gold font-sans uppercase tracking-tight text-[11px] mb-2 block font-semibold">{t.subtitle}</span>
+              <h1 className="text-5xl md:text-7xl font-serif italic tracking-wide text-white">{t.title}</h1>
             </div>
             
             <div className="w-full md:w-96 relative">
@@ -888,8 +888,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-8 py-4 rounded-full text-[10px] uppercase tracking-widest transition-all border shrink-0 min-h-[44px] ${
-                activeTab === tab.id ? 'bg-gold text-luxury-black font-bold border-gold shadow-lg shadow-gold/20' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+              className={`flex items-center gap-2 px-8 py-4 rounded-full text-[11px] font-sans uppercase tracking-tight transition-all border shrink-0 min-h-[44px] ${
+                activeTab === tab.id ? 'bg-gold text-luxury-black font-semibold border-gold shadow-lg shadow-gold/20' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
               }`}
             >
               {tab.icon} {tab.label}
@@ -910,14 +910,14 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 <Search size={40} />
               </div>
               <div>
-                <p className="text-xl font-serif text-white mb-2">New assets being verified. Check back soon.</p>
+                <p className="text-xl font-sans font-medium text-white mb-2">New assets being verified. Check back soon.</p>
                 <p className="text-sm text-white/40 font-light">Our concierge team is currently onboarding new exclusive inventory.</p>
               </div>
               <a
                 href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=Hello%20KLO%2C%20I%20am%20looking%20for%20specific%20luxury%20assets%20not%20listed%20in%20the%20marketplace.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-8 py-4 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white transition-all flex items-center gap-2"
+                className="px-8 py-4 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center gap-2"
               >
                 <MessageSquare size={16} /> Contact Concierge via WhatsApp
               </a>
@@ -942,14 +942,14 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                       referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-60" />
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-luxury-black/60 backdrop-blur-md rounded-full text-[8px] uppercase tracking-widest border border-white/10 text-white">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-luxury-black/60 backdrop-blur-md rounded-full text-[9px] font-sans uppercase tracking-tight border border-white/10 text-white">
                       {asset.type}
                     </div>
                     <div className="absolute bottom-6 left-6 right-6">
-                      <h3 className="text-2xl font-serif text-white mb-1">{asset.name}</h3>
+                      <h3 className="text-2xl font-sans font-medium text-white mb-1">{asset.name}</h3>
                       <div className="flex items-center gap-2 text-white/60">
                         <MapPin size={12} />
-                        <span className="text-[10px] uppercase tracking-widest">{asset.location}</span>
+                        <span className="text-[11px] font-sans uppercase tracking-tight">{asset.location}</span>
                       </div>
                     </div>
                   </div>
@@ -958,13 +958,13 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                     <div className="flex justify-between items-center mb-6">
                       <div className="flex items-center gap-4">
                         <div className="flex flex-col">
-                          <span className="text-[8px] text-white/30 uppercase tracking-widest mb-1">{t.capacity}</span>
-                          <span className="text-xs font-medium text-white">{asset.capacity} PAX</span>
+                          <span className="text-[10px] text-white/30 font-sans uppercase tracking-tight mb-1">{t.capacity}</span>
+                          <span className="text-xs font-sans font-medium text-white">{asset.capacity} PAX</span>
                         </div>
                         <div className="w-[1px] h-6 bg-white/10" />
                         <div className="flex flex-col">
-                          <span className="text-[8px] text-white/30 uppercase tracking-widest mb-1">{t.rate}</span>
-                          <span className="text-xs font-bold text-gold">{asset.pricePerUnit}</span>
+                          <span className="text-[10px] text-white/30 font-sans uppercase tracking-tight mb-1">{t.rate}</span>
+                          <span className="text-xs font-sans font-semibold text-gold">{asset.pricePerUnit}</span>
                         </div>
                       </div>
                       <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-gold group-hover:text-luxury-black transition-all text-white">
@@ -978,7 +978,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                         setChatPreload(msg);
                         setChatOpen(true);
                       }}
-                      className="w-full mt-4 py-3 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all flex items-center justify-center gap-2"
+                      className="w-full mt-4 py-3 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-2"
                     >
                       <Sparkles size={14} />
                       {lang === 'EN' ? 'Plan this Experience' : lang === 'ES' ? 'Planificar esta Experiencia' : 'Planejar esta Experiência'}

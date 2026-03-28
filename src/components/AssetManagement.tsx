@@ -276,26 +276,26 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       {/* Header & Controls */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h2 className="text-4xl font-serif text-white uppercase tracking-widest mb-2">
+          <h2 className="text-4xl font-serif italic text-white tracking-wide mb-2">
             {isProvider ? t.providerPortal : t.title}
           </h2>
-          <p className="text-white/40 font-light">
+          <p className="text-white/40 font-sans font-light leading-relaxed">
             {isProvider ? t.myAssets : t.subtitle}
           </p>
         </div>
         {!isProvider && (
           <div className="flex items-center gap-8 mr-auto ml-12 hidden xl:flex">
             <div className="text-center">
-              <span className="text-[10px] text-white/30 uppercase tracking-widest block mb-1">Staff Readiness</span>
-              <span className="text-xl font-serif text-emerald-400">100%</span>
+              <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-1">Staff Readiness</span>
+              <span className="text-xl font-serif italic text-emerald-400">100%</span>
             </div>
             <div className="text-center">
-              <span className="text-[10px] text-white/30 uppercase tracking-widest block mb-1">Fleet Status</span>
-              <span className="text-xl font-serif text-gold">Optimal</span>
+              <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-1">Fleet Status</span>
+              <span className="text-xl font-serif italic text-gold">Optimal</span>
             </div>
             <div className="text-center">
-              <span className="text-[10px] text-white/30 uppercase tracking-widest block mb-1">Maintenance</span>
-              <span className="text-xl font-serif text-amber-400">2 Units</span>
+              <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-1">Maintenance</span>
+              <span className="text-xl font-serif italic text-amber-400">2 Units</span>
             </div>
           </div>
         )}
@@ -324,14 +324,14 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   console.error('Stripe Connect error:', err);
                 }
               }}
-              className="px-6 py-3 bg-blue-600 text-white rounded-full font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20"
+              className="px-6 py-3 bg-blue-600 text-white rounded-full font-sans font-semibold uppercase tracking-tight text-xs flex items-center gap-2 hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20"
             >
               <DollarSign size={16} /> Connect Stripe
             </button>
           )}
           <button 
             onClick={() => openModal()}
-            className="px-6 py-3 bg-gold text-luxury-black rounded-full font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:bg-white transition-all shadow-lg shadow-gold/20"
+            className="px-6 py-3 bg-gold text-luxury-black rounded-full font-sans font-semibold uppercase tracking-tight text-xs flex items-center gap-2 hover:bg-white transition-all shadow-lg shadow-gold/20"
           >
             <Plus size={16} /> {t.addAsset}
           </button>
@@ -359,26 +359,26 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 {selectedAssetId ? <Settings size={120} /> : <Plus size={120} />}
               </div>
 
-              <h3 className="text-3xl font-serif mb-6 text-white">{selectedAssetId ? t.edit : t.addAsset}</h3>
+              <h3 className="text-3xl font-serif italic tracking-wide mb-6 text-white">{selectedAssetId ? t.edit : t.addAsset}</h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.name}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.name}</label>
                     <input 
                       required
                       type="text"
                       value={newAsset.name}
                       onChange={(e) => setNewAsset({...newAsset, name: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.type}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.type}</label>
                     <select 
                       value={newAsset.type}
                       onChange={(e) => setNewAsset({...newAsset, type: e.target.value as AssetType})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     >
                       <option value="STAFF">Staff</option>
                       <option value="AIRCRAFT">Aircraft</option>
@@ -391,67 +391,67 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.location}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.location}</label>
                     <input 
                       required
                       type="text"
                       value={newAsset.location}
                       onChange={(e) => setNewAsset({...newAsset, location: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.price}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.price}</label>
                     <input 
                       required
                       type="text"
                       placeholder="$0.00"
                       value={newAsset.pricePerUnit}
                       onChange={(e) => setNewAsset({...newAsset, pricePerUnit: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.capacity}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.capacity}</label>
                     <input 
                       required
                       type="number"
                       value={newAsset.capacity}
                       onChange={(e) => setNewAsset({...newAsset, capacity: parseInt(e.target.value)})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.contactName}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.contactName}</label>
                     <input 
                       required
                       type="text"
                       value={newAsset.contactName || ''}
                       onChange={(e) => setNewAsset({...newAsset, contactName: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                       placeholder="Registrar Name"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40">{t.description}</label>
+                  <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.description}</label>
                   <textarea 
                     required
                     rows={4}
                     value={newAsset.description || ''}
                     onChange={(e) => setNewAsset({...newAsset, description: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm resize-none text-white"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans leading-relaxed resize-none text-white"
                     placeholder="Provide a detailed description of the asset..."
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.uploadImage}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.uploadImage}</label>
                     <div className="relative group">
                       <input 
                         type="file"
@@ -465,14 +465,14 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       />
                       <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
-                        <span className="text-[10px] text-white/40 uppercase tracking-widest">
+                        <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">
                           {newAsset.image ? 'Image Selected' : 'Click to Upload'}
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.uploadVideo}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.uploadVideo}</label>
                     <div className="relative group">
                       <input 
                         type="file"
@@ -486,7 +486,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       />
                       <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
-                        <span className="text-[10px] text-white/40 uppercase tracking-widest">
+                        <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">
                           {newAsset.videoUrl ? 'Video Selected' : 'Click to Upload'}
                         </span>
                       </div>
@@ -495,7 +495,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40">{t.gallery}</label>
+                  <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.gallery}</label>
                   <div className="grid grid-cols-4 gap-4">
                     {newAsset.gallery?.map((img, idx) => (
                       <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-white/10">
@@ -516,7 +516,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       />
                       <div className="w-full h-full bg-white/5 border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center group-hover:border-gold/50 transition-all">
                         <Plus size={16} className="text-white/40 mb-1" />
-                        <span className="text-[8px] text-white/40 uppercase tracking-widest">{t.addPhoto}</span>
+                        <span className="text-[10px] font-sans font-semibold text-white/40 uppercase tracking-tight">{t.addPhoto}</span>
                       </div>
                     </div>
                   </div>
@@ -524,11 +524,11 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
 
                 <div className="grid grid-cols-1 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.status}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.status}</label>
                     <select 
                       value={newAsset.status}
                       onChange={(e) => setNewAsset({...newAsset, status: e.target.value as any})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     >
                       <option value="AVAILABLE">Available</option>
                       <option value="BOOKED">Booked</option>
@@ -541,11 +541,11 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 {/* Type Specific Fields */}
                 {newAsset.type === 'STAFF' && (
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t.role}</label>
+                    <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40">{t.role}</label>
                     <select 
                       value={(newAsset as any).role || 'CONCIERGE'}
                       onChange={(e) => setNewAsset({...newAsset, role: e.target.value} as any)}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     >
                       <option value="PILOT">Pilot</option>
                       <option value="CAPTAIN">Captain</option>
@@ -566,7 +566,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       onChange={(e) => setNewAsset({...newAsset, isArmored: e.target.checked} as any)}
                       className="w-4 h-4 rounded border-white/10 bg-white/5 text-gold focus:ring-gold"
                     />
-                    <label htmlFor="isArmored" className="text-[10px] uppercase tracking-widest text-white/40 cursor-pointer">{t.armored}</label>
+                    <label htmlFor="isArmored" className="text-[11px] font-sans font-semibold uppercase tracking-tight text-white/40 cursor-pointer">{t.armored}</label>
                   </div>
                 )}
 
@@ -574,13 +574,13 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   <button 
                     type="button"
                     onClick={closeModal}
-                    className="flex-1 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white/10 transition-all text-white"
+                    className="flex-1 py-4 bg-white/5 border border-white/10 rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white/10 transition-all text-white"
                   >
                     {t.cancel}
                   </button>
                   <button 
                     type="submit"
-                    className="flex-1 py-4 bg-gold text-luxury-black rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all"
+                    className="flex-1 py-4 bg-gold text-luxury-black rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all"
                   >
                     {t.save}
                   </button>
@@ -604,8 +604,8 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
           <button 
             key={tab.id}
             onClick={() => setActiveType(tab.id as any)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs uppercase tracking-widest transition-all border ${
-              activeType === tab.id ? 'bg-gold text-luxury-black font-bold border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-sans font-semibold uppercase tracking-tight transition-all border ${
+              activeType === tab.id ? 'bg-gold text-luxury-black border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
             }`}
           >
             {tab.icon} {tab.label}
@@ -643,37 +643,37 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 </button>
               </div>
 
-              <h3 className="text-xl font-serif mb-2 group-hover:text-gold transition-colors text-white">{asset.name}</h3>
+              <h3 className="text-xl font-serif italic tracking-wide mb-2 group-hover:text-gold transition-colors text-white">{asset.name}</h3>
               <div className="flex items-center gap-2 mb-4">
                 <MapPin size={12} className="text-white/30" />
-                <span className="text-[10px] text-white/40 uppercase tracking-widest">{asset.location}</span>
+                <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">{asset.location}</span>
               </div>
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-white/30 uppercase tracking-widest">{t.status}</span>
-                  <span className={`text-[8px] px-2 py-1 rounded-full border uppercase tracking-widest font-bold ${getStatusColor(asset.status)}`}>
+                  <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{t.status}</span>
+                  <span className={`text-[10px] px-2 py-1 rounded-full border font-sans font-semibold uppercase tracking-tight ${getStatusColor(asset.status)}`}>
                     {asset.status}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-white/30 uppercase tracking-widest">{t.capacity}</span>
-                  <span className="text-xs font-medium text-white">{asset.capacity} PAX</span>
+                  <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{t.capacity}</span>
+                  <span className="text-xs font-sans font-medium text-white">{asset.capacity} PAX</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-white/30 uppercase tracking-widest">Rate</span>
-                  <span className="text-xs font-bold text-gold">{asset.pricePerUnit}</span>
+                  <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">Rate</span>
+                  <span className="text-xs font-sans font-semibold text-gold">{asset.pricePerUnit}</span>
                 </div>
                 {(asset as any).supplier_name && (
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] text-white/30 uppercase tracking-widest">Partner</span>
-                    <span className="text-[10px] font-medium text-white/60">{(asset as any).supplier_name}</span>
+                    <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">Partner</span>
+                    <span className="text-[11px] font-sans font-medium text-white/60">{(asset as any).supplier_name}</span>
                   </div>
                 )}
               </div>
 
               <div className="mt-6 pt-6 border-t border-white/5">
-                <span className="text-[10px] text-white/30 uppercase tracking-widest block mb-4">{t.availability}</span>
+                <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-4">{t.availability}</span>
                 <MiniCalendar bookedDates={asset.bookedDates || []} lang={lang} />
               </div>
 
@@ -683,17 +683,17 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     {asset.type === 'STAFF' && (
                       <div className="flex items-center gap-1 text-gold">
                         <Star size={10} fill="currentColor" />
-                        <span className="text-[10px] font-bold">{(asset as any).rating}</span>
+                        <span className="text-[11px] font-sans font-semibold">{(asset as any).rating}</span>
                       </div>
                     )}
                     {asset.type === 'VEHICLE' && (asset as any).isArmored && (
                       <div className="flex items-center gap-1 text-blue-400">
                         <Shield size={10} />
-                        <span className="text-[10px] font-bold uppercase tracking-tighter">Armored</span>
+                        <span className="text-[11px] font-sans font-semibold uppercase tracking-tight">Armored</span>
                       </div>
                     )}
                     {asset.type === 'VESSEL' && (
-                      <span className="text-[10px] text-white/40 uppercase tracking-tighter">{(asset as any).length}</span>
+                      <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">{(asset as any).length}</span>
                     )}
                   </div>
                 </div>
@@ -702,7 +702,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   <button 
                     onClick={() => handleDispatch(asset.id)}
                     disabled={dispatchingId === asset.id}
-                    className="w-full py-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-2xl text-[10px] uppercase tracking-widest font-bold hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-2xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
                   >
                     {dispatchingId === asset.id ? <Loader2 className="animate-spin" size={12} /> : <Zap size={12} />}
                     {t.dispatch}
@@ -711,7 +711,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
 
                 <button 
                   onClick={() => openModal(asset)}
-                  className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-2xl text-[10px] uppercase tracking-widest font-bold hover:bg-white/10 transition-all"
+                  className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-2xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-white/10 transition-all"
                 >
                   {t.edit}
                 </button>
@@ -719,7 +719,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 <button 
                   onClick={() => handleSyncCalendar(asset.id)}
                   disabled={syncingId === asset.id}
-                  className="w-full py-3 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[10px] uppercase tracking-widest font-bold hover:bg-gold hover:text-luxury-black transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-gold hover:text-luxury-black transition-all flex items-center justify-center gap-2"
                 >
                   {syncingId === asset.id ? <Loader2 className="animate-spin" size={12} /> : <Calendar size={12} />}
                   Sync Calendar
@@ -748,8 +748,8 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
             >
               <div className="p-8 border-b border-white/10 flex justify-between items-center">
                 <div>
-                  <h2 className="text-3xl font-serif text-white uppercase tracking-widest">{t.crossSell}</h2>
-                  <p className="text-[10px] text-gold uppercase tracking-widest font-bold">{t.revenueShare}: 15%</p>
+                  <h2 className="text-3xl font-sans font-medium text-white uppercase tracking-tight">{t.crossSell}</h2>
+                  <p className="text-[10px] text-gold uppercase tracking-tight font-bold">{t.revenueShare}: 15%</p>
                 </div>
                 <button onClick={() => setShowCrossSell(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
                   <X size={24} className="text-white/40" />
@@ -778,11 +778,11 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       </div>
                       <div className="flex-1 flex flex-col justify-between py-1">
                         <div>
-                          <span className="text-[8px] text-gold uppercase tracking-widest font-bold">{item.type}</span>
-                          <h4 className="text-sm font-serif text-white">{item.name}</h4>
+                          <span className="text-[8px] text-gold uppercase tracking-tight font-bold">{item.type}</span>
+                          <h4 className="text-sm font-sans font-medium text-white">{item.name}</h4>
                           <p className="text-xs font-bold text-white/60">{item.price}</p>
                         </div>
-                        <button className="text-[10px] uppercase tracking-widest font-bold text-gold hover:text-white transition-colors flex items-center gap-1">
+                        <button className="text-[10px] uppercase tracking-tight font-bold text-gold hover:text-white transition-colors flex items-center gap-1">
                           {lang === 'EN' ? 'Recommend' : 'Recomendar'} <ArrowRight size={12} />
                         </button>
                       </div>
@@ -794,7 +794,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end">
                 <button 
                   onClick={() => setShowCrossSell(false)}
-                  className="px-8 py-4 bg-gold text-luxury-black rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-white transition-all"
+                  className="px-8 py-4 bg-gold text-luxury-black rounded-full text-[10px] uppercase tracking-tight font-bold hover:bg-white transition-all"
                 >
                   {lang === 'EN' ? 'Close' : 'Cerrar'}
                 </button>

@@ -58,8 +58,8 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
     <div className="glass-panel p-8 rounded-[40px] border-purple-500/20">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h3 className="text-2xl font-serif">{t.title}</h3>
-          <p className="text-luxury-cream/40 text-[10px] uppercase tracking-widest">{t.subtitle}</p>
+          <h3 className="text-2xl font-serif italic tracking-wide">{t.title}</h3>
+          <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
         </div>
         <button 
           onClick={() => setIsAdding(true)}
@@ -80,8 +80,8 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
                   {getTriggerIcon(rule.trigger)}
                 </div>
                 <div>
-                  <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest block">{t.trigger}: {rule.trigger}</span>
-                  <span className="text-sm font-bold">{rule.condition}</span>
+                  <span className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight block">{t.trigger}: {rule.trigger}</span>
+                  <span className="text-sm font-sans font-medium">{rule.condition}</span>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -104,11 +104,11 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
 
             <div className="flex items-center gap-3 p-3 bg-luxury-black/30 rounded-2xl border border-white/5">
               <Zap size={12} className="text-gold" />
-              <span className="text-[10px] uppercase tracking-widest text-luxury-cream/60">{t.action}: {rule.action}</span>
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/60">{t.action}: {rule.action}</span>
             </div>
 
             {rule.lastTriggered && (
-              <div className="mt-4 flex items-center gap-2 text-[8px] text-luxury-cream/30 uppercase tracking-widest">
+              <div className="mt-4 flex items-center gap-2 text-[10px] font-sans font-semibold text-luxury-cream/30 uppercase tracking-tight">
                 <Clock size={10} />
                 {t.lastTriggered}: {rule.lastTriggered}
               </div>

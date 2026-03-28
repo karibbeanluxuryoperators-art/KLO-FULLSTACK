@@ -129,8 +129,8 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
                 <stat.icon size={20} />
               </div>
             </div>
-            <span className="text-[10px] uppercase tracking-widest text-luxury-cream/40 block mb-1">{stat.label}</span>
-            <span className={`text-2xl font-serif ${stat.color}`}>{stat.value}</span>
+            <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/40 block mb-1">{stat.label}</span>
+            <span className={`text-2xl font-serif italic tracking-wide ${stat.color}`}>{stat.value}</span>
           </div>
         ))}
       </div>
@@ -139,10 +139,10 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       <div className="glass-panel p-8 rounded-[40px] border-white/5">
         <div className="flex justify-between items-end mb-4">
           <div>
-            <h4 className="text-xl font-serif mb-1">{t.clientProgress}</h4>
-            <p className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">Target: 20 High-Net-Worth Clients Acquired</p>
+            <h4 className="text-xl font-serif italic mb-1">{t.clientProgress}</h4>
+            <p className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">Target: 20 High-Net-Worth Clients Acquired</p>
           </div>
-          <span className="text-2xl font-serif text-gold">{leadsCount} / 20</span>
+          <span className="text-2xl font-serif italic text-gold">{leadsCount} / 20</span>
         </div>
         <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden border border-white/10">
           <motion.div 
@@ -158,10 +158,10 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       <div className="glass-panel p-8 rounded-[40px] border-white/5">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h3 className="text-xl font-serif uppercase tracking-wider">Monthly Revenue Performance</h3>
-            <p className="text-[10px] text-luxury-cream/40 uppercase tracking-widest">Real-time GMV Tracking</p>
+            <h3 className="text-xl font-serif italic tracking-wide">Monthly Revenue Performance</h3>
+            <p className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">Real-time GMV Tracking</p>
           </div>
-          <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold">
+          <div className="flex items-center gap-2 text-emerald-400 text-xs font-sans font-semibold">
             <TrendingUp size={16} />
             +24% vs Last Period
           </div>
@@ -208,8 +208,8 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
         <div className="lg:col-span-2 glass-panel p-8 rounded-[40px] border-gold/20">
           <div className="flex justify-between items-center mb-12">
             <div>
-              <h3 className="text-3xl font-serif">{t.title}</h3>
-              <p className="text-luxury-cream/40 text-[10px] uppercase tracking-widest">{t.subtitle}</p>
+              <h3 className="text-3xl font-serif italic tracking-wide">{t.title}</h3>
+              <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
             </div>
             <div className="p-4 bg-gold/10 text-gold rounded-3xl">
               <DollarSign size={24} />
@@ -218,25 +218,25 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <div>
-              <span className="text-luxury-cream/40 text-[10px] uppercase tracking-widest block mb-2">{t.netMargin}</span>
+              <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.netMargin}</span>
               <div className="flex items-end gap-2">
-                <span className="text-4xl font-serif text-gold">${financials.netMargin.toLocaleString()}</span>
-                <span className="text-[10px] text-emerald-400 mb-1 flex items-center gap-1">
+                <span className="text-4xl font-serif italic text-gold">${financials.netMargin.toLocaleString()}</span>
+                <span className="text-[10px] font-sans font-semibold text-emerald-400 mb-1 flex items-center gap-1">
                   <ArrowUpRight size={10} /> 12%
                 </span>
               </div>
             </div>
             <div>
-              <span className="text-luxury-cream/40 text-[10px] uppercase tracking-widest block mb-2">{t.partnerPayouts}</span>
+              <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.partnerPayouts}</span>
               <div className="flex items-end gap-2">
-                <span className="text-4xl font-serif">${financials.partnerPayouts.toLocaleString()}</span>
+                <span className="text-4xl font-serif italic">${financials.partnerPayouts.toLocaleString()}</span>
               </div>
             </div>
             <div>
-              <span className="text-luxury-cream/40 text-[10px] uppercase tracking-widest block mb-2">{t.opLeakage}</span>
+              <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.opLeakage}</span>
               <div className="flex items-end gap-2">
-                <span className="text-4xl font-serif text-red-400">${financials.operationalLeakage.toLocaleString()}</span>
-                <span className="text-[10px] text-red-400 mb-1 flex items-center gap-1">
+                <span className="text-4xl font-serif italic text-red-400">${financials.operationalLeakage.toLocaleString()}</span>
+                <span className="text-[10px] font-sans font-semibold text-red-400 mb-1 flex items-center gap-1">
                   <ArrowDownRight size={10} /> 4%
                 </span>
               </div>
@@ -244,7 +244,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
           </div>
 
           <div className="space-y-6">
-            <h4 className="text-[10px] uppercase tracking-widest text-luxury-cream/40">{t.automatedSettlements}</h4>
+            <h4 className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/40">{t.automatedSettlements}</h4>
             <div className="space-y-4">
               {[
                 { name: 'Jettly Aviation', amount: '$45,000', status: t.settled, icon: ShieldCheck },
@@ -257,11 +257,11 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
                       <partner.icon size={16} />
                     </div>
                     <div>
-                      <span className="text-sm font-bold block">{partner.name}</span>
-                      <span className="text-[8px] text-luxury-cream/40 uppercase tracking-widest">{partner.status}</span>
+                      <span className="text-sm font-sans font-medium block">{partner.name}</span>
+                      <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{partner.status}</span>
                     </div>
                   </div>
-                  <span className="text-sm font-mono font-bold">{partner.amount}</span>
+                  <span className="text-sm font-mono font-medium">{partner.amount}</span>
                 </div>
               ))}
             </div>
@@ -297,9 +297,9 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
                 <div key={i} className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
-                    <span className="text-[10px] uppercase tracking-widest text-luxury-cream/60">{item.category}</span>
+                    <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/60">{item.category}</span>
                   </div>
-                  <span className="text-xs font-bold">${item.value.toLocaleString()}</span>
+                  <span className="text-xs font-sans font-medium">${item.value.toLocaleString()}</span>
                 </div>
               ))}
             </div>

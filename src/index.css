@@ -14,11 +14,15 @@
 
 @layer base {
   body {
-    @apply bg-luxury-black text-white font-sans antialiased;
+    @apply bg-luxury-black text-white font-sans font-light leading-relaxed antialiased;
   }
   
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+  h1, h2 {
+    @apply font-serif italic tracking-wide;
+  }
+
+  h3, h4, h5, h6 {
+    @apply font-sans font-medium;
   }
 }
 

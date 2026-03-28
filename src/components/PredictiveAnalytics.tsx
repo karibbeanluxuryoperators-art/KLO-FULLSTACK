@@ -66,8 +66,8 @@ export const PredictiveAnalytics: React.FC<PredictiveAnalyticsProps> = ({ alerts
         <div className="glass-panel p-8 rounded-[40px] border-amber-500/20">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h3 className="text-2xl font-serif">{t.maintenanceTitle}</h3>
-              <p className="text-luxury-cream/40 text-[10px] uppercase tracking-widest">{t.maintenanceSubtitle}</p>
+              <h3 className="text-2xl font-serif italic tracking-wide">{t.maintenanceTitle}</h3>
+              <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.maintenanceSubtitle}</p>
             </div>
             <div className="p-3 bg-amber-500/10 text-amber-400 rounded-2xl">
               <Activity size={20} />
@@ -83,17 +83,17 @@ export const PredictiveAnalytics: React.FC<PredictiveAnalyticsProps> = ({ alerts
                       <AlertTriangle size={16} />
                     </div>
                     <div>
-                      <span className="text-[10px] text-luxury-cream/40 uppercase tracking-widest block">{alert.type} {t.alert}</span>
-                      <span className="text-sm font-bold">{alert.description}</span>
+                      <span className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight block">{alert.type} {t.alert}</span>
+                      <span className="text-sm font-sans font-medium">{alert.description}</span>
                     </div>
                   </div>
-                  <span className={`text-[8px] px-2 py-1 rounded-full border uppercase tracking-widest font-bold ${getUrgencyColor(alert.urgency)}`}>
+                  <span className={`text-[10px] px-2 py-1 rounded-full border font-sans font-semibold uppercase tracking-tight ${getUrgencyColor(alert.urgency)}`}>
                     {alert.urgency}
                   </span>
                 </div>
                 <div className="flex justify-between items-center pt-4 border-t border-white/5">
-                  <span className="text-[10px] text-luxury-cream/30 uppercase tracking-widest">{t.estCost}</span>
-                  <span className="text-xs font-bold text-amber-400">{alert.estimatedCost}</span>
+                  <span className="text-[11px] font-sans font-semibold text-luxury-cream/30 uppercase tracking-tight">{t.estCost}</span>
+                  <span className="text-xs font-sans font-medium text-amber-400">{alert.estimatedCost}</span>
                 </div>
               </div>
             ))}
@@ -104,8 +104,8 @@ export const PredictiveAnalytics: React.FC<PredictiveAnalyticsProps> = ({ alerts
         <div className="glass-panel p-8 rounded-[40px] border-gold/20">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h3 className="text-2xl font-serif">{t.demandTitle}</h3>
-              <p className="text-luxury-cream/40 text-[10px] uppercase tracking-widest">{t.demandSubtitle}</p>
+              <h3 className="text-2xl font-serif italic tracking-wide">{t.demandTitle}</h3>
+              <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.demandSubtitle}</p>
             </div>
             <div className="p-3 bg-gold/10 text-gold rounded-2xl">
               <TrendingUp size={20} />
@@ -130,12 +130,12 @@ export const PredictiveAnalytics: React.FC<PredictiveAnalyticsProps> = ({ alerts
 
           <div className="mt-8 grid grid-cols-2 gap-4">
             <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-              <span className="text-[10px] text-luxury-cream/30 uppercase block mb-1">{t.topDestination}</span>
-              <span className="text-lg font-serif text-gold">St. Barths</span>
+              <span className="text-[11px] font-sans font-semibold text-luxury-cream/30 uppercase tracking-tight block mb-1">{t.topDestination}</span>
+              <span className="text-lg font-serif italic text-gold">St. Barths</span>
             </div>
             <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-              <span className="text-[10px] text-luxury-cream/30 uppercase block mb-1">{t.growthTrend}</span>
-              <span className="text-lg font-serif text-emerald-400">+24%</span>
+              <span className="text-[11px] font-sans font-semibold text-luxury-cream/30 uppercase tracking-tight block mb-1">{t.growthTrend}</span>
+              <span className="text-lg font-serif italic text-emerald-400">+24%</span>
             </div>
           </div>
         </div>
