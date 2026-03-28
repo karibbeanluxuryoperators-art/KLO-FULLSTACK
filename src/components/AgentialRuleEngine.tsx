@@ -55,7 +55,7 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
   };
 
   return (
-    <div className="glass-panel p-8 rounded-[40px] border-purple-500/20">
+    <div className="glass-panel p-8 rounded-2xl border-purple-500/20">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h3 className="text-2xl font-serif italic tracking-wide">{t.title}</h3>
@@ -71,7 +71,7 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
 
       <div className="space-y-4">
         {rules.map((rule) => (
-          <div key={rule.id} className={`p-6 rounded-3xl border transition-all ${
+          <div key={rule.id} className={`p-6 rounded-2xl border transition-all ${
             rule.status === 'ACTIVE' ? 'bg-white/5 border-white/10' : 'bg-white/[0.02] border-white/5 opacity-50'
           }`}>
             <div className="flex justify-between items-start mb-4">
@@ -102,7 +102,7 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-luxury-black/30 rounded-2xl border border-white/5">
+            <div className="flex items-center gap-3 p-3 bg-luxury-black/30 rounded-xl border border-white/5">
               <Zap size={12} className="text-gold" />
               <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/60">{t.action}: {rule.action}</span>
             </div>

@@ -353,7 +353,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-[40px] p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
+              className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-3xl p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
             >
               <div className="absolute top-0 right-0 p-8 opacity-5 text-white">
                 {selectedAssetId ? <Settings size={120} /> : <Plus size={120} />}
@@ -370,7 +370,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       type="text"
                       value={newAsset.name}
                       onChange={(e) => setNewAsset({...newAsset, name: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                   <div className="space-y-2">
@@ -378,7 +378,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     <select 
                       value={newAsset.type}
                       onChange={(e) => setNewAsset({...newAsset, type: e.target.value as AssetType})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     >
                       <option value="STAFF">Staff</option>
                       <option value="AIRCRAFT">Aircraft</option>
@@ -397,7 +397,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       type="text"
                       value={newAsset.location}
                       onChange={(e) => setNewAsset({...newAsset, location: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                   <div className="space-y-2">
@@ -408,7 +408,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       placeholder="$0.00"
                       value={newAsset.pricePerUnit}
                       onChange={(e) => setNewAsset({...newAsset, pricePerUnit: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                 </div>
@@ -421,7 +421,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       type="number"
                       value={newAsset.capacity}
                       onChange={(e) => setNewAsset({...newAsset, capacity: parseInt(e.target.value)})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     />
                   </div>
                   <div className="space-y-2">
@@ -431,7 +431,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       type="text"
                       value={newAsset.contactName || ''}
                       onChange={(e) => setNewAsset({...newAsset, contactName: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                       placeholder="Registrar Name"
                     />
                   </div>
@@ -444,7 +444,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     rows={4}
                     value={newAsset.description || ''}
                     onChange={(e) => setNewAsset({...newAsset, description: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans leading-relaxed resize-none text-white"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans leading-relaxed resize-none text-white"
                     placeholder="Provide a detailed description of the asset..."
                   />
                 </div>
@@ -464,7 +464,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                         }}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       />
-                      <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
+                      <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
                         <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">
                           {newAsset.image ? 'Image Selected' : 'Click to Upload'}
                         </span>
@@ -485,7 +485,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                         }}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       />
-                      <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
+                      <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-xl py-4 px-4 text-center group-hover:border-gold/50 transition-all">
                         <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">
                           {newAsset.videoUrl ? 'Video Selected' : 'Click to Upload'}
                         </span>
@@ -528,7 +528,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     <select 
                       value={newAsset.status}
                       onChange={(e) => setNewAsset({...newAsset, status: e.target.value as any})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     >
                       <option value="AVAILABLE">Available</option>
                       <option value="BOOKED">Booked</option>
@@ -545,7 +545,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     <select 
                       value={(newAsset as any).role || 'CONCIERGE'}
                       onChange={(e) => setNewAsset({...newAsset, role: e.target.value} as any)}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans text-white"
                     >
                       <option value="PILOT">Pilot</option>
                       <option value="CAPTAIN">Captain</option>
@@ -558,7 +558,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 )}
 
                 {newAsset.type === 'VEHICLE' && (
-                  <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                  <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                     <input 
                       type="checkbox"
                       id="isArmored"
@@ -574,13 +574,13 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   <button 
                     type="button"
                     onClick={closeModal}
-                    className="flex-1 py-4 bg-white/5 border border-white/10 rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white/10 transition-all text-white"
+                    className="flex-1 py-4 bg-white/5 border border-white/10 rounded-xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white/10 transition-all text-white"
                   >
                     {t.cancel}
                   </button>
                   <button 
                     type="submit"
-                    className="flex-1 py-4 bg-gold text-luxury-black rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all"
+                    className="flex-1 py-4 bg-gold text-luxury-black rounded-xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all"
                   >
                     {t.save}
                   </button>
@@ -623,7 +623,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               key={asset.id}
-              className="glass-panel p-6 rounded-3xl group hover:border-gold/30 transition-all relative overflow-hidden"
+              className="glass-panel p-6 rounded-2xl group hover:border-gold/30 transition-all relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-white">
                 {getAssetIcon(asset.type)}
@@ -702,7 +702,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   <button 
                     onClick={() => handleDispatch(asset.id)}
                     disabled={dispatchingId === asset.id}
-                    className="w-full py-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-2xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
                   >
                     {dispatchingId === asset.id ? <Loader2 className="animate-spin" size={12} /> : <Zap size={12} />}
                     {t.dispatch}
@@ -711,7 +711,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
 
                 <button 
                   onClick={() => openModal(asset)}
-                  className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-2xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-white/10 transition-all"
+                  className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-white/10 transition-all"
                 >
                   {t.edit}
                 </button>
@@ -719,7 +719,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 <button 
                   onClick={() => handleSyncCalendar(asset.id)}
                   disabled={syncingId === asset.id}
-                  className="w-full py-3 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-gold hover:text-luxury-black transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gold/10 text-gold border border-gold/20 rounded-xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-gold hover:text-luxury-black transition-all flex items-center justify-center gap-2"
                 >
                   {syncingId === asset.id ? <Loader2 className="animate-spin" size={12} /> : <Calendar size={12} />}
                   Sync Calendar
@@ -744,7 +744,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="glass-panel w-full max-w-4xl max-h-[80vh] overflow-hidden rounded-[40px] relative z-10 flex flex-col"
+              className="glass-panel w-full max-w-4xl max-h-[80vh] overflow-hidden rounded-3xl relative z-10 flex flex-col"
             >
               <div className="p-8 border-b border-white/10 flex justify-between items-center">
                 <div>
@@ -757,7 +757,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               </div>
               
               <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
-                <div className="bg-gold/10 p-6 rounded-3xl border border-gold/20 flex items-center gap-4">
+                <div className="bg-gold/10 p-6 rounded-2xl border border-gold/20 flex items-center gap-4">
                   <Sparkles className="text-gold" size={24} />
                   <p className="text-xs text-white/70 leading-relaxed">
                     As a certified KLO Provider, you can earn additional revenue by recommending complementary services to your clients. All bookings made through this portal are tracked to your account.
@@ -772,7 +772,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     { id: 'CS3', name: 'Vianco Armor Transfer', price: '$850', type: 'VEHICLE', img: 'https://picsum.photos/seed/car/400/300' },
                     { id: 'CS4', name: 'Bespoke Villa Stay', price: '$3,200', type: 'LODGING', img: 'https://picsum.photos/seed/villa/400/300' },
                   ].map(item => (
-                    <div key={item.id} className="bg-white/5 rounded-3xl p-4 flex gap-4 border border-white/5 group hover:border-gold/30 transition-all">
+                    <div key={item.id} className="bg-white/5 rounded-2xl p-4 flex gap-4 border border-white/5 group hover:border-gold/30 transition-all">
                       <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0">
                         <img src={item.img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                       </div>

@@ -144,7 +144,7 @@ Notes: ${formData.special_requests}`;
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="fixed bottom-32 right-8 w-full max-w-sm bg-luxury-paper rounded-[32px] shadow-2xl z-[101] overflow-hidden border border-white/10"
+              className="fixed bottom-32 right-8 w-full max-w-sm bg-luxury-paper rounded-3xl shadow-2xl z-[101] overflow-hidden border border-white/10"
             >
               <div className="bg-emerald-500 p-8 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-10">

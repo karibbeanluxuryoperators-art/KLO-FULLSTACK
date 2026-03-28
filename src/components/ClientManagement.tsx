@@ -134,12 +134,12 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
               placeholder={t.search}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-sm font-light"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-sm font-light"
             />
           </div>
           <button 
             onClick={() => setIsAddModalOpen(true)}
-            className="px-8 py-4 bg-gold text-luxury-black rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center gap-3 hover:bg-white transition-all shrink-0"
+            className="px-8 py-4 bg-gold text-luxury-black rounded-xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center gap-3 hover:bg-white transition-all shrink-0"
           >
             <UserPlus size={16} /> {t.addClient}
           </button>
@@ -153,7 +153,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             key={profile.id} 
-            className="glass-panel p-8 rounded-[40px] relative overflow-hidden group"
+            className="glass-panel p-8 rounded-2xl relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
               <Users size={120} />
@@ -161,7 +161,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
             
             <div className="flex justify-between items-start mb-8">
               <div className="flex items-center gap-6">
-                <div className="w-20 h-20 bg-gold rounded-3xl flex items-center justify-center text-luxury-black">
+                <div className="w-20 h-20 bg-gold rounded-2xl flex items-center justify-center text-luxury-black">
                   <span className="text-3xl font-bold">{profile.name[0]}</span>
                 </div>
                 <div>
@@ -216,11 +216,11 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                   <Activity size={12} /> Intelligence
                 </h5>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                  <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                     <span className="text-[11px] font-sans font-semibold text-luxury-cream/30 uppercase tracking-tight block">{t.experiences}</span>
                     <span className="text-xl font-serif italic">{profile.pastExperiences}</span>
                   </div>
-                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                  <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                     <span className="text-[11px] font-sans font-semibold text-luxury-cream/30 uppercase tracking-tight block">{t.loyalty}</span>
                     <span className="text-xl font-serif italic">{profile.loyaltyPoints}</span>
                   </div>
@@ -256,11 +256,11 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-luxury-slate rounded-[40px] border border-white/10 overflow-hidden shadow-2xl"
+              className="relative w-full max-w-2xl bg-luxury-slate rounded-3xl border border-white/10 overflow-hidden shadow-2xl"
             >
               <div className="p-8 border-b border-white/5 flex justify-between items-center">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-gold/10 text-gold rounded-2xl">
+                  <div className="p-3 bg-gold/10 text-gold rounded-xl">
                     <UserPlus size={24} />
                   </div>
                   <div>
@@ -282,7 +282,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                       required
                       value={newClient.name || ''}
                       onChange={e => setNewClient({...newClient, name: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans"
                       placeholder="e.g. Alexander Vianco"
                     />
                   </div>
@@ -291,7 +291,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                     <select 
                       value={newClient.tier}
                       onChange={e => setNewClient({...newClient, tier: e.target.value as any})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans appearance-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans appearance-none"
                     >
                       <option value="UHNWI">UHNWI</option>
                       <option value="VVIP">VVIP</option>
@@ -324,7 +324,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                             }
                           }
                         }}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans"
                       />
                       <div className="flex flex-wrap gap-2 mt-2">
                         {newClient.preferences?.dietary.map((d, i) => (
@@ -363,7 +363,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                             }
                           }
                         }}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans"
                       />
                       <div className="flex flex-wrap gap-2 mt-2">
                         {newClient.preferences?.beverages.map((b, i) => (
@@ -388,13 +388,13 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                   <button 
                     type="button"
                     onClick={() => setIsAddModalOpen(false)}
-                    className="flex-1 py-4 border border-white/10 rounded-2xl text-luxury-cream/40 font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white/5 transition-all"
+                    className="flex-1 py-4 border border-white/10 rounded-xl text-luxury-cream/40 font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white/5 transition-all"
                   >
                     {t.cancel}
                   </button>
                   <button 
                     type="submit"
-                    className="flex-1 py-4 bg-gold text-luxury-black rounded-2xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-3"
+                    className="flex-1 py-4 bg-gold text-luxury-black rounded-xl font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-3"
                   >
                     <Check size={16} /> {t.save}
                   </button>

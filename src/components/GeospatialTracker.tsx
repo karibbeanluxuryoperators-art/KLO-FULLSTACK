@@ -114,7 +114,7 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
   }, [assets]);
 
   return (
-    <div className="glass-panel p-8 rounded-[40px] border-gold/20 overflow-hidden relative">
+    <div className="glass-panel p-8 rounded-2xl border-gold/20 overflow-hidden relative">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h3 className="text-2xl font-serif italic tracking-wide">{t.title}</h3>
@@ -132,7 +132,7 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
         </div>
       </div>
 
-      <div className="relative w-full aspect-[16/9] bg-luxury-black/30 rounded-3xl border border-white/5 overflow-hidden">
+      <div className="relative w-full aspect-[16/9] bg-luxury-black/30 rounded-2xl border border-white/5 overflow-hidden">
         <svg 
           ref={svgRef} 
           viewBox="0 0 800 450" 
@@ -142,7 +142,7 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
         {/* Overlay Info */}
         <div className="absolute bottom-6 left-6 space-y-2">
           {Array.isArray(assets) && assets.slice(0, 3).map((asset, i) => (
-            <div key={i} className="flex items-center gap-3 bg-luxury-black/80 backdrop-blur-md p-3 rounded-2xl border border-white/10">
+            <div key={i} className="flex items-center gap-3 bg-luxury-black/80 backdrop-blur-md p-3 rounded-xl border border-white/10">
               <div className="p-2 bg-gold/10 text-gold rounded-xl">
                 {asset.type === 'AIRCRAFT' ? <Plane size={14} /> : asset.type === 'VESSEL' ? <Ship size={14} /> : <Car size={14} />}
               </div>

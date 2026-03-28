@@ -174,7 +174,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
   return (
     <div className="space-y-8">
       {/* Command Header: Clocks & Status */}
-      <div className="flex flex-col lg:flex-row justify-between items-center gap-6 glass-panel p-6 rounded-[32px] border-white/5">
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-6 glass-panel p-6 rounded-2xl border-white/5">
         <div className="flex flex-wrap justify-center lg:justify-start gap-8">
           {[
             { label: 'Cartagena', tz: 'America/Bogota', code: 'COT', offset: 'UTC-5' },
@@ -273,7 +273,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Active Missions Timeline */}
         <div className="lg:col-span-2 space-y-8">
-          <div className="glass-panel p-8 rounded-[40px]">
+          <div className="glass-panel p-8 rounded-2xl">
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-2xl font-serif italic">{t.activeMissions}</h3>
               <div className="flex gap-2">
@@ -285,7 +285,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
 
             <div className="space-y-6">
               {bookings.map((booking) => (
-                <div key={booking.id} className="p-6 bg-white/5 rounded-3xl border border-white/10 hover:border-gold/30 transition-all group">
+                <div key={booking.id} className="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-gold/30 transition-all group">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h4 className="text-lg font-sans font-medium group-hover:text-gold transition-colors">{booking.title}</h4>
@@ -324,7 +324,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           </div>
 
           {/* Asset Status Monitor */}
-          <div className="glass-panel p-8 rounded-[40px]">
+          <div className="glass-panel p-8 rounded-2xl">
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-2xl font-serif italic">Asset Status Monitor</h3>
               <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tight">{Array.isArray(assets) ? assets.length : 0} Total Assets</span>
@@ -349,10 +349,10 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           </div>
 
           {/* Environmental Intel */}
-          <div className="glass-panel p-8 rounded-[40px]">
+          <div className="glass-panel p-8 rounded-2xl">
             <h3 className="text-2xl font-serif italic mb-8">{t.environmentalIntel}</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
+              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-blue-400/10 text-blue-400 rounded-xl">
                     <Wind size={18} />
@@ -366,7 +366,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                 <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Wind: 12kts NE</p>
               </div>
 
-              <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
+              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-cyan-400/10 text-cyan-400 rounded-xl">
                     <Droplets size={18} />
@@ -380,7 +380,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                 <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Next Low: 18:45</p>
               </div>
 
-              <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
+              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-amber-400/10 text-amber-400 rounded-xl">
                     <Car size={18} />
@@ -399,7 +399,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
 
         {/* Incident Feed & Security Monitor */}
         <div className="space-y-8">
-          <div className="glass-panel p-8 rounded-[40px] border-red-500/20">
+          <div className="glass-panel p-8 rounded-2xl border-red-500/20">
             <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3">
               <AlertCircle size={20} className="text-red-400" /> {t.incidentFeed}
             </h3>
@@ -429,7 +429,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             </div>
           </div>
 
-          <div className="glass-panel p-8 rounded-[40px] border-gold/20">
+          <div className="glass-panel p-8 rounded-2xl border-gold/20">
             <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3">
               <DollarSign size={20} className="text-gold" /> {t.unitEconomics}
             </h3>
@@ -480,7 +480,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-2xl bg-luxury-paper rounded-[40px] overflow-hidden border border-white/10"
+              className="relative w-full max-w-2xl bg-luxury-paper rounded-3xl overflow-hidden border border-white/10"
             >
               <div className="p-8 border-b border-white/5 flex justify-between items-center">
                 <h3 className="text-2xl font-sans font-medium text-white">New Lead Capture</h3>
@@ -508,7 +508,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-5xl bg-luxury-paper rounded-[40px] overflow-hidden border border-white/10"
+              className="relative w-full max-w-5xl bg-luxury-paper rounded-3xl overflow-hidden border border-white/10"
             >
               <div className="p-8 border-b border-white/5 flex justify-between items-center">
                 <h3 className="text-2xl font-sans font-medium text-white">Asset Management</h3>

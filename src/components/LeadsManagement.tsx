@@ -186,7 +186,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
             placeholder={t.search}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-xs font-light text-white"
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-xs font-light text-white"
           />
         </div>
         
@@ -216,7 +216,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="h-64 glass-panel rounded-[40px] flex flex-col items-center justify-center text-center opacity-40 text-white"
+                className="h-64 glass-panel rounded-2xl flex flex-col items-center justify-center text-center opacity-40 text-white"
               >
                 <Users size={48} className="mb-4" />
                 <p className="text-sm font-light">{t.noLeads}</p>
@@ -229,10 +229,10 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   key={lead.id}
-                  className="glass-panel p-8 rounded-[40px] flex flex-col lg:flex-row justify-between items-center gap-8 group hover:border-gold/30 transition-all"
+                  className="glass-panel p-8 rounded-2xl flex flex-col lg:flex-row justify-between items-center gap-8 group hover:border-gold/30 transition-all"
                 >
                   <div className="flex items-center gap-6 flex-1">
-                    <div className="w-16 h-16 bg-white/5 rounded-3xl flex items-center justify-center text-gold relative">
+                    <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-gold relative">
                       <Users size={24} />
                       <div className="absolute -top-1 -right-1 w-4 h-4 bg-gold rounded-full border-2 border-luxury-black flex items-center justify-center">
                         <span className="text-[8px] text-luxury-black font-bold">{lead.source === 'WHATSAPP' ? 'W' : 'C'}</span>
@@ -257,7 +257,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                   </div>
 
                   <div className="flex-1 max-w-md">
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5 italic text-xs text-white/60 font-light leading-relaxed">
+                    <div className="bg-white/5 p-4 rounded-xl border border-white/5 italic text-xs text-white/60 font-light leading-relaxed">
                       "{lead.message}"
                     </div>
                   </div>
@@ -271,7 +271,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                         const cleanPhone = phone.replace(/\D/g, '');
                         window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
                       }}
-                      className="p-4 bg-emerald-500/10 text-emerald-500 rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
+                      className="p-4 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
                       title="WhatsApp Quick Reply"
                     >
                       <Send size={18} />
@@ -280,7 +280,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                     {getNextStatus(lead.status) && (
                       <button 
                         onClick={() => updateLeadStatus(lead.id, getNextStatus(lead.status)!)}
-                        className="p-4 bg-gold/10 text-gold rounded-2xl border border-gold/20 hover:bg-gold/20 transition-all"
+                        className="p-4 bg-gold/10 text-gold rounded-xl border border-gold/20 hover:bg-gold/20 transition-all"
                         title={t.advance}
                       >
                         <ArrowUpRight size={18} />
@@ -290,7 +290,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                     {lead.status !== 'LOST' && lead.status !== 'CLOSED' && (
                       <button 
                         onClick={() => updateLeadStatus(lead.id, 'LOST')}
-                        className="p-4 bg-red-500/10 text-red-500 rounded-2xl border border-red-500/20 hover:bg-red-500/20 transition-all"
+                        className="p-4 bg-red-500/10 text-red-500 rounded-xl border border-red-500/20 hover:bg-red-500/20 transition-all"
                         title={t.markLost}
                       >
                         <XCircle size={18} />

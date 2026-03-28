@@ -324,7 +324,7 @@ export default function App() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel p-12 rounded-[40px] w-full max-w-md relative z-10"
+        className="glass-panel p-12 rounded-3xl w-full max-w-md relative z-10"
       >
         <div className="text-center mb-10">
           <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
@@ -351,7 +351,7 @@ export default function App() {
               type="email" 
               value={authEmail}
               onChange={(e) => setAuthEmail(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light"
               placeholder="admin@klo.com"
               required
             />
@@ -364,7 +364,7 @@ export default function App() {
               type="password" 
               value={authPassword}
               onChange={(e) => setAuthPassword(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light"
               placeholder="••••••••"
               required
             />
@@ -523,7 +523,7 @@ export default function App() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="glass-panel p-8 rounded-3xl text-center border border-white/5 hover:border-gold/30 transition-all group"
+                className="glass-panel p-8 rounded-2xl text-center border border-white/5 hover:border-gold/30 transition-all group"
               >
                 <stat.icon className="mx-auto mb-4 text-gold/50 group-hover:text-gold transition-colors" size={32} />
                 <p className="text-white font-sans font-medium text-base">{stat.label}</p>
@@ -568,7 +568,7 @@ export default function App() {
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 + (idx * 0.1) }}
-                className="glass-panel p-10 rounded-[2rem] border border-white/5 hover:border-gold/20 transition-all"
+                className="glass-panel p-10 rounded-2xl border border-white/5 hover:border-gold/20 transition-all"
               >
                 <div className="w-16 h-16 bg-gold/10 rounded-2xl flex items-center justify-center text-gold mb-8">
                   <feature.icon size={32} />
@@ -617,7 +617,7 @@ export default function App() {
                   const pillarInfo = PILLARS.find(p => p.id === key.toUpperCase());
                   if (!value) return null;
                   return (
-                    <motion.div key={key} whileHover={{ y: -5 }} className="glass-panel p-8 rounded-3xl relative overflow-hidden group">
+                    <motion.div key={key} whileHover={{ y: -5 }} className="glass-panel p-8 rounded-2xl relative overflow-hidden group">
                       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         {pillarInfo && <pillarInfo.icon size={80} />}
                       </div>
@@ -636,7 +636,7 @@ export default function App() {
                 
                 {/* Legal & Security */}
                 <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="glass-panel p-8 rounded-3xl border-gold/20">
+                  <div className="glass-panel p-8 rounded-2xl border-gold/20">
                     <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <Shield size={20} className="text-gold" /> {lang === 'EN' ? 'Security Brief' : 'Resumen de Seguridad'}
                     </h3>
@@ -658,7 +658,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="glass-panel p-8 rounded-3xl border-white/10">
+                  <div className="glass-panel p-8 rounded-2xl border-white/10">
                     <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <UserCheck size={20} className="text-gold" /> {lang === 'EN' ? 'Compliance' : 'Cumplimiento'}
                     </h3>
@@ -673,7 +673,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="glass-panel p-8 rounded-3xl">
+              <div className="glass-panel p-8 rounded-2xl">
                 <h3 className="text-lg font-sans font-medium mb-8 flex items-center gap-3">
                   <Clock size={20} className="text-gold" /> {lang === 'EN' ? 'Agential Timeline' : 'Cronograma Agéntico'}
                 </h3>
@@ -799,7 +799,7 @@ export default function App() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white/20">
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-8 border-white/20">
               <img 
                 src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000" 
                 alt="Luxury Partner"
@@ -807,7 +807,7 @@ export default function App() {
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="absolute -bottom-10 -left-10 glass-panel p-8 rounded-3xl border-white/20 text-luxury-black shadow-2xl">
+            <div className="absolute -bottom-10 -left-10 glass-panel p-8 rounded-2xl border-white/20 text-luxury-black shadow-2xl">
               <div className="flex items-center gap-4 mb-2">
                 <div className="flex -space-x-2">
                   {[1, 2, 3].map(i => (
@@ -852,7 +852,7 @@ export default function App() {
                   <button 
                     key={tab.id}
                     onClick={() => setAdminActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all ${
+                    className={`w-full flex items-center gap-4 px-6 py-4 rounded-xl transition-all ${
                       adminActiveTab === tab.id ? 'bg-gold text-luxury-black font-bold' : 'text-luxury-black/40 hover:bg-black/5'
                     }`}
                   >
@@ -865,7 +865,7 @@ export default function App() {
               <div className="mt-12 pt-12 border-t border-white/5">
                 <button 
                   onClick={() => setIsMissionControl(true)}
-                  className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all"
+                  className="w-full flex items-center gap-4 px-6 py-4 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all"
                 >
                   <Zap size={18} />
                   <span className="text-[11px] font-sans uppercase tracking-tight font-semibold">
@@ -889,12 +889,12 @@ export default function App() {
                       setViewMode('CLIENT');
                       setShowMarketplace(false);
                     }}
-                    className="p-4 bg-white/5 border border-white/10 rounded-3xl text-white hover:bg-white/10 transition-all"
+                    className="p-4 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-white/10 transition-all"
                     title="Back to Home"
                   >
                     <Home size={24} />
                   </button>
-                  <div className="p-4 bg-red-500/10 text-red-500 rounded-3xl border border-red-500/20">
+                  <div className="p-4 bg-red-500/10 text-red-500 rounded-2xl border border-red-500/20">
                     <Zap size={32} />
                   </div>
                   <div>
@@ -908,7 +908,7 @@ export default function App() {
                 </div>
                 <button 
                   onClick={() => setIsMissionControl(false)}
-                  className="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-white/10 transition-all font-sans uppercase tracking-tight text-[11px] font-semibold"
+                  className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all font-sans uppercase tracking-tight text-[11px] font-semibold"
                 >
                   {lang === 'EN' ? 'Exit Control Mode' : lang === 'ES' ? 'Salir del Modo Control' : 'Sair do Modo Controle'}
                 </button>

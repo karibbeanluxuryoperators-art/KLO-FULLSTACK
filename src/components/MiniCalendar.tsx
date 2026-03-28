@@ -58,7 +58,7 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
   }[lang];
 
   return (
-    <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
+    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
       <div className="flex justify-between items-center mb-4">
         <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-gold">
           {monthNames[currentMonth]} {currentYear}

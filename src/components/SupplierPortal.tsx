@@ -301,9 +301,9 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
             whileHover={{ y: -10, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => handleTypeSelect(item.id)}
-            className="glass-panel p-8 rounded-[40px] text-center space-y-6 group border-white/10 hover:border-gold/50 transition-all duration-500"
+            className="glass-panel p-8 rounded-3xl text-center space-y-6 group border-white/10 hover:border-gold/50 transition-all duration-500"
           >
-            <div className={`w-20 h-20 ${item.color} rounded-3xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform`}>
+            <div className={`w-20 h-20 ${item.color} rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform`}>
               <item.icon size={40} />
             </div>
             <h3 className="text-xl font-sans font-medium">{item.label}</h3>
@@ -323,7 +323,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         </div>
       </div>
 
-      <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-10">
+      <div className="glass-panel p-10 rounded-3xl border-white/10 space-y-10">
         {/* Common Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-2">
@@ -682,7 +682,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-8 flex flex-col items-center text-center opacity-60">
+          <div className="glass-panel p-10 rounded-3xl border-white/10 space-y-8 flex flex-col items-center text-center opacity-60">
             <div className="w-20 h-20 rounded-3xl flex items-center justify-center bg-blue-500/10 text-blue-500">
               <Globe size={40} />
             </div>
@@ -704,7 +704,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
             </p>
           </div>
 
-          <div className="glass-panel p-10 rounded-[48px] border-white/10 space-y-8">
+          <div className="glass-panel p-10 rounded-3xl border-white/10 space-y-8">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center">
                 <Calendar size={24} />

@@ -217,11 +217,11 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-[40px] overflow-hidden shadow-2xl"
+          className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
         >
           <div className="p-8 border-b border-white/5 bg-white/5 flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gold/10 text-gold rounded-2xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gold/10 text-gold rounded-xl flex items-center justify-center">
                 <ClipboardList size={24} />
               </div>
               <div>
@@ -239,7 +239,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
               <div className="space-y-6">
                 <div className="space-y-2">
                   <h4 className="text-[10px] uppercase tracking-widest text-gold font-bold">Asset Information</h4>
-                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-3">
+                  <div className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-3">
                     <div className="flex items-center gap-3">
                       <Package size={16} className="text-white/40" />
                       <span className="text-sm text-white">{selectedBooking.asset_name}</span>
@@ -254,7 +254,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
 
                 <div className="space-y-2">
                   <h4 className="text-[10px] uppercase tracking-widest text-gold font-bold">Guest Details</h4>
-                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-3">
+                  <div className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-3">
                     <div className="flex items-center gap-3">
                       <User size={16} className="text-white/40" />
                       <span className="text-sm text-white">{selectedBooking.guest_name}</span>
@@ -270,7 +270,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
               <div className="space-y-6">
                 <div className="space-y-2">
                   <h4 className="text-[10px] uppercase tracking-widest text-gold font-bold">Journey Dates</h4>
-                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-3">
+                  <div className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-3">
                     <div className="flex items-center gap-3">
                       <Calendar size={16} className="text-white/40" />
                       <div className="text-sm text-white">
@@ -286,7 +286,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
 
                 <div className="space-y-2">
                   <h4 className="text-[10px] uppercase tracking-widest text-gold font-bold">Financials</h4>
-                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                  <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] text-white/40 uppercase tracking-widest">Total Price</span>
                       <span className="text-xl text-gold font-light">{selectedBooking.total_price}</span>
@@ -302,7 +302,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                 <textarea 
                   value={bookingNotes}
                   onChange={(e) => setBookingNotes(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-sm text-white font-light h-32 resize-none focus:outline-none focus:border-gold/50 transition-all"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-6 text-sm text-white font-light h-32 resize-none focus:outline-none focus:border-gold/50 transition-all"
                   placeholder="Add internal notes about this booking..."
                 />
                 <button 
@@ -319,7 +319,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
               <button 
                 onClick={() => handleBookingStatusUpdate(selectedBooking.id, 'CONFIRMED')}
                 disabled={actionLoading === selectedBooking.id || selectedBooking.status === 'CONFIRMED'}
-                className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 transition-all ${
+                className={`flex-1 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 transition-all ${
                   selectedBooking.status === 'CONFIRMED' ? 'bg-emerald-500 text-white' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white'
                 }`}
               >
@@ -329,7 +329,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
               <button 
                 onClick={() => handleBookingStatusUpdate(selectedBooking.id, 'CANCELLED')}
                 disabled={actionLoading === selectedBooking.id || selectedBooking.status === 'CANCELLED'}
-                className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 transition-all ${
+                className={`flex-1 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 transition-all ${
                   selectedBooking.status === 'CANCELLED' ? 'bg-red-500 text-white' : 'bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white'
                 }`}
               >
@@ -434,12 +434,12 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={supplier.id}
-                  className="glass-panel rounded-[40px] overflow-hidden group border-white/5 hover:border-gold/30 transition-all flex flex-col"
+                  className="glass-panel rounded-2xl overflow-hidden group border-white/5 hover:border-gold/30 transition-all flex flex-col"
                 >
                   <div className="p-8 space-y-6 flex-1">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center text-gold font-serif text-2xl">
+                        <div className="w-14 h-14 bg-gold/10 rounded-xl flex items-center justify-center text-gold font-serif text-2xl">
                           {supplier.business_name.charAt(0)}
                         </div>
                         <div>
@@ -500,7 +500,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                         <button 
                           onClick={() => handleStatusUpdate(supplier.id, 'APPROVED')}
                           disabled={actionLoading === supplier.id}
-                          className="flex-1 py-4 bg-emerald-500/10 text-emerald-400 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20 font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
+                          className="flex-1 py-4 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20 font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
                         >
                           {actionLoading === supplier.id ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
                           Approve
@@ -508,7 +508,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                         <button 
                           onClick={() => handleStatusUpdate(supplier.id, 'REJECTED')}
                           disabled={actionLoading === supplier.id}
-                          className="flex-1 py-4 bg-red-500/10 text-red-400 rounded-2xl hover:bg-red-500 hover:text-white transition-all border border-red-500/20 font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
+                          className="flex-1 py-4 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition-all border border-red-500/20 font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
                         >
                           {actionLoading === supplier.id ? <Loader2 size={14} className="animate-spin" /> : <X size={14} />}
                           Reject
@@ -517,7 +517,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                     ) : (
                       <button 
                         onClick={() => onViewAssets(supplier.id)}
-                        className="w-full py-4 bg-white/5 text-white/60 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-white/10 transition-all border border-white/10"
+                        className="w-full py-4 bg-white/5 text-white/60 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-white/10 transition-all border border-white/10"
                       >
                         <Package size={16} /> View Inventory
                       </button>
@@ -529,7 +529,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
           )}
         </div>
       ) : (
-        <div className="glass-panel rounded-[40px] overflow-hidden border-white/5">
+        <div className="glass-panel rounded-2xl overflow-hidden border-white/5">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>

@@ -114,7 +114,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
           >
             <div className="p-8 border-b border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center text-luxury-black">
+                <div className="w-12 h-12 bg-gold rounded-xl flex items-center justify-center text-luxury-black">
                   <Sparkles size={24} />
                 </div>
                 <div>
@@ -130,14 +130,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
             <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
               {chatHistory.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] p-5 rounded-3xl text-sm font-light leading-relaxed ${
+                  <div className={`max-w-[85%] p-5 rounded-2xl text-sm font-light leading-relaxed ${
                     msg.role === 'user' ? 'bg-gold text-luxury-black rounded-tr-none' : 'glass-panel rounded-tl-none'
                   }`}>{msg.content}</div>
                 </div>
               ))}
               {isPlanning && (
                 <div className="flex justify-start">
-                  <div className="glass-panel p-5 rounded-3xl rounded-tl-none flex items-center gap-3">
+                  <div className="glass-panel p-5 rounded-2xl rounded-tl-none flex items-center gap-3">
                     <Loader2 size={16} className="animate-spin text-gold" />
                     <span className="text-xs text-luxury-black/50 italic">
                       {lang === 'EN' ? 'Orchestrating 360° pillars...' : lang === 'ES' ? 'Orquestando pilares 360°...' : 'Orquestrando pilares 360°...'}
@@ -155,7 +155,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                   value={message} 
                   onChange={(e) => setMessage(e.target.value)} 
                   placeholder={lang === 'EN' ? 'Plan a 360° experience...' : lang === 'ES' ? 'Planifica una experiencia 360°...' : 'Planeje uma experiência 360°...'} 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-6 pr-14 focus:outline-none focus:border-gold/50 transition-colors font-light" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl py-5 pl-6 pr-14 focus:outline-none focus:border-gold/50 transition-colors font-light" 
                 />
                 <button type="submit" disabled={isPlanning} className="absolute right-2 top-2 bottom-2 w-10 bg-gold text-luxury-black rounded-xl flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50"><Send size={18} /></button>
               </div>

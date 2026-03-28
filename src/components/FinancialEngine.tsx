@@ -123,9 +123,9 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
           { label: t.avgBooking, value: `$${(avgBookingValue / 1000).toFixed(1)}K`, icon: TrendingUp, color: 'text-white' },
           { label: t.totalBookings, value: totalBookingsCount, icon: Target, color: 'text-white' },
         ].map((stat, i) => (
-          <div key={i} className="glass-panel p-6 rounded-3xl border-white/5">
+          <div key={i} className="glass-panel p-6 rounded-2xl border-white/5">
             <div className="flex justify-between items-start mb-4">
-              <div className={`p-3 rounded-2xl bg-white/5 ${stat.color}`}>
+              <div className={`p-3 rounded-xl bg-white/5 ${stat.color}`}>
                 <stat.icon size={20} />
               </div>
             </div>
@@ -136,7 +136,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       </div>
 
       {/* Progress Bar */}
-      <div className="glass-panel p-8 rounded-[40px] border-white/5">
+      <div className="glass-panel p-8 rounded-2xl border-white/5">
         <div className="flex justify-between items-end mb-4">
           <div>
             <h4 className="text-xl font-serif italic mb-1">{t.clientProgress}</h4>
@@ -155,7 +155,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       </div>
 
       {/* Monthly Revenue Performance */}
-      <div className="glass-panel p-8 rounded-[40px] border-white/5">
+      <div className="glass-panel p-8 rounded-2xl border-white/5">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h3 className="text-xl font-serif italic tracking-wide">Monthly Revenue Performance</h3>
@@ -205,13 +205,13 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Stats */}
-        <div className="lg:col-span-2 glass-panel p-8 rounded-[40px] border-gold/20">
+        <div className="lg:col-span-2 glass-panel p-8 rounded-2xl border-gold/20">
           <div className="flex justify-between items-center mb-12">
             <div>
               <h3 className="text-3xl font-serif italic tracking-wide">{t.title}</h3>
               <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
             </div>
-            <div className="p-4 bg-gold/10 text-gold rounded-3xl">
+            <div className="p-4 bg-gold/10 text-gold rounded-2xl">
               <DollarSign size={24} />
             </div>
           </div>
@@ -251,7 +251,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
                 { name: 'Vianco Ground', amount: '$12,400', status: t.pending, icon: Wallet },
                 { name: 'ZentrumHub', amount: '$8,900', status: t.settled, icon: ShieldCheck },
               ].map((partner, i) => (
-                <div key={i} className="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/10">
+                <div key={i} className="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
                   <div className="flex items-center gap-4">
                     <div className={`p-2 rounded-xl bg-white/5 ${partner.status === t.settled ? 'text-emerald-400' : 'text-amber-400'}`}>
                       <partner.icon size={16} />
@@ -270,7 +270,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
 
         {/* Cost Breakdown & Revenue Breakdown */}
         <div className="space-y-8">
-          <div className="glass-panel p-8 rounded-[40px] border-white/10">
+          <div className="glass-panel p-8 rounded-2xl border-white/10">
             <h3 className="text-xl font-serif mb-8">{t.costDistribution}</h3>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -305,7 +305,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
             </div>
           </div>
 
-          <div className="glass-panel p-8 rounded-[40px] border-white/10">
+          <div className="glass-panel p-8 rounded-2xl border-white/10">
             <h3 className="text-xl font-serif mb-8">{t.revenueBreakdown}</h3>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">

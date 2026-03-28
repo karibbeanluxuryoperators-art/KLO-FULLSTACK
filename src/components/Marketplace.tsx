@@ -341,7 +341,7 @@ Please let me know the availability and next steps.`;
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full h-full md:h-auto md:max-w-2xl bg-luxury-black border border-white/10 rounded-none md:rounded-[40px] p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
+        className="relative w-full h-full md:h-auto md:max-w-2xl bg-luxury-black border border-white/10 rounded-none md:rounded-3xl p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
       >
         <div className="absolute top-0 right-0 p-10 opacity-5 text-white">
           <Shield size={160} />
@@ -361,7 +361,7 @@ Please let me know the availability and next steps.`;
                   type="text"
                   value={bookingData.guestName}
                   onChange={(e) => setBookingData({...bookingData, guestName: e.target.value})}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
                   placeholder="John Doe"
                 />
               </div>
@@ -371,7 +371,7 @@ Please let me know the availability and next steps.`;
                   type="email"
                   value={bookingData.guestEmail}
                   onChange={(e) => setBookingData({...bookingData, guestEmail: e.target.value})}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
                   placeholder="john@example.com"
                 />
               </div>
@@ -381,7 +381,7 @@ Please let me know the availability and next steps.`;
                   type="number"
                   value={bookingData.pax}
                   onChange={(e) => setBookingData({...bookingData, pax: parseInt(e.target.value)})}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
                   min="1"
                 />
               </div>
@@ -392,13 +392,13 @@ Please let me know the availability and next steps.`;
                     type="date"
                     value={bookingData.startDate}
                     onChange={(e) => setBookingData({...bookingData, startDate: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
                   />
                   <input 
                     type="date"
                     value={bookingData.endDate}
                     onChange={(e) => setBookingData({...bookingData, endDate: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
                   />
                 </div>
               </div>
@@ -409,7 +409,7 @@ Please let me know the availability and next steps.`;
               <textarea 
                 value={bookingData.specialRequests}
                 onChange={(e) => setBookingData({...bookingData, specialRequests: e.target.value})}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light h-32 resize-none"
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light h-32 resize-none"
                 placeholder="Any special preferences or security requirements..."
               />
             </div>
@@ -439,7 +439,7 @@ Please let me know the availability and next steps.`;
               <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Step 2 of 2: Review Journey</p>
             </div>
 
-            <div className="glass-panel p-6 rounded-3xl space-y-4">
+            <div className="glass-panel p-6 rounded-2xl space-y-4">
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Guest</span>
                 <span className="text-sm text-white font-medium">{bookingData.guestName}</span>
@@ -459,7 +459,7 @@ Please let me know the availability and next steps.`;
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                   onClick={() => setPaymentMethod('card')}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border transition-all text-left ${
+                  className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
                     paymentMethod === 'card' ? 'border-gold bg-gold/10' : 'border-white/10 bg-white/5 hover:bg-white/10'
                   }`}
                 >
@@ -474,7 +474,7 @@ Please let me know the availability and next steps.`;
 
                 <button
                   onClick={() => setPaymentMethod('usdc')}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border transition-all text-left ${
+                  className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
                     paymentMethod === 'usdc' ? 'border-gold bg-gold/10' : 'border-white/10 bg-white/5 hover:bg-white/10'
                   }`}
                 >
@@ -553,7 +553,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       >
       <div className="p-8 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center text-luxury-black">
+          <div className="w-12 h-12 bg-gold rounded-xl flex items-center justify-center text-luxury-black">
             <ShoppingBag size={24} />
           </div>
           <div>
@@ -574,7 +574,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
         ) : (
           cart.map((item) => (
-            <div key={item.id} className="glass-panel p-4 rounded-2xl flex gap-4 group">
+            <div key={item.id} className="glass-panel p-4 rounded-xl flex gap-4 group">
               <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
                 <img src={`https://picsum.photos/seed/${item.id}/200/200`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
@@ -628,7 +628,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           <div>
-            <div className="relative aspect-video rounded-3xl md:rounded-[40px] overflow-hidden mb-8 group">
+            <div className="relative aspect-video rounded-2xl overflow-hidden mb-8 group">
               <img 
                 src={asset.image || `https://picsum.photos/seed/${asset.id}/1200/800`} 
                 alt={asset.name}
@@ -645,17 +645,17 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-              <div className="glass-panel p-6 rounded-3xl text-center">
+              <div className="glass-panel p-6 rounded-xl text-center">
                 <MapPin size={20} className="text-gold mx-auto mb-2" />
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.location}</span>
                 <span className="text-sm font-medium text-white">{asset.location}</span>
               </div>
-              <div className="glass-panel p-6 rounded-3xl text-center">
+              <div className="glass-panel p-6 rounded-xl text-center">
                 <Users size={20} className="text-gold mx-auto mb-2" />
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.capacity}</span>
                 <span className="text-sm font-medium text-white">{asset.capacity} PAX</span>
               </div>
-              <div className="glass-panel p-6 rounded-3xl text-center">
+              <div className="glass-panel p-6 rounded-xl text-center">
                 <DollarSign size={20} className="text-gold mx-auto mb-2" />
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.rate}</span>
                 <span className="text-sm font-bold text-gold">{asset.pricePerUnit}</span>
@@ -666,7 +666,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               {asset.description && (
                 <div>
                   <h3 className="text-xl font-sans font-medium mb-4 text-white">{t.description}</h3>
-                  <p className="text-sm text-white/60 leading-relaxed bg-white/5 p-6 rounded-3xl border border-white/10">
+                  <p className="text-sm text-white/60 leading-relaxed bg-white/5 p-6 rounded-xl border border-white/10">
                     {asset.description}
                   </p>
                 </div>
@@ -677,7 +677,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   <h3 className="text-xl font-sans font-medium mb-4 text-white">{t.gallery}</h3>
                   <div className="grid grid-cols-2 gap-4">
                     {asset.gallery.map((img, idx) => (
-                      <div key={idx} className="aspect-square rounded-3xl overflow-hidden border border-white/10">
+                      <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-white/10">
                         <img src={img} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
                       </div>
                     ))}
@@ -688,7 +688,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               {asset.videoUrl && (
                 <div>
                   <h3 className="text-xl font-sans font-medium mb-4 text-white">{t.video}</h3>
-                  <div className="aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black">
+                  <div className="aspect-video rounded-xl overflow-hidden border border-white/10 bg-black">
                     <video 
                       src={asset.videoUrl} 
                       controls 
@@ -703,11 +703,11 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 <div className="grid grid-cols-2 gap-4">
                   {asset.type === 'STAFF' && (
                     <>
-                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                         <Star size={16} className="text-gold" />
                         <span className="text-sm text-white/70">Rating: {(asset as any).rating}/5.0</span>
                       </div>
-                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                         <Users size={16} className="text-gold" />
                         <span className="text-sm text-white/70">{(asset as any).languages.join(', ')}</span>
                       </div>
@@ -715,11 +715,11 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   )}
                   {asset.type === 'AIRCRAFT' && (
                     <>
-                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                         <Plane size={16} className="text-gold" />
                         <span className="text-sm text-white/70">Range: {(asset as any).range}</span>
                       </div>
-                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                         <Shield size={16} className="text-gold" />
                         <span className="text-sm text-white/70">Tail: {(asset as any).tailNumber}</span>
                       </div>
@@ -727,11 +727,11 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   )}
                   {asset.type === 'VESSEL' && (
                     <>
-                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                         <Ship size={16} className="text-gold" />
                         <span className="text-sm text-white/70">Length: {(asset as any).length}</span>
                       </div>
-                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                         <Users size={16} className="text-gold" />
                         <span className="text-sm text-white/70">Crew: {(asset as any).crewCount}</span>
                       </div>
@@ -743,7 +743,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
 
           <div className="space-y-8">
-            <div className="glass-panel p-8 rounded-[40px] border-gold/20">
+            <div className="glass-panel p-8 rounded-2xl border-gold/20">
               <h3 className="text-2xl font-sans font-medium mb-6 flex items-center gap-3 text-white">
                 <Calendar size={24} className="text-gold" /> {t.availability}
               </h3>
@@ -773,9 +773,9 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               </div>
             </div>
 
-            <div className="glass-panel p-8 rounded-[40px] border-white/5">
+            <div className="glass-panel p-8 rounded-2xl border-white/5">
                 <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-gold/10 text-gold rounded-2xl">
+                <div className="p-3 bg-gold/10 text-gold rounded-xl">
                   <Users size={24} />
                 </div>
                 <div>
@@ -785,7 +785,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               </div>
 
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-gold/10 text-gold rounded-2xl">
+                <div className="p-3 bg-gold/10 text-gold rounded-xl">
                   <Shield size={24} />
                 </div>
                 <div>
@@ -931,7 +931,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={asset.id}
-                  className="glass-panel rounded-[40px] overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
+                  className="glass-panel rounded-2xl overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
                   onClick={() => setSelectedAsset(asset)}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">

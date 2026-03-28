@@ -37,7 +37,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({ messages, la
   const activeMessages = messages.filter(m => m.senderId === activeChat);
 
   return (
-    <div className="glass-panel rounded-[40px] border-white/10 overflow-hidden flex h-[600px]">
+    <div className="glass-panel rounded-2xl border-white/10 overflow-hidden flex h-[600px]">
       {/* Sidebar */}
       <div className="w-80 border-r border-white/5 bg-white/[0.02] flex flex-col">
         <div className="p-6 border-b border-white/5">
@@ -59,7 +59,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({ messages, la
                 activeChat === chat.senderId ? 'bg-gold/5 border-r-2 border-r-gold' : 'hover:bg-white/5'
               }`}
             >
-              <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-luxury-cream/40">
+              <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-luxury-cream/40">
                 <User size={20} />
               </div>
               <div className="flex-1 text-left">
@@ -106,7 +106,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({ messages, la
         <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
           {activeMessages.map((msg) => (
             <div key={msg.id} className={`flex ${msg.senderRole === 'ADMIN' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[70%] p-4 rounded-3xl ${
+              <div className={`max-w-[70%] p-4 rounded-2xl ${
                 msg.senderRole === 'ADMIN' 
                   ? 'bg-gold text-luxury-black rounded-tr-none' 
                   : 'bg-white/5 border border-white/10 rounded-tl-none'
@@ -132,7 +132,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({ messages, la
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder={t.typeMessage}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-16 text-sm focus:outline-none focus:border-gold/50"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-16 text-sm focus:outline-none focus:border-gold/50"
             />
             <button className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-gold text-luxury-black rounded-xl hover:bg-white transition-all">
               <Send size={18} />
