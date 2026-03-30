@@ -461,10 +461,10 @@ export default function App() {
             </h1>
             <p className="text-white/60 text-lg md:text-xl font-sans font-light max-w-2xl mx-auto mb-12 leading-relaxed">
               {lang === 'EN' 
-                ? 'The only platform that moves you from private jet to superyacht to ultra-luxury villa — with your entire Caribbean journey orchestrated in seconds.'
+                ? "Cartagena's most exclusive travel experience. Private aviation, superyachts, and ultra-luxury villas — curated for those who accept nothing less."
                 : lang === 'ES'
-                ? 'La única plataforma que lo traslada de un jet privado a un superyate y a una villa de ultra-lujo, con todo su viaje por el Caribe orquestado en segundos.'
-                : 'A única plataforma que o leva de um jato particular a um superiate e a uma vila de ultra-luxo — com toda a sua jornada pelo Caribe orquestrada em segundos.'}
+                ? "La experiencia de viaje más exclusiva de Cartagena. Aviación privada, superyates y villas de ultra-lujo — para quienes no aceptan nada menos que lo mejor."
+                : "A experiência de viagem mais exclusiva de Cartagena. Aviação privada, superates e vilas de ultra-luxo — para quem não aceita nada menos que o melhor."}
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 px-4">
               <button 
@@ -513,10 +513,22 @@ export default function App() {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
             {[
-              { label: '$7,500 avg booking', icon: DollarSign },
-              { label: '<0.5s response time', icon: Timer },
-              { label: '5 pillars covered', icon: LayoutDashboard },
-              { label: '100% vetted assets', icon: Shield },
+              { 
+                label: lang === 'EN' ? "Cartagena, Colombia" : lang === 'ES' ? "Cartagena, Colombia" : "Cartagena, Colômbia", 
+                icon: MapPin 
+              },
+              { 
+                label: lang === 'EN' ? "Every asset personally vetted" : lang === 'ES' ? "Cada activo verificado personalmente" : "Cada ativo verificado pessoalmente", 
+                icon: Shield 
+              },
+              { 
+                label: "Air · Sea · Stay · Ground · Staff", 
+                icon: LayoutDashboard 
+              },
+              { 
+                label: lang === 'EN' ? "By invitation only" : lang === 'ES' ? "Solo por invitación" : "Somente por convite", 
+                icon: Star 
+              },
             ].map((stat, idx) => (
               <motion.div
                 key={idx}
@@ -537,30 +549,30 @@ export default function App() {
             {[
               {
                 icon: Shield,
-                title: lang === 'EN' ? 'Military-Grade Vetting' : lang === 'ES' ? 'Veteo de Grado Militar' : 'Vetting de Grau Militar',
+                title: lang === 'EN' ? 'Absolute discretion' : lang === 'ES' ? 'Discreción absoluta' : 'Discrição absoluta',
                 desc: lang === 'EN' 
-                  ? 'Every asset physically verified by CEO/COO. Ex-Military Intelligence security protocols.'
+                  ? 'Every asset physically verified by our security team. Ex-military intelligence protocols. Your privacy is non-negotiable.'
                   : lang === 'ES'
-                  ? 'Cada activo verificado físicamente por el CEO/COO. Protocolos de seguridad de Inteligencia Ex-Militar.'
-                  : 'Cada ativo verificado fisicamente pelo CEO/COO. Protocolos de segurança de Inteligência Ex-Militar.'
+                  ? 'Cada activo verificado físicamente por nuestro equipo de seguridad. Protocolos de inteligencia ex-militar. Su privacidad no es negociable.'
+                  : 'Cada ativo verificado fisicamente por nossa equipe de segurança. Protocolos de inteligência ex-militar. Sua privacidade é inegociável.'
               },
               {
                 icon: Zap,
-                title: lang === 'EN' ? 'Instant Orchestration' : lang === 'ES' ? 'Orquestación Instantánea' : 'Orquestração Instantânea',
+                title: lang === 'EN' ? 'Your journey, orchestrated' : lang === 'ES' ? 'Su viaje, orquestado' : 'Sua jornada, orquestrada',
                 desc: lang === 'EN'
-                  ? 'Maria Fernanda AI plans your complete 360 experience in under 1 second.'
+                  ? 'Tell us what you have in mind. Our concierge team — backed by AI — assembles your complete Cartagena itinerary and presents it for your approval. One conversation is all it takes.'
                   : lang === 'ES'
-                  ? 'La IA Maria Fernanda planifica su experiencia 360 completa en menos de 1 segundo.'
-                  : 'A IA Maria Fernanda planeja sua experiência 360 completa em menos de 1 segundo.'
+                  ? 'Cuéntenos qué tiene en mente. Nuestro equipo de conserjería, respaldado por IA, organiza su itinerario completo en Cartagena y se lo presenta para su aprobación. Una conversación es todo lo que se necesita.'
+                  : 'Conte-nos o que você tem em mente. Nossa equipe de concierge — apoiada por IA — monta seu itinerário completo em Cartagena e o apresenta para sua aprovação. Uma conversa é tudo o que basta.'
               },
               {
                 icon: Users,
-                title: lang === 'EN' ? 'B2B2C Network' : lang === 'ES' ? 'Red B2B2C' : 'Rede B2B2C',
+                title: lang === 'EN' ? 'White-glove from first contact' : lang === 'ES' ? 'Guante blanco desde el primer contacto' : 'Luva branca desde o primeiro contato',
                 desc: lang === 'EN'
-                  ? 'On-site staff become your sales force. Zero acquisition cost after month 6.'
+                  ? 'From your first message to your final transfer, a dedicated KLO concierge manages every detail. No call centres. No waiting. No exceptions.'
                   : lang === 'ES'
-                  ? 'El personal en el sitio se convierte en su fuerza de ventas. Costo de adquisición cero después del mes 6.'
-                  : 'A equipe no local torna-se sua força de vendas. Custo de aquisição zero após o mês 6.'
+                  ? 'Desde su primer mensaje hasta su traslado final, un conserje dedicado de KLO gestiona cada detalle. Sin centros de llamadas. Sin esperas. Sin excepciones.'
+                  : 'Luva branca desde o primeiro contato. Desde a sua primeira mensagem até a sua transferência final, um concierge dedicado da KLO gerencia cada detalhe. Sem centros de chamadas. Sem espera. Sem exceções.'
               }
             ].map((feature, idx) => (
               <motion.div
@@ -749,28 +761,19 @@ export default function App() {
             </h2>
             <p className="text-luxury-black/70 text-lg font-sans font-light mb-12 leading-relaxed">
               {lang === 'EN' 
-                ? "List your villa, yacht, aircraft, or services with the Caribbean's premier ultra-luxury platform. Reach UHNW clients globally with zero upfront cost."
+                ? "We are building Cartagena's most exclusive luxury network — and we are selective about who joins. If your villa, yacht, aircraft, or service belongs among the best, we want to hear from you."
                 : lang === 'ES'
-                ? "Anuncie su villa, yate, avión o servicios en la plataforma de ultra-lujo líder del Caribe. Llegue a clientes UHNW a nivel mundial sin costo inicial."
-                : "Liste sua vila, iate, aeronave ou serviços na principal plataforma de ultra-luxo do Caribe. Alcance clientes UHNW globalmente com custo inicial zero."}
+                ? "Estamos construyendo la red de lujo más exclusiva de Cartagena, y somos selectivos con quienes se unen. Si su villa, yate, avión o servicio pertenece a los mejores, queremos saber de usted."
+                : "Estamos construindo a rede de luxo mais exclusiva de Cartagena — e somos seletivos sobre quem participa. Se a sua vila, iate, aeronave ou serviço pertence aos melhores, queremos ouvi-lo."}
             </p>
             
-            <div className="space-y-6 mb-12">
-              {[
-                { en: '20% commission — you keep 80%', es: '20% de comisión — usted se queda con el 80%', pt: '20% de comissão — você fica com 80%' },
-                { en: 'Verified UHNW client base', es: 'Base de clientes UHNW verificada', pt: 'Base de clientes UHNW verificada' },
-                { en: '48-hour payment after check-in', es: 'Pago en 48 horas después del check-in', pt: 'Pagamento em 48 horas após o check-in' }
-              ].map((point, idx) => (
-                <div key={idx} className="flex items-center gap-4">
-                  <div className="w-6 h-6 rounded-full bg-luxury-black/10 flex items-center justify-center">
-                    <CheckCircle2 size={14} className="text-luxury-black" />
-                  </div>
-                  <span className="text-[11px] font-sans font-semibold uppercase tracking-tight">
-                    {lang === 'EN' ? point.en : lang === 'ES' ? point.es : point.pt}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <p className="text-luxury-black/70 text-lg font-sans font-light mb-12 leading-relaxed">
+              {lang === 'EN' 
+                ? "Competitive terms · Vetted clientele · Dedicated support"
+                : lang === 'ES'
+                ? "Condiciones competitivas · Clientela verificada · Soporte dedicado"
+                : "Condições competitivas · Clientela verificada · Suporte dedicado"}
+            </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-6">
               <button 
@@ -817,9 +820,10 @@ export default function App() {
                     </div>
                   ))}
                 </div>
-                <span className="text-[10px] font-sans uppercase tracking-tight font-semibold">500+ Active Partners</span>
+                <span className="text-[10px] font-sans uppercase tracking-tight font-semibold">
+                  {lang === 'EN' ? "Vetted partners · Cartagena" : lang === 'ES' ? "Socios verificados · Cartagena" : "Parceiros verificados · Cartagena"}
+                </span>
               </div>
-              <p className="text-xs italic font-light">"KLO changed our business model."</p>
             </div>
           </motion.div>
         </div>
@@ -1015,7 +1019,7 @@ export default function App() {
     <SupplierPortal onBack={() => {
       window.history.pushState({}, '', '/');
       setViewMode('CLIENT');
-    }} />
+    }} lang={lang} />
   );
 
   return (
@@ -1407,10 +1411,10 @@ export default function App() {
             </div>
             <p className="text-luxury-black/40 font-light max-w-sm leading-relaxed">
               {lang === 'EN' 
-                ? "The world's first AI-driven marketplace for UHNWI. Redefining luxury through agential orchestration."
+                ? "Ultra-luxury travel, curated in Cartagena. Expanding across Colombia and the Caribbean."
                 : lang === 'ES'
-                ? "El primer mercado del mundo impulsado por IA para UHNWI. Redefiniendo el lujo a través de la orquestación agéntica."
-                : "O primeiro marketplace do mundo impulsionado por IA para UHNWI. Redefinindo o luxo através da orquestração agêntica."}
+                ? "Viajes de ultra-lujo, diseñados en Cartagena. En expansión por Colombia y el Caribe."
+                : "Viagens de ultra-luxo, com curadoria em Cartagena. Em expansão pela Colômbia e o Caribe."}
             </p>
           </div>
           <div>

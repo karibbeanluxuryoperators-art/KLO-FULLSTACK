@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Language } from '../types';
 import { 
   Home, Ship, Plane, Users, Car, ChevronLeft, ChevronRight, 
   Check, Calendar, Globe, Shield, DollarSign, Camera, 
@@ -32,9 +33,10 @@ const YACHT_FEATURES = ["Water toys", "Jet ski", "Dive equipment", "Fishing gear
 
 interface SupplierPortalProps {
   onBack?: () => void;
+  lang?: Language;
 }
 
-export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
+export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack, lang = 'EN' }) => {
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(0);
   const [type, setType] = useState<string | null>(null);
@@ -857,7 +859,11 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <h3 className="text-xl font-sans font-medium">KLO Partnership Terms</h3>
         </div>
         <p className="text-sm text-luxury-black/60 font-light leading-relaxed">
-          KLO charges a 20% commission on all bookings. You receive 80% of the booking value. Payment is processed within 48 hours of check-in.
+          {lang === 'EN' 
+            ? "As a KLO Verified Partner, you retain 80% of every booking. KLO's 20% management fee covers client acquisition, platform access, payment processing, and dedicated concierge support. Payouts are processed within 48 hours of guest check-in via Stripe. You will have access to a partner dashboard to track bookings and revenue in real time."
+            : lang === 'ES'
+            ? "Como Socio Verificado de KLO, usted retiene el 80% de cada reserva. La tarifa de gestión del 20% de KLO cubre la adquisición de clientes, acceso a la plataforma, procesamiento de pagos y soporte de conserjería dedicado. Los pagos se procesan dentro de las 48 horas posteriores al check-in del huésped a través de Stripe."
+            : "Como Parceiro Verificado KLO, você retém 80% de cada reserva. A taxa de gestão de 20% da KLO cobre aquisição de clientes, acesso à plataforma, processamento de pagamentos e suporte de concierge dedicado. Os pagamentos são processados em até 48 horas após o check-in do hóspede via Stripe."}
         </p>
         <label className="flex items-center gap-4 cursor-pointer group">
           <div 
