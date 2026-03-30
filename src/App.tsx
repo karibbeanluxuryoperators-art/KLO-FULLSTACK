@@ -748,86 +748,6 @@ export default function App() {
           </motion.section>
         )}
       </AnimatePresence>
-      {/* Become a Partner Section */}
-      <section className="py-24 px-6 bg-gradient-to-br from-gold via-gold/80 to-gold/60 text-luxury-black">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-6xl font-serif italic mb-8 tracking-wide">
-              {lang === 'EN' ? 'Join the KLO Partner Network' : lang === 'ES' ? 'Únase a la Red de Socios de KLO' : 'Junte-se à Rede de Parceiros KLO'}
-            </h2>
-            <p className="text-luxury-black/70 text-lg font-sans font-light mb-12 leading-relaxed">
-              {lang === 'EN' 
-                ? "We are building Cartagena's most exclusive luxury network — and we are selective about who joins. If your villa, yacht, aircraft, or service belongs among the best, we want to hear from you."
-                : lang === 'ES'
-                ? "Estamos construyendo la red de lujo más exclusiva de Cartagena, y somos selectivos con quienes se unen. Si su villa, yate, avión o servicio pertenece a los mejores, queremos saber de usted."
-                : "Estamos construindo a rede de luxo mais exclusiva de Cartagena — e somos seletivos sobre quem participa. Se a sua vila, iate, aeronave ou serviço pertence aos melhores, queremos ouvi-lo."}
-            </p>
-            
-            <p className="text-luxury-black/70 text-lg font-sans font-light mb-12 leading-relaxed">
-              {lang === 'EN' 
-                ? "Competitive terms · Vetted clientele · Dedicated support"
-                : lang === 'ES'
-                ? "Condiciones competitivas · Clientela verificada · Soporte dedicado"
-                : "Condições competitivas · Clientela verificada · Suporte dedicado"}
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              <button 
-                onClick={() => {
-                  window.history.pushState({}, '', '/supplier');
-                  setViewMode('SUPPLIER');
-                }}
-                className="w-full sm:w-auto px-10 py-4 bg-luxury-black text-gold rounded-full font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-white hover:text-luxury-black transition-all shadow-2xl"
-              >
-                {lang === 'EN' ? 'Apply to Become a Partner' : lang === 'ES' ? 'Solicitar ser Socio' : 'Candidatar-se a Parceiro'}
-              </button>
-              <a 
-                href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-luxury-black font-sans font-semibold uppercase tracking-tight text-[11px] hover:underline"
-              >
-                <MessageSquare size={18} />
-                {lang === 'EN' ? 'WhatsApp Us First' : lang === 'ES' ? 'WhatsApp Primero' : 'WhatsApp Primeiro'}
-              </a>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-8 border-white/20">
-              <img 
-                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000" 
-                alt="Luxury Partner"
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <div className="absolute -bottom-10 -left-10 glass-panel p-8 rounded-2xl border-white/20 text-luxury-black shadow-2xl">
-              <div className="flex items-center gap-4 mb-2">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3].map(i => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-gold bg-luxury-paper overflow-hidden">
-                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Partner" />
-                    </div>
-                  ))}
-                </div>
-                <span className="text-[10px] font-sans uppercase tracking-tight font-semibold">
-                  {lang === 'EN' ? "Vetted partners · Cartagena" : lang === 'ES' ? "Socios verificados · Cartagena" : "Parceiros verificados · Cartagena"}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </>
   );
 };
@@ -1095,10 +1015,9 @@ export default function App() {
                     window.history.pushState({}, '', '/supplier');
                     setViewMode('SUPPLIER');
                   }} 
-                  style={{ color: viewMode === 'SUPPLIER' ? (isHeroNav ? '#D4AF37' : '#B8941F') : undefined, opacity: viewMode === 'SUPPLIER' ? 1 : 0.6 }}
-                  className="hover:text-gold transition-colors"
+                  className="px-4 py-1.5 border border-gold/40 rounded-full text-gold hover:bg-gold hover:text-luxury-black transition-all duration-300 text-[10px] uppercase tracking-widest"
                 >
-                  {lang === 'EN' ? 'Become a Partner' : lang === 'ES' ? 'Ser Socio' : 'Ser Parceiro'}
+                  {lang === 'EN' ? 'List with KLO' : lang === 'ES' ? 'Unirse a KLO' : 'Listar com KLO'}
                 </button>
 
                 <div className="w-[1px] h-4 bg-current opacity-10 mx-1" />
@@ -1223,7 +1142,7 @@ export default function App() {
                       setSectionConfirmation(lang === 'EN' ? 'Partner Portal' : lang === 'ES' ? 'Portal de Socios' : 'Portal de Parceiros');
                       setTimeout(() => setSectionConfirmation(null), 2000);
                     }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
-                      {lang === 'EN' ? 'Become a Partner' : lang === 'ES' ? 'Ser Socio' : 'Ser Parceiro'}
+                      {lang === 'EN' ? 'List with KLO' : lang === 'ES' ? 'Unirse a KLO' : 'Listar com KLO'}
                     </button>
 
                     <div className="h-[1px] w-full bg-black/5 my-2" />
@@ -1398,6 +1317,34 @@ export default function App() {
           )}
         </motion.button>
       </div>
+
+      <section className="py-10 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-luxury-black/40 mb-1">
+              {lang === 'EN' ? 'For villa, yacht & aviation partners' 
+              : lang === 'ES' ? 'Para socios de villas, yates y aviación' 
+              : 'Para parceiros de vilas, iates e aviação'}
+            </p>
+            <p className="text-lg font-serif text-luxury-black">
+              {lang === 'EN' ? 'List your asset with KLO' 
+              : lang === 'ES' ? 'Liste su activo con KLO'
+              : 'Liste seu ativo com KLO'}
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              window.history.pushState({}, '', '/supplier');
+              setViewMode('SUPPLIER');
+            }}
+            className="px-8 py-3 border border-luxury-black/20 rounded-full text-xs uppercase tracking-widest font-medium hover:bg-luxury-black hover:text-white transition-all duration-300 whitespace-nowrap"
+          >
+            {lang === 'EN' ? 'Apply to become a partner'
+            : lang === 'ES' ? 'Solicitar ser socio'
+            : 'Candidatar-se a parceiro'}
+          </button>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="py-20 px-6 border-t border-white/5">
