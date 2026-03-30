@@ -26,10 +26,17 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
     setIsLoading(true);
     try {
       const res = await fetch('/api/leads');
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
-      setLeads(data);
+      if (Array.isArray(data)) {
+        setLeads(data);
+      } else {
+        console.error('Expected array of leads, got:', data);
+        setLeads([]);
+      }
     } catch (err) {
-      console.error(err);
+      console.error('Failed to fetch leads:', err);
+      setLeads([]);
     } finally {
       setIsLoading(false);
     }
