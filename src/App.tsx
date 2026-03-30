@@ -231,6 +231,7 @@ export default function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('CLIENT');
   const [lang, setLang] = useState<Language>('EN');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [sectionConfirmation, setSectionConfirmation] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [chatPreload, setChatPreload] = useState<string | null>(null);
   const [plannedExperience, setPlannedExperience] = useState<KLOExperience | null>(null);
@@ -865,7 +866,7 @@ export default function App() {
               <div className="mt-12 pt-12 border-t border-white/5">
                 <button 
                   onClick={() => setIsMissionControl(true)}
-                  className="w-full flex items-center gap-4 px-6 py-4 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all"
+                  className="w-full flex items-center gap-4 px-6 py-4 rounded-xl bg-gold/10 text-gold border border-gold/20 hover:bg-gold/20 transition-all"
                 >
                   <Zap size={18} />
                   <span className="text-[11px] font-sans uppercase tracking-tight font-semibold">
@@ -894,22 +895,23 @@ export default function App() {
                   >
                     <Home size={24} />
                   </button>
-                  <div className="p-4 bg-red-500/10 text-red-500 rounded-2xl border border-red-500/20">
+                  <div className="p-4 bg-gold/10 text-gold rounded-2xl border border-gold/20">
                     <Zap size={32} />
                   </div>
                   <div>
                     <h2 className="text-5xl font-serif italic tracking-wide text-white">
                       {lang === 'EN' ? 'Mission Control Mode' : lang === 'ES' ? 'Modo Control de Misión' : 'Modo Controle de Missão'}
                     </h2>
-                    <p className="text-red-500/60 font-sans text-[11px] uppercase tracking-tight font-semibold">
+                    <p className="text-gold/60 font-sans text-[11px] uppercase tracking-tight font-semibold">
                       {lang === 'EN' ? 'High-Density Orchestration Active' : lang === 'ES' ? 'Orquestación de Alta Densidad Activa' : 'Orquestração de Alta Densidade Ativa'}
                     </p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsMissionControl(false)}
-                  className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all font-sans uppercase tracking-tight text-[11px] font-semibold"
+                  className="px-8 py-4 bg-gold text-luxury-black rounded-xl hover:bg-white transition-all font-sans uppercase tracking-tight text-[11px] font-bold shadow-lg shadow-gold/20 flex items-center gap-2"
                 >
+                  <X size={16} />
                   {lang === 'EN' ? 'Exit Control Mode' : lang === 'ES' ? 'Salir del Modo Control' : 'Sair do Modo Controle'}
                 </button>
               </div>
@@ -983,6 +985,15 @@ export default function App() {
 
   const renderProviderView = () => (
     <div className="pt-24 px-6 max-w-7xl mx-auto pb-20">
+      <div className="mb-8">
+        <button 
+          onClick={() => setViewMode('CLIENT')}
+          className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold text-luxury-black hover:bg-black/5 transition-all group"
+        >
+          <ChevronRight className="rotate-180 group-hover:text-gold transition-colors" size={14} /> 
+          {lang === 'EN' ? 'Back to Client View' : lang === 'ES' ? 'Volver a Vista Cliente' : 'Voltar à Vista do Cliente'}
+        </button>
+      </div>
       <AssetManagement 
         assets={assets.filter(a => a.providerId === 'P1')} 
         lang={lang} 
@@ -1020,6 +1031,19 @@ export default function App() {
               color: isHeroNav ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.6)'
             }}
           >
+            {/* Section Confirmation Toast */}
+            <AnimatePresence>
+              {sectionConfirmation && (
+                <motion.div
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  className="absolute top-24 left-1/2 -translate-x-1/2 px-6 py-3 bg-gold text-luxury-black rounded-full shadow-2xl font-sans font-bold uppercase tracking-tight text-[10px] z-[100]"
+                >
+                  {lang === 'EN' ? 'Entering' : lang === 'ES' ? 'Entrando a' : 'Entrando em'} {sectionConfirmation}
+                </motion.div>
+              )}
+            </AnimatePresence>
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
               <div className="flex items-center gap-2 cursor-pointer" onClick={() => { setViewMode('CLIENT'); setShowMarketplace(false); }}>
                 <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
@@ -1127,7 +1151,7 @@ export default function App() {
                   {user ? (
                     <div className="flex items-center gap-3">
                       <span className="text-[8px] opacity-50 lowercase tracking-normal">{user.name}</span>
-                      <button onClick={handleLogout} className="hover:text-red-400 transition-colors opacity-60 hover:opacity-100">
+                      <button onClick={handleLogout} className="hover:text-gold transition-colors opacity-60 hover:opacity-100">
                         {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
                       </button>
                     </div>
@@ -1174,6 +1198,8 @@ export default function App() {
                       setViewMode('CLIENT');
                       setShowMarketplace(false);
                       setIsMenuOpen(false);
+                      setSectionConfirmation(lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge');
+                      setTimeout(() => setSectionConfirmation(null), 2000);
                     }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
                       {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
                     </button>
@@ -1181,6 +1207,8 @@ export default function App() {
                       setViewMode('CLIENT');
                       setShowMarketplace(true);
                       setIsMenuOpen(false);
+                      setSectionConfirmation(lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado');
+                      setTimeout(() => setSectionConfirmation(null), 2000);
                     }} className={`text-left transition-colors ${viewMode === 'CLIENT' && showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
                       {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
                     </button>
@@ -1188,22 +1216,46 @@ export default function App() {
                       window.history.pushState({}, '', '/supplier');
                       setViewMode('SUPPLIER');
                       setIsMenuOpen(false);
+                      setSectionConfirmation(lang === 'EN' ? 'Partner Portal' : lang === 'ES' ? 'Portal de Socios' : 'Portal de Parceiros');
+                      setTimeout(() => setSectionConfirmation(null), 2000);
                     }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
                       {lang === 'EN' ? 'Become a Partner' : lang === 'ES' ? 'Ser Socio' : 'Ser Parceiro'}
                     </button>
 
                     <div className="h-[1px] w-full bg-black/5 my-2" />
 
-                    <button onClick={() => { setViewMode('ADMIN'); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'ADMIN' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    <button onClick={() => { 
+                      setViewMode('ADMIN'); 
+                      setIsMenuOpen(false); 
+                      setSectionConfirmation('Admin');
+                      setTimeout(() => setSectionConfirmation(null), 2000);
+                    }} className={`text-left transition-colors ${viewMode === 'ADMIN' ? 'text-gold' : 'text-luxury-black/60'}`}>
                       Admin
                     </button>
-                    <button onClick={() => { setViewMode('CLIENT'); setShowMarketplace(false); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    <button onClick={() => { 
+                      setViewMode('CLIENT'); 
+                      setShowMarketplace(false); 
+                      setIsMenuOpen(false); 
+                      setSectionConfirmation('Client');
+                      setTimeout(() => setSectionConfirmation(null), 2000);
+                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
                       Client
                     </button>
-                    <button onClick={() => { window.history.pushState({}, '', '/supplier'); setViewMode('SUPPLIER'); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    <button onClick={() => { 
+                      window.history.pushState({}, '', '/supplier'); 
+                      setViewMode('SUPPLIER'); 
+                      setIsMenuOpen(false); 
+                      setSectionConfirmation('Supplier');
+                      setTimeout(() => setSectionConfirmation(null), 2000);
+                    }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
                       Supplier
                     </button>
-                    <button onClick={() => { setViewMode('PROVIDER'); setIsMenuOpen(false); }} className={`text-left transition-colors ${viewMode === 'PROVIDER' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    <button onClick={() => { 
+                      setViewMode('PROVIDER'); 
+                      setIsMenuOpen(false); 
+                      setSectionConfirmation('Provider');
+                      setTimeout(() => setSectionConfirmation(null), 2000);
+                    }} className={`text-left transition-colors ${viewMode === 'PROVIDER' ? 'text-gold' : 'text-luxury-black/60'}`}>
                       Provider
                     </button>
 
@@ -1338,7 +1390,7 @@ export default function App() {
           </motion.div>
           
           {!isSpeedDialOpen && (
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-luxury-black animate-pulse" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-gold rounded-full border-2 border-luxury-black animate-pulse" />
           )}
         </motion.button>
       </div>

@@ -76,9 +76,9 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
             className={`
               h-6 flex items-center justify-center text-[10px] font-sans rounded-lg transition-all
               ${day === null ? '' : 'hover:bg-white/5 cursor-default'}
-              ${day !== null && isBooked(day) ? 'bg-red-500/20 text-red-400 border border-red-500/30' : ''}
+              ${day !== null && isBooked(day) ? 'bg-white/5 text-white/20 border border-white/10' : ''}
               ${day !== null && isToday(day) ? 'bg-gold text-luxury-black font-semibold' : 'text-luxury-cream/60'}
-              ${day !== null && !isBooked(day) && !isToday(day) ? 'bg-emerald-500/10 text-emerald-400/60' : ''}
+              ${day !== null && !isBooked(day) && !isToday(day) ? 'bg-gold/10 text-gold/60' : ''}
             `}
           >
             {day}
@@ -87,11 +87,11 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
       </div>
       <div className="mt-4 flex gap-4 justify-center">
         <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-emerald-500/30" />
+          <div className="w-2 h-2 rounded-full bg-gold/30" />
           <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{t.available}</span>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-red-500/30" />
+          <div className="w-2 h-2 rounded-full bg-white/20" />
           <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{t.booked}</span>
         </div>
       </div>

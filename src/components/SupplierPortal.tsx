@@ -290,11 +290,11 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {[
-          { id: 'VILLA', label: 'Villa Owner', icon: Home, color: 'bg-emerald-500/10 text-emerald-500' },
-          { id: 'YACHT', label: 'Yacht / Boat Operator', icon: Ship, color: 'bg-blue-500/10 text-blue-500' },
-          { id: 'AVIATION', label: 'Private Aviation', icon: Plane, color: 'bg-purple-500/10 text-purple-500' },
-          { id: 'STAFF', label: 'Staffing & Services', icon: Users, color: 'bg-amber-500/10 text-amber-500' },
-          { id: 'GROUND', label: 'Ground Transport', icon: Car, color: 'bg-emerald-500/10 text-emerald-500' },
+          { id: 'VILLA', label: 'Villa Owner', icon: Home, color: 'bg-gold/10 text-gold' },
+          { id: 'YACHT', label: 'Yacht / Boat Operator', icon: Ship, color: 'bg-white/5 text-white/60' },
+          { id: 'AVIATION', label: 'Private Aviation', icon: Plane, color: 'bg-white/5 text-white/70' },
+          { id: 'STAFF', label: 'Staffing & Services', icon: Users, color: 'bg-white/5 text-white/50' },
+          { id: 'GROUND', label: 'Ground Transport', icon: Car, color: 'bg-white/5 text-white/40' },
         ].map((item) => (
           <motion.button
             key={item.id}
@@ -915,7 +915,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack }) => {
           <MessageSquare size={18} /> Contact via WhatsApp
         </a>
         <button 
-          onClick={() => window.location.href = '/'}
+          onClick={() => onBack ? onBack() : window.location.href = '/'}
           className="w-full py-6 glass-panel border-white/10 text-luxury-black rounded-3xl font-sans font-semibold uppercase tracking-tight text-[11px] flex items-center justify-center gap-3 hover:bg-white transition-all"
         >
           Explore KLO Marketplace <ArrowRight size={18} />

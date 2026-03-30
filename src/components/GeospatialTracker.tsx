@@ -114,7 +114,7 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
   }, [assets]);
 
   return (
-    <div className="glass-panel p-8 rounded-2xl border-gold/20 overflow-hidden relative">
+    <div className="admin-card p-8 rounded-2xl border-gold/20 overflow-hidden relative">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h3 className="text-2xl font-serif italic tracking-wide">{t.title}</h3>

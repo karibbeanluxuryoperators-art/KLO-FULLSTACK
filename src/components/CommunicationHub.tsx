@@ -37,7 +37,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({ messages, la
   const activeMessages = messages.filter(m => m.senderId === activeChat);
 
   return (
-    <div className="glass-panel rounded-2xl border-white/10 overflow-hidden flex h-[600px]">
+    <div className="admin-card rounded-2xl border-white/10 overflow-hidden flex h-[600px]">
       {/* Sidebar */}
       <div className="w-80 border-r border-white/5 bg-white/[0.02] flex flex-col">
         <div className="p-6 border-b border-white/5">

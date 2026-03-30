@@ -478,7 +478,7 @@ Please let me know the availability and next steps.`;
                     paymentMethod === 'usdc' ? 'border-gold bg-gold/10' : 'border-white/10 bg-white/5 hover:bg-white/10'
                   }`}
                 >
-                  <div className={`p-2 rounded-lg ${paymentMethod === 'usdc' ? 'bg-purple-500 text-white' : 'bg-white/10 text-white'}`}>
+                  <div className={`p-2 rounded-lg ${paymentMethod === 'usdc' ? 'bg-gold text-luxury-black' : 'bg-white/10 text-white'}`}>
                     <Hexagon size={20} />
                   </div>
                   <div>
@@ -585,7 +585,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               </div>
               <button 
                 onClick={() => removeFromCart(item.id)}
-                className="p-2 self-start text-white/20 hover:text-red-500 transition-colors"
+                className="p-2 self-start text-white/20 hover:text-gold transition-colors"
               >
                 <Trash2 size={16} />
               </button>
@@ -621,9 +621,9 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-20">
         <button 
           onClick={() => setSelectedAsset(null)}
-          className="flex items-center gap-2 text-white/40 hover:text-gold transition-colors mb-8 md:mb-12 uppercase tracking-tight text-[11px] font-semibold min-h-[44px]"
+          className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold text-white hover:bg-white/10 transition-all shadow-sm group mb-8 md:mb-12"
         >
-          <ChevronRight className="rotate-180" size={16} /> {t.back}
+          <ChevronRight className="rotate-180 group-hover:text-gold transition-colors" size={14} /> {t.back}
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
@@ -858,6 +858,15 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             className="flex flex-col md:flex-row justify-between items-end gap-8"
           >
             <div>
+              {onBack && (
+                <button 
+                  onClick={onBack}
+                  className="flex items-center gap-2 text-gold hover:text-white transition-colors mb-4 uppercase tracking-tight text-[10px] font-bold"
+                >
+                  <ChevronRight className="rotate-180" size={14} />
+                  {lang === 'EN' ? 'Back to Home' : lang === 'ES' ? 'Volver al Inicio' : 'Voltar ao Início'}
+                </button>
+              )}
               <span className="text-gold font-sans uppercase tracking-tight text-[11px] mb-2 block font-semibold">{t.subtitle}</span>
               <h1 className="text-5xl md:text-7xl font-serif italic tracking-wide text-white">{t.title}</h1>
             </div>

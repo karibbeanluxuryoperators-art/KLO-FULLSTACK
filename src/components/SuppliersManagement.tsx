@@ -193,10 +193,10 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'APPROVED':
-      case 'CONFIRMED': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-      case 'PENDING': return 'bg-gold/10 text-gold border-gold/20';
+      case 'CONFIRMED': return 'bg-gold/10 text-gold border-gold/20';
+      case 'PENDING': return 'bg-white/10 text-white border-white/20';
       case 'REJECTED':
-      case 'CANCELLED': return 'bg-red-500/10 text-red-400 border-red-500/20';
+      case 'CANCELLED': return 'bg-red-500/10 text-red-500 border-red-500/20';
       default: return 'bg-white/5 text-white/40 border-white/10';
     }
   };
@@ -434,7 +434,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={supplier.id}
-                  className="glass-panel rounded-2xl overflow-hidden group border-white/5 hover:border-gold/30 transition-all flex flex-col"
+                  className="admin-card rounded-2xl overflow-hidden group border-white/5 hover:border-gold/30 transition-all flex flex-col"
                 >
                   <div className="p-8 space-y-6 flex-1">
                     <div className="flex justify-between items-start">
@@ -529,7 +529,7 @@ export const SuppliersManagement: React.FC<SuppliersManagementProps> = ({ lang, 
           )}
         </div>
       ) : (
-        <div className="glass-panel rounded-2xl overflow-hidden border-white/5">
+        <div className="admin-card rounded-2xl overflow-hidden border-white/5">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>

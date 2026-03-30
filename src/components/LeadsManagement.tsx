@@ -61,10 +61,10 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
 
   const getStatusColor = (status: Lead['status']) => {
     switch (status) {
-      case 'NEW': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
-      case 'CONTACTED': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
-      case 'QUALIFIED': return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
-      case 'CLOSED': return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
+      case 'NEW': return 'bg-gold/10 text-gold border-gold/20';
+      case 'CONTACTED': return 'bg-white/10 text-white border-white/20';
+      case 'QUALIFIED': return 'bg-gold text-luxury-black border-gold font-bold';
+      case 'CLOSED': return 'bg-white/5 text-white/40 border-white/10';
       case 'LOST': return 'bg-red-500/10 text-red-500 border-red-500/20';
     }
   };
@@ -159,21 +159,21 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
             <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">Total</span>
             <span className="text-lg font-serif italic text-white">{stats.total}</span>
           </div>
-          <div className="px-4 py-2 bg-blue-500/10 rounded-xl border border-blue-500/20 flex items-center gap-3">
-            <span className="text-[11px] font-sans font-semibold text-blue-500 uppercase tracking-tight">{t.new}</span>
-            <span className="text-lg font-serif italic text-blue-500">{stats.new}</span>
+          <div className="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
+            <span className="text-[11px] font-sans font-semibold text-gold uppercase tracking-tight">{t.new}</span>
+            <span className="text-lg font-serif italic text-gold">{stats.new}</span>
           </div>
-          <div className="px-4 py-2 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
-            <span className="text-[11px] font-sans font-semibold text-amber-500 uppercase tracking-tight">{t.contacted}</span>
-            <span className="text-lg font-serif italic text-amber-500">{stats.contacted}</span>
+          <div className="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
+            <span className="text-[11px] font-sans font-semibold text-white/60 uppercase tracking-tight">{t.contacted}</span>
+            <span className="text-lg font-serif italic text-white/60">{stats.contacted}</span>
           </div>
-          <div className="px-4 py-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20 flex items-center gap-3">
-            <span className="text-[11px] font-sans font-semibold text-emerald-500 uppercase tracking-tight">{t.qualified}</span>
-            <span className="text-lg font-serif italic text-emerald-500">{stats.qualified}</span>
+          <div className="px-4 py-2 bg-gold/10 rounded-xl border border-gold/20 flex items-center gap-3">
+            <span className="text-[11px] font-sans font-semibold text-gold uppercase tracking-tight">{t.qualified}</span>
+            <span className="text-lg font-serif italic text-gold">{stats.qualified}</span>
           </div>
-          <div className="px-4 py-2 bg-purple-500/10 rounded-xl border border-purple-500/20 flex items-center gap-3">
-            <span className="text-[11px] font-sans font-semibold text-purple-500 uppercase tracking-tight">{t.closed}</span>
-            <span className="text-lg font-serif italic text-purple-500">{stats.closed}</span>
+          <div className="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex items-center gap-3">
+            <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">{t.closed}</span>
+            <span className="text-lg font-serif italic text-white/40">{stats.closed}</span>
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="h-64 glass-panel rounded-2xl flex flex-col items-center justify-center text-center opacity-40 text-white"
+                className="h-64 admin-card rounded-2xl flex flex-col items-center justify-center text-center opacity-40 text-white"
               >
                 <Users size={48} className="mb-4" />
                 <p className="text-sm font-light">{t.noLeads}</p>
@@ -229,7 +229,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   key={lead.id}
-                  className="glass-panel p-8 rounded-2xl flex flex-col lg:flex-row justify-between items-center gap-8 group hover:border-gold/30 transition-all"
+                  className="admin-card p-8 rounded-2xl flex flex-col lg:flex-row justify-between items-center gap-8 group hover:border-gold/30 transition-all"
                 >
                   <div className="flex items-center gap-6 flex-1">
                     <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-gold relative">
@@ -271,7 +271,7 @@ export const LeadsManagement: React.FC<LeadsManagementProps> = ({ lang }) => {
                         const cleanPhone = phone.replace(/\D/g, '');
                         window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
                       }}
-                      className="p-4 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
+                      className="p-4 bg-white/5 text-gold rounded-xl border border-white/10 hover:bg-white/10 transition-all"
                       title="WhatsApp Quick Reply"
                     >
                       <Send size={18} />

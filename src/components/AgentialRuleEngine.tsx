@@ -46,24 +46,24 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
 
   const getTriggerIcon = (trigger: string) => {
     switch (trigger) {
-      case 'DELAY': return <Clock size={16} className="text-amber-400" />;
+      case 'DELAY': return <Clock size={16} className="text-white/40" />;
       case 'SECURITY': return <Shield size={16} className="text-red-400" />;
-      case 'WEATHER': return <Wind size={16} className="text-blue-400" />;
-      case 'TTE_CRITICAL': return <AlertTriangle size={16} className="text-orange-400" />;
+      case 'WEATHER': return <Wind size={16} className="text-white/60" />;
+      case 'TTE_CRITICAL': return <AlertTriangle size={16} className="text-gold" />;
       default: return <Zap size={16} className="text-gold" />;
     }
   };
 
   return (
-    <div className="glass-panel p-8 rounded-2xl border-purple-500/20">
+    <div className="admin-card p-8 rounded-2xl border-white/5">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h3 className="text-2xl font-serif italic tracking-wide">{t.title}</h3>
-          <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
+          <h3 className="text-2xl font-serif italic tracking-wide text-white">{t.title}</h3>
+          <p className="text-white/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
         </div>
         <button 
           onClick={() => setIsAdding(true)}
-          className="p-3 bg-purple-500/10 text-purple-400 rounded-full border border-purple-500/20 hover:bg-purple-500/20 transition-all"
+          className="p-3 bg-gold/10 text-gold rounded-full border border-gold/20 hover:bg-gold/20 transition-all"
         >
           <Plus size={20} />
         </button>

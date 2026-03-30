@@ -119,11 +119,11 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: t.gmv, value: `$${(gmvValue / 1000000).toFixed(1)}M`, icon: Wallet, color: 'text-gold' },
-          { label: t.commission, value: `$${(commissionValue / 1000).toFixed(0)}K`, icon: CreditCard, color: 'text-emerald-400' },
+          { label: t.commission, value: `$${(commissionValue / 1000).toFixed(0)}K`, icon: CreditCard, color: 'text-gold' },
           { label: t.avgBooking, value: `$${(avgBookingValue / 1000).toFixed(1)}K`, icon: TrendingUp, color: 'text-white' },
           { label: t.totalBookings, value: totalBookingsCount, icon: Target, color: 'text-white' },
         ].map((stat, i) => (
-          <div key={i} className="glass-panel p-6 rounded-2xl border-white/5">
+          <div key={i} className="admin-card p-6 rounded-2xl border-white/5">
             <div className="flex justify-between items-start mb-4">
               <div className={`p-3 rounded-xl bg-white/5 ${stat.color}`}>
                 <stat.icon size={20} />
@@ -136,7 +136,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       </div>
 
       {/* Progress Bar */}
-      <div className="glass-panel p-8 rounded-2xl border-white/5">
+      <div className="admin-card p-8 rounded-2xl border-white/5">
         <div className="flex justify-between items-end mb-4">
           <div>
             <h4 className="text-xl font-serif italic mb-1">{t.clientProgress}</h4>
@@ -155,13 +155,13 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       </div>
 
       {/* Monthly Revenue Performance */}
-      <div className="glass-panel p-8 rounded-2xl border-white/5">
+      <div className="admin-card p-8 rounded-2xl border-white/5">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h3 className="text-xl font-serif italic tracking-wide">Monthly Revenue Performance</h3>
             <p className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">Real-time GMV Tracking</p>
           </div>
-          <div className="flex items-center gap-2 text-emerald-400 text-xs font-sans font-semibold">
+          <div className="flex items-center gap-2 text-gold text-xs font-sans font-semibold">
             <TrendingUp size={16} />
             +24% vs Last Period
           </div>
@@ -205,7 +205,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Stats */}
-        <div className="lg:col-span-2 glass-panel p-8 rounded-2xl border-gold/20">
+        <div className="lg:col-span-2 admin-card p-8 rounded-2xl border-gold/20">
           <div className="flex justify-between items-center mb-12">
             <div>
               <h3 className="text-3xl font-serif italic tracking-wide">{t.title}</h3>
@@ -221,7 +221,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
               <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.netMargin}</span>
               <div className="flex items-end gap-2">
                 <span className="text-4xl font-serif italic text-gold">${financials.netMargin.toLocaleString()}</span>
-                <span className="text-[10px] font-sans font-semibold text-emerald-400 mb-1 flex items-center gap-1">
+                <span className="text-[10px] font-sans font-semibold text-gold mb-1 flex items-center gap-1">
                   <ArrowUpRight size={10} /> 12%
                 </span>
               </div>
@@ -235,8 +235,8 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
             <div>
               <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.opLeakage}</span>
               <div className="flex items-end gap-2">
-                <span className="text-4xl font-serif italic text-red-400">${financials.operationalLeakage.toLocaleString()}</span>
-                <span className="text-[10px] font-sans font-semibold text-red-400 mb-1 flex items-center gap-1">
+                <span className="text-4xl font-serif italic text-red-500">${financials.operationalLeakage.toLocaleString()}</span>
+                <span className="text-[10px] font-sans font-semibold text-red-500 mb-1 flex items-center gap-1">
                   <ArrowDownRight size={10} /> 4%
                 </span>
               </div>
@@ -253,7 +253,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
               ].map((partner, i) => (
                 <div key={i} className="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
                   <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-xl bg-white/5 ${partner.status === t.settled ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    <div className={`p-2 rounded-xl bg-white/5 ${partner.status === t.settled ? 'text-gold' : 'text-white/40'}`}>
                       <partner.icon size={16} />
                     </div>
                     <div>
@@ -270,7 +270,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
 
         {/* Cost Breakdown & Revenue Breakdown */}
         <div className="space-y-8">
-          <div className="glass-panel p-8 rounded-2xl border-white/10">
+          <div className="admin-card p-8 rounded-2xl border-white/10">
             <h3 className="text-xl font-serif mb-8">{t.costDistribution}</h3>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -305,7 +305,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
             </div>
           </div>
 
-          <div className="glass-panel p-8 rounded-2xl border-white/10">
+          <div className="admin-card p-8 rounded-2xl border-white/10">
             <h3 className="text-xl font-serif mb-8">{t.revenueBreakdown}</h3>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">

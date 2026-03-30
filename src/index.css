@@ -30,6 +30,10 @@
   @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
 }
 
+.admin-card {
+  @apply bg-luxury-slate border-[0.5px] border-white/10 shadow-lg;
+}
+
 .gold-gradient {
   background: linear-gradient(135deg, #D4AF37 0%, #F9E29C 50%, #B8860B 100%);
   -webkit-background-clip: text;

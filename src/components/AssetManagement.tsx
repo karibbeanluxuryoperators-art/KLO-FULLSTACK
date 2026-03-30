@@ -623,7 +623,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               key={asset.id}
-              className="glass-panel p-6 rounded-2xl group hover:border-gold/30 transition-all relative overflow-hidden"
+              className="admin-card p-6 rounded-2xl group hover:border-gold/30 transition-all relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-white">
                 {getAssetIcon(asset.type)}
@@ -631,10 +631,10 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
 
               <div className="flex justify-between items-start mb-6">
                 <div className={`p-3 rounded-2xl bg-white/5 ${
-                  asset.type === 'STAFF' ? 'text-purple-400' : 
-                  asset.type === 'AIRCRAFT' ? 'text-blue-400' : 
-                  asset.type === 'VESSEL' ? 'text-cyan-400' : 
-                  asset.type === 'VEHICLE' ? 'text-emerald-400' : 'text-amber-400'
+                  asset.type === 'STAFF' ? 'text-white/40' : 
+                  asset.type === 'AIRCRAFT' ? 'text-gold' : 
+                  asset.type === 'VESSEL' ? 'text-white/60' : 
+                  asset.type === 'VEHICLE' ? 'text-white/50' : 'text-gold'
                 }`}>
                   {getAssetIcon(asset.type)}
                 </div>
@@ -687,7 +687,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                       </div>
                     )}
                     {asset.type === 'VEHICLE' && (asset as any).isArmored && (
-                      <div className="flex items-center gap-1 text-blue-400">
+                      <div className="flex items-center gap-1 text-gold">
                         <Shield size={10} />
                         <span className="text-[11px] font-sans font-semibold uppercase tracking-tight">Armored</span>
                       </div>
@@ -702,7 +702,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   <button 
                     onClick={() => handleDispatch(asset.id)}
                     disabled={dispatchingId === asset.id}
-                    className="w-full py-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gold/10 text-gold border border-gold/20 rounded-xl text-[11px] font-sans font-semibold uppercase tracking-tight hover:bg-gold hover:text-luxury-black transition-all flex items-center justify-center gap-2"
                   >
                     {dispatchingId === asset.id ? <Loader2 className="animate-spin" size={12} /> : <Zap size={12} />}
                     {t.dispatch}

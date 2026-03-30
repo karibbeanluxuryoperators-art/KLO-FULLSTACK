@@ -153,7 +153,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             key={profile.id} 
-            className="glass-panel p-8 rounded-2xl relative overflow-hidden group"
+            className="admin-card p-8 rounded-2xl relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
               <Users size={120} />
@@ -171,7 +171,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                       {profile.tier}
                     </span>
                     <span className={`px-3 py-1 text-[11px] font-sans font-semibold uppercase tracking-tight rounded-full border ${
-                      profile.status === 'ACTIVE' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'
+                      profile.status === 'ACTIVE' ? 'bg-gold/10 text-gold border-gold/20' : 'bg-white/5 text-white/40 border-white/10'
                     }`}>
                       {profile.status}
                     </span>
