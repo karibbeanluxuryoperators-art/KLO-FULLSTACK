@@ -195,13 +195,13 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
           >
             <button 
               onClick={onApply}
-              className="px-8 py-4 bg-gold text-luxury-black rounded-full text-xs uppercase tracking-widest font-bold hover:bg-white transition-all duration-500"
+              className="px-8 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-white transition-all duration-300"
             >
               {t.hero.apply}
             </button>
             <button 
               onClick={() => window.open('https://wa.me/573243132500', '_blank')}
-              className="px-8 py-4 border border-white/20 text-white rounded-full text-xs uppercase tracking-widest font-bold hover:bg-white/5 transition-all duration-500"
+              className="px-8 py-4 border border-white/20 text-white rounded-xl font-medium text-xs tracking-wide hover:bg-white/5 transition-all duration-300"
             >
               {t.hero.whatsapp}
             </button>
@@ -228,9 +228,9 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
               { icon: Car, ...t.categories.ground, badge: true },
               { icon: Users, ...t.categories.staff }
             ].map((cat, i) => (
-              <div key={i} className="p-6 bg-white border border-luxury-black/5 rounded-2xl relative group hover:border-gold/30 transition-all">
+              <div key={i} className="p-6 bg-white border border-luxury-black/[0.07] rounded-xl relative group hover:border-gold/30 transition-all">
                 {cat.badge && (
-                  <span className="absolute top-4 right-4 px-2 py-0.5 bg-gold text-[8px] uppercase font-bold rounded-full">New</span>
+                  <span className="absolute top-4 right-4 px-2 py-0.5 bg-gold text-[8px] uppercase font-bold rounded-md">New</span>
                 )}
                 <cat.icon size={24} className="text-gold mb-4" />
                 <h3 className="text-sm font-serif italic mb-1">{cat.name}</h3>
@@ -277,7 +277,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[t.commercial.card1, t.commercial.card2, t.commercial.card3, t.commercial.card4].map((card, i) => (
-              <div key={i} className="p-8 bg-white border border-luxury-black/5 rounded-3xl">
+              <div key={i} className="p-8 bg-white border border-luxury-black/[0.07] rounded-xl">
                 <div className="flex justify-between items-end mb-6">
                   <span className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">{card.label}</span>
                   <span className="text-4xl font-serif italic text-gold">{card.value}</span>
@@ -297,7 +297,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
           </p>
           <h2 className="text-4xl font-serif italic mb-12">{t.vianco.title}</h2>
 
-          <div className="p-10 bg-white/5 border border-white/10 rounded-3xl relative overflow-hidden group">
+          <div className="p-10 bg-white/5 border border-white/[0.07] rounded-xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
               <Shield size={120} className="text-gold" />
             </div>
@@ -324,13 +324,13 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
           <div className="flex flex-wrap justify-center gap-4">
             <button 
               onClick={onApply}
-              className="px-12 py-5 bg-gold text-luxury-black rounded-full text-xs uppercase tracking-widest font-bold hover:bg-white transition-all duration-500"
+              className="px-12 py-5 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-white transition-all duration-300"
             >
               {t.hero.apply}
             </button>
             <button 
               onClick={() => window.open('https://wa.me/573243132500', '_blank')}
-              className="px-12 py-5 border border-white/20 text-white rounded-full text-xs uppercase tracking-widest font-bold hover:bg-white/5 transition-all duration-500"
+              className="px-12 py-5 border border-white/20 text-white rounded-xl font-medium text-xs tracking-wide hover:bg-white/5 transition-all duration-300"
             >
               {t.hero.whatsapp}
             </button>

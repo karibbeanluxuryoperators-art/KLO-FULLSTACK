@@ -341,7 +341,7 @@ Please let me know the availability and next steps.`;
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full h-full md:h-auto md:max-w-2xl bg-luxury-black border border-white/10 rounded-none md:rounded-3xl p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
+        className="relative w-full h-full md:h-auto md:max-w-2xl bg-luxury-black border border-white/[0.07] rounded-none md:rounded-2xl p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
       >
         <div className="absolute top-0 right-0 p-10 opacity-5 text-white">
           <Shield size={160} />
@@ -417,14 +417,14 @@ Please let me know the availability and next steps.`;
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setIsBookingModalOpen(false)}
-                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-sans font-semibold uppercase tracking-tight text-[10px] hover:bg-white/5 transition-all"
+                className="flex-1 py-5 border border-white/10 rounded-xl font-medium text-xs tracking-wide text-white/40 hover:bg-white/5 transition-all"
               >
                 {t.back}
               </button>
               <button 
                 onClick={() => setBookingStep(2)}
                 disabled={!bookingData.guestName || !bookingData.guestEmail}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all disabled:opacity-50 disabled:hover:bg-gold"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all disabled:opacity-50 disabled:hover:bg-gold"
               >
                 {t.next}
               </button>
@@ -439,7 +439,7 @@ Please let me know the availability and next steps.`;
               <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Step 2 of 2: Review Journey</p>
             </div>
 
-            <div className="glass-panel p-6 rounded-2xl space-y-4">
+            <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 space-y-4">
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Guest</span>
                 <span className="text-sm text-white font-medium">{bookingData.guestName}</span>
@@ -492,14 +492,14 @@ Please let me know the availability and next steps.`;
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setBookingStep(1)}
-                className="flex-1 py-5 border border-white/10 rounded-full text-white/40 font-sans font-semibold uppercase tracking-tight text-[10px] hover:bg-white/5 transition-all"
+                className="flex-1 py-5 border border-white/10 rounded-xl font-medium text-xs tracking-wide text-white/40 hover:bg-white/5 transition-all"
               >
                 {t.prev}
               </button>
               <button 
                 onClick={handleConfirmBooking}
                 disabled={isProcessing}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all flex items-center justify-center gap-2"
               >
                 {isProcessing ? <Loader2 className="animate-spin" size={16} /> : t.confirmBooking}
               </button>
@@ -509,7 +509,7 @@ Please let me know the availability and next steps.`;
 
         {bookingStep === 3 && (
           <div className="text-center py-12 space-y-8">
-            <div className="w-24 h-24 bg-gold/20 text-gold rounded-full flex items-center justify-center mx-auto mb-8">
+            <div className="w-24 h-24 bg-gold/20 text-gold rounded flex items-center justify-center mx-auto mb-8">
               <Shield size={48} />
             </div>
             <div>
@@ -519,7 +519,7 @@ Please let me know the availability and next steps.`;
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setIsBookingModalOpen(false)}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all"
               >
                 Return to Marketplace
               </button>
@@ -531,9 +531,9 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
 \nRequests: ${bookingData.specialRequests}`
                 )}`}
                 target='_blank' rel='noopener noreferrer'
-                className='px-12 py-5 bg-[#25D366] text-white rounded-full font-bold
-                uppercase tracking-tight text-[11px] hover:bg-[#20bd5a] transition-all
-                flex items-center justify-center gap-2 mt-4'
+                className="px-12 py-5 bg-[#25D366] text-white rounded-xl font-medium
+                text-xs tracking-wide hover:bg-[#20bd5a] transition-all
+                flex items-center justify-center gap-2 mt-4"
               >
                 <MessageSquare size={16} /> Confirm with Concierge
               </a>
@@ -557,7 +557,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             <ShoppingBag size={24} />
           </div>
           <div>
-            <h2 className="text-2xl font-sans font-medium text-white uppercase tracking-tight">{t.cart}</h2>
+            <h2 className="text-2xl font-sans font-medium text-white">{t.cart}</h2>
             <p className="text-[11px] text-gold font-sans uppercase tracking-tight font-semibold">{cart.length} {t.items}</p>
           </div>
         </div>
@@ -574,7 +574,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
         ) : (
           cart.map((item) => (
-            <div key={item.id} className="glass-panel p-4 rounded-xl flex gap-4 group">
+            <div key={item.id} className="bg-[#111109] border border-white/[0.07] rounded-xl p-4 flex gap-4 group">
               <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
                 <img src={`https://picsum.photos/seed/${item.id}/200/200`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
@@ -602,7 +602,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
           <button 
             onClick={handleCheckout}
-            className="w-full py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-3"
+            className="w-full py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all flex items-center justify-center gap-3"
           >
             {t.checkout} <ArrowRight size={16} />
           </button>
@@ -621,14 +621,14 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-20">
         <button 
           onClick={() => setSelectedAsset(null)}
-          className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold text-white hover:bg-white/10 transition-all shadow-sm group mb-8 md:mb-12"
+          className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl font-medium text-xs tracking-wide text-white hover:bg-white/10 transition-all shadow-sm group mb-8 md:mb-12"
         >
           <ChevronRight className="rotate-180 group-hover:text-gold transition-colors" size={14} /> {t.back}
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           <div>
-            <div className="relative aspect-video rounded-2xl overflow-hidden mb-8 group">
+            <div className="relative aspect-video rounded-xl overflow-hidden mb-8 group">
               <img 
                 src={asset.image || `https://picsum.photos/seed/${asset.id}/1200/800`} 
                 alt={asset.name}
@@ -645,17 +645,17 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-              <div className="glass-panel p-6 rounded-xl text-center">
+              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 text-center">
                 <MapPin size={20} className="text-gold mx-auto mb-2" />
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.location}</span>
                 <span className="text-sm font-medium text-white">{asset.location}</span>
               </div>
-              <div className="glass-panel p-6 rounded-xl text-center">
+              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 text-center">
                 <Users size={20} className="text-gold mx-auto mb-2" />
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.capacity}</span>
                 <span className="text-sm font-medium text-white">{asset.capacity} PAX</span>
               </div>
-              <div className="glass-panel p-6 rounded-xl text-center">
+              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 text-center">
                 <DollarSign size={20} className="text-gold mx-auto mb-2" />
                 <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.rate}</span>
                 <span className="text-sm font-bold text-gold">{asset.pricePerUnit}</span>
@@ -743,7 +743,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
 
           <div className="space-y-8">
-            <div className="glass-panel p-8 rounded-2xl border-gold/20">
+            <div className="bg-[#111109] border border-gold/20 rounded-xl p-8">
               <h3 className="text-2xl font-sans font-medium mb-6 flex items-center gap-3 text-white">
                 <Calendar size={24} className="text-gold" /> {t.availability}
               </h3>
@@ -755,7 +755,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                     addToCart(asset);
                     setSelectedAsset(null);
                   }}
-                  className="w-full sm:flex-1 py-5 bg-white/5 border border-white/10 text-white rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white/10 transition-all flex items-center justify-center gap-3 min-h-[44px]"
+                  className="w-full sm:flex-1 py-5 bg-white/5 border border-white/10 text-white rounded-xl font-medium text-xs tracking-wide hover:bg-white/10 transition-all flex items-center justify-center gap-3 min-h-[44px]"
                 >
                   {t.addToJourney} <ArrowRight size={16} />
                 </button>
@@ -765,7 +765,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                     setChatPreload(msg);
                     setChatOpen(true);
                   }}
-                  className="w-full sm:flex-1 py-5 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight text-[11px] hover:bg-white transition-all flex items-center justify-center gap-3 min-h-[44px]"
+                  className="w-full sm:flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all flex items-center justify-center gap-3 min-h-[44px]"
                 >
                   <Sparkles size={18} />
                   {lang === 'EN' ? 'Plan this Experience' : lang === 'ES' ? 'Planificar esta Experiencia' : 'Planejar esta Experiência'}
@@ -773,7 +773,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               </div>
             </div>
 
-            <div className="glass-panel p-8 rounded-2xl border-white/5">
+            <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
                 <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-gold/10 text-gold rounded-xl">
                   <Users size={24} />
@@ -810,7 +810,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
         <div className="fixed top-8 left-8 z-[140]">
           <button 
             onClick={onBack}
-            className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold text-white hover:bg-white/10 transition-all shadow-sm group"
+            className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl text-[11px] font-sans uppercase tracking-tight font-semibold text-white hover:bg-white/10 transition-all shadow-sm group"
           >
             <Home size={14} className="group-hover:text-gold transition-colors" /> 
             {lang === 'EN' ? 'Back to Home' : lang === 'ES' ? 'Volver al Inicio' : 'Voltar ao Início'}
@@ -878,7 +878,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 placeholder={t.search}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-sm font-light text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-sm font-light text-white"
               />
             </div>
           </motion.div>
@@ -940,7 +940,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={asset.id}
-                  className="glass-panel rounded-2xl overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
+                  className="bg-[#111109] border border-white/[0.07] rounded-xl overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
                   onClick={() => setSelectedAsset(asset)}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">

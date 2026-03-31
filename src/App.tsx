@@ -327,7 +327,7 @@ export default function App() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel p-12 rounded-3xl w-full max-w-md relative z-10"
+        className="bg-[#111109] border border-white/[0.07] rounded-xl p-12 w-full max-w-md relative z-10"
       >
         <div className="text-center mb-10">
           <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
@@ -336,7 +336,7 @@ export default function App() {
           <h2 className="text-2xl font-sans font-medium mb-2 tracking-tight">
             {lang === 'EN' ? 'Access KLO' : lang === 'ES' ? 'Acceder a KLO' : 'Acessar KLO'}
           </h2>
-          <p className="text-luxury-black/40 text-sm font-light">
+          <p className="text-white/40 text-sm font-light">
             {lang === 'EN' 
               ? 'Enter your credentials to access the orchestration core' 
               : lang === 'ES' 
@@ -354,7 +354,7 @@ export default function App() {
               type="email" 
               value={authEmail}
               onChange={(e) => setAuthEmail(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-white"
               placeholder="admin@klo.com"
               required
             />
@@ -367,7 +367,7 @@ export default function App() {
               type="password" 
               value={authPassword}
               onChange={(e) => setAuthPassword(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-white"
               placeholder="••••••••"
               required
             />
@@ -375,14 +375,14 @@ export default function App() {
           {authError && <p className="text-red-400 text-xs text-center">{authError}</p>}
           <button 
             type="submit"
-            className="w-full py-4 bg-gold text-luxury-black rounded-full font-semibold uppercase tracking-tight hover:bg-white transition-all duration-300"
+            className="w-full py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-white transition-all duration-300"
           >
             {lang === 'EN' ? 'Sign In' : lang === 'ES' ? 'Iniciar Sesión' : 'Entrar'}
           </button>
         </form>
 
         <div className="mt-8 pt-8 border-t border-white/5 text-center">
-          <p className="text-[10px] font-sans uppercase tracking-tight text-luxury-black/40">
+          <p className="text-[10px] font-sans uppercase tracking-tight text-white/40">
             {lang === 'EN' ? 'Demo Credentials' : lang === 'ES' ? 'Credenciales de Demostración' : 'Credenciais de Demonstração'}:<br />
             admin@klo.com | provider@klo.com | client@klo.com
           </p>
@@ -485,13 +485,13 @@ export default function App() {
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 px-4">
               <button 
                 onClick={() => setChatOpen(true)}
-                className="group px-10 py-4 bg-gold text-luxury-black rounded-full font-medium flex items-center gap-3 hover:bg-white transition-all duration-300"
+                className="group px-10 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide flex items-center gap-3 hover:bg-white transition-all duration-300"
               >
                 {lang === 'EN' ? 'Curate My Journey' : lang === 'ES' ? 'Organizar mi Viaje' : 'Curar Minha Jornada'} <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </button>
               <button 
                 onClick={() => setShowMarketplace(true)}
-                className="px-10 py-4 border border-white/20 rounded-full hover:bg-white/5 transition-all"
+                className="px-10 py-4 border border-white/20 rounded-xl font-medium text-xs tracking-wide hover:bg-white/5 transition-all text-white"
               >
                 {lang === 'EN' ? 'Explore Marketplace' : lang === 'ES' ? 'Explorar Mercado' : 'Explorar Mercado'}
               </button>
@@ -552,7 +552,7 @@ export default function App() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="glass-panel p-8 rounded-2xl text-center border border-white/5 hover:border-gold/30 transition-all group"
+                className="bg-[#111109] border border-white/[0.07] rounded-xl p-8 text-center hover:border-gold/30 transition-all group"
               >
                 <stat.icon className="mx-auto mb-4 text-gold/50 group-hover:text-gold transition-colors" size={32} />
                 <p className="text-white font-sans font-medium text-base">{stat.label}</p>
@@ -597,9 +597,9 @@ export default function App() {
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 + (idx * 0.1) }}
-                className="glass-panel p-10 rounded-2xl border border-white/5 hover:border-gold/20 transition-all"
+                className="bg-[#111109] border border-white/[0.07] rounded-xl p-10 hover:border-gold/20 transition-all"
               >
-                <div className="w-16 h-16 bg-gold/10 rounded-2xl flex items-center justify-center text-gold mb-8">
+                <div className="w-16 h-16 bg-gold/10 rounded-xl flex items-center justify-center text-gold mb-8">
                   <feature.icon size={32} />
                 </div>
                 <h3 className="text-xl font-sans font-medium text-white mb-2">{feature.title}</h3>
@@ -646,12 +646,12 @@ export default function App() {
                   const pillarInfo = PILLARS.find(p => p.id === key.toUpperCase());
                   if (!value) return null;
                   return (
-                    <motion.div key={key} whileHover={{ y: -5 }} className="glass-panel p-8 rounded-2xl relative overflow-hidden group">
+                    <motion.div key={key} whileHover={{ y: -5 }} className="bg-[#111109] border border-white/[0.07] rounded-xl p-8 relative overflow-hidden group">
                       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         {pillarInfo && <pillarInfo.icon size={80} />}
                       </div>
                       <div className="flex items-center gap-4 mb-6">
-                        <div className={`p-3 rounded-2xl bg-white/5 ${pillarInfo?.color}`}>
+                        <div className={`p-3 rounded-lg bg-white/5 ${pillarInfo?.color}`}>
                           {pillarInfo && <pillarInfo.icon size={24} />}
                         </div>
                         <h3 className="text-lg font-sans font-medium">
@@ -665,21 +665,21 @@ export default function App() {
                 
                 {/* Legal & Security */}
                 <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="glass-panel p-8 rounded-2xl border-gold/20">
+                  <div className="bg-[#111109] border border-gold/20 rounded-xl p-8">
                     <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <Shield size={20} className="text-gold" /> {lang === 'EN' ? 'Security Brief' : 'Resumen de Seguridad'}
                     </h3>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-[11px] font-sans uppercase tracking-tight text-luxury-black/40 font-semibold">Level</span>
+                        <span className="text-[11px] font-sans uppercase tracking-tight text-white/40 font-semibold">Level</span>
                         <span className="text-xs font-sans font-semibold text-gold">{plannedExperience.securityBrief.level}</span>
                       </div>
-                      <p className="text-xs font-sans text-luxury-black/60 italic leading-relaxed">
+                      <p className="text-xs font-sans text-white/60 italic leading-relaxed">
                         "{plannedExperience.securityBrief.riskAssessment}"
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {plannedExperience.securityBrief.protocols.map((p, i) => (
-                          <span key={i} className="px-3 py-1 bg-white/5 rounded-full text-[10px] font-sans font-semibold uppercase tracking-tight border border-white/10">
+                          <span key={i} className="px-3 py-1 bg-white/5 rounded-md text-[10px] font-sans font-semibold uppercase tracking-tight border border-white/10 text-white/70">
                             {p}
                           </span>
                         ))}
@@ -687,13 +687,13 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="glass-panel p-8 rounded-2xl border-white/10">
+                  <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
                     <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <UserCheck size={20} className="text-gold" /> {lang === 'EN' ? 'Compliance' : 'Cumplimiento'}
                     </h3>
                     <div className="flex flex-wrap gap-3">
                       {plannedExperience.legalRequirements.map((req, i) => (
-                        <span key={i} className="px-4 py-2 bg-white/5 rounded-full text-xs font-sans font-light border border-white/10">
+                        <span key={i} className="px-4 py-2 bg-white/5 rounded-xl text-xs font-sans font-light border border-white/10 text-white/70">
                           {req}
                         </span>
                       ))}
@@ -702,7 +702,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="glass-panel p-8 rounded-2xl">
+              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
                 <h3 className="text-lg font-sans font-medium mb-8 flex items-center gap-3">
                   <Clock size={20} className="text-gold" /> {lang === 'EN' ? 'Agential Timeline' : 'Cronograma Agéntico'}
                 </h3>
@@ -719,17 +719,17 @@ export default function App() {
                           <span className="text-[11px] text-gold font-sans font-semibold uppercase tracking-tight block mb-1">{item.time}</span>
                           <span className="text-[9px] text-emerald-400 font-sans">TTE: {item.tte}</span>
                         </div>
-                        <span className={`text-[10px] font-sans font-semibold uppercase tracking-tight px-2 py-0.5 rounded-full ${
+                        <span className={`text-[10px] font-sans font-semibold uppercase tracking-tight px-2 py-0.5 rounded-md ${
                           item.status === 'Auto-Scheduled' ? 'bg-cyan-400/10 text-cyan-400' : 'bg-gold/10 text-gold'
                         }`}>
                           {lang === 'EN' ? item.status : lang === 'ES' ? (item.status === 'Auto-Scheduled' ? 'Auto-Programado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendiente') : (item.status === 'Auto-Scheduled' ? 'Auto-Agendado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendente')}
                         </span>
                       </div>
-                      <p className="text-sm font-sans font-light text-luxury-black/90">{item.activity}</p>
+                      <p className="text-sm font-sans font-light text-white/90">{item.activity}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[11px] font-sans font-semibold text-luxury-black/30 uppercase tracking-tight">{item.pillar}</span>
-                        <span className="text-[11px] text-luxury-black/20">•</span>
-                        <span className="text-[11px] font-sans font-semibold text-luxury-black/30 uppercase tracking-tight">{item.location}</span>
+                        <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{item.pillar}</span>
+                        <span className="text-[11px] text-white/20">•</span>
+                        <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{item.location}</span>
                       </div>
                     </div>
                   ))}
@@ -738,7 +738,7 @@ export default function App() {
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="w-full mt-10 py-6 bg-emerald-500/10 border border-emerald-500/20 rounded-3xl flex flex-col items-center justify-center gap-3 text-center"
+                    className="w-full mt-10 py-6 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex flex-col items-center justify-center gap-3 text-center"
                   >
                     <CheckCircle2 className="text-emerald-500" size={32} />
                     <p className="text-emerald-500 font-sans font-medium px-4">
@@ -753,7 +753,7 @@ export default function App() {
                   <button 
                     onClick={handlePayment}
                     disabled={isProcessingPayment}
-                    className="w-full mt-10 py-4 bg-white text-luxury-black rounded-full font-sans font-semibold uppercase tracking-tight text-[11px] hover:bg-gold transition-colors flex items-center justify-center gap-3"
+                    className="w-full mt-10 py-4 bg-white text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-gold transition-colors flex items-center justify-center gap-3"
                   >
                     {isProcessingPayment ? <Loader2 className="animate-spin" /> : <CreditCard size={18} />}
                     {lang === 'EN' ? 'Confirm Invisible Payment' : lang === 'ES' ? 'Confirmar Pago Invisible' : 'Confirmar Pagamento Invisível'}

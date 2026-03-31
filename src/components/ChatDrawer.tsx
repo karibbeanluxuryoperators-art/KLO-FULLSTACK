@@ -118,26 +118,26 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                   <Sparkles size={24} />
                 </div>
                 <div>
-                  <h3 className="font-serif text-xl uppercase tracking-wider">Karibbean Luxury Operators</h3>
+                  <h3 className="font-serif text-xl">Karibbean Luxury Operators</h3>
                   <span className="text-[10px] text-gold uppercase tracking-[0.2em]">
                     {lang === 'EN' ? 'Agentic Middleware' : lang === 'ES' ? 'Middleware Agéntico' : 'Middleware Agêntico'}
                   </span>
                 </div>
               </div>
-              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full"><X /></button>
+              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded"><X /></button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
               {chatHistory.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] p-5 rounded-2xl text-sm font-light leading-relaxed ${
-                    msg.role === 'user' ? 'bg-gold text-luxury-black rounded-tr-none' : 'glass-panel rounded-tl-none'
+                  <div className={`max-w-[85%] p-5 rounded-xl text-sm font-light leading-relaxed ${
+                    msg.role === 'user' ? 'bg-gold text-luxury-black rounded-tr-none' : 'bg-[#111109] border border-white/[0.07] rounded-xl rounded-tl-none'
                   }`}>{msg.content}</div>
                 </div>
               ))}
               {isPlanning && (
                 <div className="flex justify-start">
-                  <div className="glass-panel p-5 rounded-2xl rounded-tl-none flex items-center gap-3">
+                  <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-5 rounded-tl-none flex items-center gap-3">
                     <Loader2 size={16} className="animate-spin text-gold" />
                     <span className="text-xs text-luxury-black/50 italic">
                       {lang === 'EN' ? 'Orchestrating 360° pillars...' : lang === 'ES' ? 'Orquestando pilares 360°...' : 'Orquestrando pilares 360°...'}

@@ -307,10 +307,10 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               placeholder={t.search}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-full py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all w-full lg:w-64 text-sm"
+              className="bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all w-full lg:w-64 text-sm"
             />
           </div>
-          <button className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-white/60">
+          <button className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-white/60">
             <Filter size={18} />
           </button>
           {isProvider && (
@@ -353,7 +353,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-luxury-black border border-white/10 rounded-3xl p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
+              className="relative w-full max-w-2xl bg-[#111109] border border-white/[0.07] rounded-xl p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
             >
               <div className="absolute top-0 right-0 p-8 opacity-5 text-white">
                 {selectedAssetId ? <Settings size={120} /> : <Plus size={120} />}
@@ -604,7 +604,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
           <button 
             key={tab.id}
             onClick={() => setActiveType(tab.id as any)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-sans font-semibold uppercase tracking-tight transition-all border ${
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-sans font-semibold uppercase tracking-tight transition-all border ${
               activeType === tab.id ? 'bg-gold text-luxury-black border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
             }`}
           >
@@ -623,7 +623,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               key={asset.id}
-              className="admin-card p-6 rounded-2xl group hover:border-gold/30 transition-all relative overflow-hidden"
+              className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 group hover:border-gold/30 transition-all relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-white">
                 {getAssetIcon(asset.type)}
@@ -744,11 +744,11 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="glass-panel w-full max-w-4xl max-h-[80vh] overflow-hidden rounded-3xl relative z-10 flex flex-col"
+              className="bg-[#111109] border border-white/[0.07] rounded-xl w-full max-w-4xl max-h-[80vh] overflow-hidden relative z-10 flex flex-col"
             >
               <div className="p-8 border-b border-white/10 flex justify-between items-center">
                 <div>
-                  <h2 className="text-3xl font-sans font-medium text-white uppercase tracking-tight">{t.crossSell}</h2>
+                  <h2 className="text-3xl font-sans font-medium text-white">{t.crossSell}</h2>
                   <p className="text-[10px] text-gold uppercase tracking-tight font-bold">{t.revenueShare}: 15%</p>
                 </div>
                 <button onClick={() => setShowCrossSell(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
@@ -757,7 +757,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               </div>
               
               <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
-                <div className="bg-gold/10 p-6 rounded-2xl border border-gold/20 flex items-center gap-4">
+                <div className="bg-gold/10 p-6 rounded-xl border border-gold/20 flex items-center gap-4">
                   <Sparkles className="text-gold" size={24} />
                   <p className="text-xs text-white/70 leading-relaxed">
                     As a certified KLO Provider, you can earn additional revenue by recommending complementary services to your clients. All bookings made through this portal are tracked to your account.
@@ -772,7 +772,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     { id: 'CS3', name: 'Vianco Armor Transfer', price: '$850', type: 'VEHICLE', img: 'https://picsum.photos/seed/car/400/300' },
                     { id: 'CS4', name: 'Bespoke Villa Stay', price: '$3,200', type: 'LODGING', img: 'https://picsum.photos/seed/villa/400/300' },
                   ].map(item => (
-                    <div key={item.id} className="bg-white/5 rounded-2xl p-4 flex gap-4 border border-white/5 group hover:border-gold/30 transition-all">
+                    <div key={item.id} className="bg-[#111109] border border-white/[0.07] rounded-xl p-4 flex gap-4 group hover:border-gold/30 transition-all">
                       <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0">
                         <img src={item.img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                       </div>
