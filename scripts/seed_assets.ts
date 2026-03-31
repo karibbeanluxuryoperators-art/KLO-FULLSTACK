@@ -1,0 +1,79 @@
+
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_KEY');
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const assets = [
+  // STAFF
+  { id: 'S3', name: 'Sofia Martinez', type: 'STAFF', location: 'St. Maarten', price_per_unit: '$650/day', capacity: 1, description: 'Chief Stewardess with a background in 5-star hospitality. Expert in event coordination and guest relations.', images: ['https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S4', name: 'Jack Thorne', type: 'STAFF', location: 'Panama City', price_per_unit: '$1,500/day', capacity: 1, description: 'Former elite special forces. Specialized in close protection and secure logistics for high-profile individuals.', images: ['https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S5', name: 'Yuki Tanaka', type: 'STAFF', location: 'Anguilla', price_per_unit: '$500/session', capacity: 1, description: 'Licensed wellness therapist specializing in traditional Japanese massage and holistic healing.', images: ['https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S6', name: 'Andre Dubois', type: 'STAFF', location: 'St. Barths', price_per_unit: '$750/day', capacity: 1, description: 'Award-winning mixologist and culinary artist. Expert in crafting bespoke cocktails and gourmet appetizers.', images: ['https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S7', name: 'Isabella Rossi', type: 'STAFF', location: 'Cartagena', price_per_unit: '$600/day', capacity: 1, description: 'Personal concierge with deep local knowledge of the Caribbean\'s most exclusive venues.', images: ['https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S8', name: 'Carlos Mendez', type: 'STAFF', location: 'Roatan', price_per_unit: '$450/day', capacity: 1, description: 'Certified PADI Dive Master and maritime navigator. Expert in underwater exploration and marine safety.', images: ['https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S9', name: 'Emma Wilson', type: 'STAFF', location: 'Turks & Caicos', price_per_unit: '$400/day', capacity: 1, description: 'Professional childcare specialist with experience in high-net-worth households. CPR and First Aid certified.', images: ['https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S10', name: 'Sarah Jenkins', type: 'STAFF', location: 'Antigua', price_per_unit: '$350/session', capacity: 1, description: 'Yoga and Pilates instructor specializing in private sessions for relaxation and core strength.', images: ['https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'S11', name: 'James Harrington', type: 'STAFF', location: 'Barbados', price_per_unit: '$1,200/day', capacity: 1, description: 'Traditional British butler with over 15 years of experience in royal and high-profile estates.', images: ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+
+  // AIRCRAFT
+  { id: 'A2', name: 'Bombardier Global 7500', type: 'AIRCRAFT', location: 'New York', price_per_unit: '$9,200/hr', capacity: 19, description: 'The largest and longest-range business jet. Featuring four true living spaces and a full-size kitchen.', images: ['https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A3', name: 'Embraer Lineage 1000E', type: 'AIRCRAFT', location: 'London', price_per_unit: '$11,000/hr', capacity: 19, description: 'An ultra-large business jet with five cabin zones, including a master suite with a queen-size bed and walk-in shower.', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A4', name: 'Dassault Falcon 8X', type: 'AIRCRAFT', location: 'Paris', price_per_unit: '$7,800/hr', capacity: 14, description: 'The flagship of the Falcon family. Exceptional short-field performance and ultra-quiet cabin.', images: ['https://images.unsplash.com/photo-1520437358207-323b43b50729?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A5', name: 'Cessna Citation Longitude', type: 'AIRCRAFT', location: 'Miami', price_per_unit: '$5,500/hr', capacity: 12, description: 'The quietest cabin in its class. Perfect for transcontinental missions with superior comfort.', images: ['https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A6', name: 'Airbus ACJ319neo', type: 'AIRCRAFT', location: 'Dubai', price_per_unit: '$15,000/hr', capacity: 19, description: 'A corporate version of the A319neo. Offering the widest and tallest cabin of any business jet.', images: ['https://images.unsplash.com/photo-1570710891163-6d3b5c47248b?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A7', name: 'Boeing BBJ 737 MAX', type: 'AIRCRAFT', location: 'Singapore', price_per_unit: '$18,000/hr', capacity: 19, description: 'The ultimate in space and luxury. A flying palace with a master bedroom, dining room, and lounge.', images: ['https://images.unsplash.com/photo-1559627814-4d0c75748d2b?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A8', name: 'Bell 429 GlobalRanger', type: 'AIRCRAFT', location: 'St. Barths', price_per_unit: '$3,500/hr', capacity: 7, description: 'The most advanced light twin-engine helicopter. Perfect for island hopping in style.', images: ['https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A9', name: 'Sikorsky S-76D', type: 'AIRCRAFT', location: 'Miami', price_per_unit: '$4,500/hr', capacity: 8, description: 'The standard for executive helicopter transport. Smooth, quiet, and exceptionally safe.', images: ['https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'A10', name: 'Pilatus PC-24', type: 'AIRCRAFT', location: 'Aspen', price_per_unit: '$4,200/hr', capacity: 10, description: 'The world\'s first Super Versatile Jet. Capable of landing on short and even unpaved runways.', images: ['https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+
+  // VESSELS
+  { id: 'V2', name: 'Azure Sky', type: 'VESSEL', location: 'Monaco', price_per_unit: '$25,000/day', capacity: 12, description: 'A stunning superyacht with a helipad, cinema, and a full spa. The ultimate Mediterranean experience.', images: ['https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V3', name: 'Ocean Pearl', type: 'VESSEL', location: 'British Virgin Islands', price_per_unit: '$4,500/day', capacity: 10, description: 'A spacious and stable luxury catamaran. Perfect for exploring the shallow waters of the BVI.', images: ['https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V4', name: 'Midnight Sun', type: 'VESSEL', location: 'St. Tropez', price_per_unit: '$2,800/day', capacity: 8, description: 'A sleek and powerful day cruiser. Ideal for quick trips to beach clubs and coastal exploration.', images: ['https://images.unsplash.com/photo-1544413647-ad67cd76709b?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V5', name: 'Golden Horizon', type: 'VESSEL', location: 'Grenadines', price_per_unit: '$8,500/day', capacity: 10, description: 'A classic motor yacht with timeless elegance. Features a large sun deck and premium water toys.', images: ['https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V6', name: 'Silver Wave', type: 'VESSEL', location: 'Ibiza', price_per_unit: '$6,200/day', capacity: 12, description: 'Modern design meets high performance. A favorite for sunset cruises and island hopping in the Balearics.', images: ['https://images.unsplash.com/photo-1605281317010-fe5ffe798156?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V7', name: 'Emerald Sea', type: 'VESSEL', location: 'Exumas', price_per_unit: '$12,000/day', capacity: 10, description: 'An explorer yacht built for adventure. Equipped with a deep-sea submersible and long-range capabilities.', images: ['https://images.unsplash.com/photo-1563299208-f3d36f7e8c33?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V8', name: 'Crystal Water', type: 'VESSEL', location: 'Seychelles', price_per_unit: '$5,200/day', capacity: 8, description: 'Eco-friendly luxury catamaran with solar power. Experience the pristine waters of the Seychelles in silence.', images: ['https://images.unsplash.com/photo-1516939884455-1445c8652f83?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V9', name: 'Royal Voyager', type: 'VESSEL', location: 'Caribbean', price_per_unit: '$45,000/day', capacity: 12, description: 'One of the world\'s most exclusive superyachts. Features a glass-bottom pool and a private owner\'s deck.', images: ['https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'V10', name: 'Island Hopper', type: 'VESSEL', location: 'Nassau', price_per_unit: '$1,500/day', capacity: 6, description: 'Fast and agile day boat. Perfect for fishing trips or exploring hidden coves.', images: ['https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+
+  // VEHICLES
+  { id: 'C2', name: 'Rolls-Royce Phantom VIII', type: 'VEHICLE', location: 'London', price_per_unit: '$2,500/day', capacity: 4, description: 'The quietest motor car in the world. Experience the ultimate in luxury and presence.', images: ['https://images.unsplash.com/photo-1631214524020-5e1839765c71?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C3', name: 'Bentley Mulsanne', type: 'VEHICLE', location: 'Miami', price_per_unit: '$1,800/day', capacity: 4, description: 'A fusion of performance and luxury. Handcrafted in Crewe, England.', images: ['https://images.unsplash.com/photo-1621135802920-133df287f89c?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C4', name: 'Mercedes-Maybach S-Class', type: 'VEHICLE', location: 'Berlin', price_per_unit: '$1,200/day', capacity: 4, description: 'The pinnacle of the S-Class. Features VR10 level ballistic protection and a V12 engine.', images: ['https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C5', name: 'Range Rover Autobiography', type: 'VEHICLE', location: 'Mexico City', price_per_unit: '$1,100/day', capacity: 4, description: 'Luxury meets security. B6 armored protection with the comfort of a long-wheelbase Range Rover.', images: ['https://images.unsplash.com/photo-1606611013016-969c19ba27bb?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C6', name: 'Lamborghini Urus', type: 'VEHICLE', location: 'Dubai', price_per_unit: '$1,500/day', capacity: 4, description: 'The world\'s first Super SUV. Unmatched performance and aggressive styling.', images: ['https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C7', name: 'Ferrari Purosangue', type: 'VEHICLE', location: 'Milan', price_per_unit: '$2,200/day', capacity: 4, description: 'Ferrari\'s first four-door, four-seater. A true sports car with the versatility of an SUV.', images: ['https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C8', name: 'Porsche Taycan Turbo S', type: 'VEHICLE', location: 'Los Angeles', price_per_unit: '$900/day', capacity: 4, description: 'The soul of a Porsche, powered by electricity. Breathtaking acceleration and handling.', images: ['https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C9', name: 'BMW i7 Protection', type: 'VEHICLE', location: 'Geneva', price_per_unit: '$1,400/day', capacity: 4, description: 'The first all-electric protection sedan. VR9 level security with zero emissions.', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+  { id: 'C10', name: 'Audi A8 L Security', type: 'VEHICLE', location: 'Vienna', price_per_unit: '$1,300/day', capacity: 4, description: 'Understated luxury with maximum protection. Certified to VR9 ballistic standards.', images: ['https://images.unsplash.com/photo-1606152421643-059966107386?auto=format&fit=crop&q=80&w=800'], status: 'ACTIVE' },
+];
+
+async function seed() {
+  console.log('Seeding assets...');
+  for (const asset of assets) {
+    const { error } = await supabase
+      .from('assets')
+      .upsert(asset, { onConflict: 'id' });
+    
+    if (error) {
+      console.error(`Error seeding asset ${asset.id}:`, error.message);
+    } else {
+      console.log(`Successfully seeded asset ${asset.id}`);
+    }
+  }
+  console.log('Seeding complete.');
+}
+
+seed();
