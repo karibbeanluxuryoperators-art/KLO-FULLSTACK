@@ -341,7 +341,7 @@ Please let me know the availability and next steps.`;
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full h-full md:h-auto md:max-w-2xl bg-luxury-black border border-white/[0.07] rounded-none md:rounded-2xl p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
+        className="relative w-full h-full md:h-auto md:max-w-2xl bg-[#0d0d0b] border border-white/[0.07] rounded-none md:rounded-2xl p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
       >
         <div className="absolute top-0 right-0 p-10 opacity-5 text-white">
           <Shield size={160} />
@@ -574,7 +574,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
         ) : (
           cart.map((item) => (
-            <div key={item.id} className="bg-[#111109] border border-white/[0.07] rounded-xl p-4 flex gap-4 group">
+            <div key={item.id} className="bg-white/[0.04] border border-white/[0.07] rounded-lg p-4 flex gap-4 group">
               <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
                 <img src={`https://picsum.photos/seed/${item.id}/200/200`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
@@ -621,9 +621,9 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-20">
         <button 
           onClick={() => setSelectedAsset(null)}
-          className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl font-medium text-xs tracking-wide text-white hover:bg-white/10 transition-all shadow-sm group mb-8 md:mb-12"
+          className="flex items-center gap-2 text-white/40 hover:text-gold transition-colors mb-10 text-xs uppercase tracking-wide font-medium"
         >
-          <ChevronRight className="rotate-180 group-hover:text-gold transition-colors" size={14} /> {t.back}
+          ← {t.back}
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
@@ -743,7 +743,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
 
           <div className="space-y-8">
-            <div className="bg-[#111109] border border-gold/20 rounded-xl p-8">
+            <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
               <h3 className="text-2xl font-sans font-medium mb-6 flex items-center gap-3 text-white">
                 <Calendar size={24} className="text-gold" /> {t.availability}
               </h3>
@@ -878,7 +878,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                 placeholder={t.search}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-sm font-light text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-lg py-4 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all text-sm font-light text-white"
               />
             </div>
           </motion.div>
@@ -897,8 +897,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-8 py-4 rounded-full text-[11px] font-sans uppercase tracking-tight transition-all border shrink-0 min-h-[44px] ${
-                activeTab === tab.id ? 'bg-gold text-luxury-black font-semibold border-gold shadow-lg shadow-gold/20' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+              className={`flex items-center gap-2 px-8 py-4 rounded text-[11px] font-sans uppercase tracking-tight transition-all border shrink-0 min-h-[44px] ${
+                activeTab === tab.id ? 'bg-gold text-luxury-black font-medium border-gold' : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
               }`}
             >
               {tab.icon} {tab.label}
