@@ -55,3 +55,140 @@
 .custom-scrollbar::-webkit-scrollbar-thumb {
   @apply bg-gold/30 rounded-full;
 }
+
+/* ─── KLO UNIFIED DESIGN SYSTEM ─── */
+
+/* 1. TAME EXTREME ROUNDED CORNERS
+   Target all the rounded-[40px] and rounded-[2rem] 
+   Tailwind classes that appear on cards and panels */
+.rounded-\[40px\] { border-radius: 12px !important; }
+.rounded-\[2rem\]  { border-radius: 12px !important; }
+.rounded-\[32px\]  { border-radius: 12px !important; }
+.rounded-\[48px\]  { border-radius: 16px !important; }
+.rounded-\[3rem\]  { border-radius: 16px !important; }
+
+/* 2. REPLACE GLASS-PANEL ON DATA CARDS
+   glass-panel gets a flat dark surface treatment 
+   everywhere except nav and overlays */
+.glass-panel {
+  background: rgba(17, 17, 9, 0.95) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+/* Keep glass on nav, drawer, and hero overlays */
+nav .glass-panel,
+.glass-panel.nav-glass,
+[class*="z-[6"] .glass-panel,
+[class*="z-[7"] .glass-panel {
+  background: rgba(13, 13, 11, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* 3. TYPOGRAPHY HIERARCHY
+   Enforce sentence case and weight discipline */
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Reduce tracking on small text — 
+   tracking-widest on text smaller than 12px is 
+   hard to read and looks cheap */
+.text-\[8px\]  { letter-spacing: 0.06em !important; }
+.text-\[9px\]  { letter-spacing: 0.06em !important; }
+.text-\[10px\] { letter-spacing: 0.08em !important; }
+
+/* 4. ADMIN SIDEBAR REFINEMENT */
+aside {
+  background: #0d0d0b !important;
+  border-right: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Active sidebar nav item — gold left border 
+   instead of gold background fill */
+aside button.bg-gold {
+  background: rgba(255,255,255,0.06) !important;
+  color: #fff !important;
+  border-left: 2px solid #D4AF37 !important;
+  border-radius: 0 6px 6px 0 !important;
+  font-weight: 400 !important;
+}
+
+/* 5. BUTTON REFINEMENT 
+   Primary buttons keep rounded-full.
+   Secondary/ghost buttons get sharp rectangle. */
+button.bg-gold {
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+/* Keep rounded-full only where it's a primary CTA */
+button.rounded-full.bg-gold {
+  border-radius: 9999px !important;
+}
+
+/* 6. TABLE AND LIST REFINEMENT */
+table {
+  border-collapse: collapse;
+}
+table th {
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 10px 12px;
+}
+table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+}
+
+/* 7. MODAL OVERLAY BACKDROP */
+[class*="fixed inset-0"][class*="backdrop-blur"] {
+  background: rgba(0,0,0,0.75) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* 8. INPUT FIELDS — consistent across all panels */
+input[type="text"],
+input[type="email"], 
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+input[type="password"],
+select,
+textarea {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 6px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-family: 'Jost', sans-serif !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(212,175,55,0.5) !important;
+  outline: none !important;
+  background: rgba(255,255,255,0.06) !important;
+}
+
+/* 9. SCROLLBAR — luxury thin style */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { 
+  background: rgba(212,175,55,0.2); 
+  border-radius: 2px; 
+}
+::-webkit-scrollbar-thumb:hover { 
+  background: rgba(212,175,55,0.4); 
+}
+
+/* ─── END KLO UNIFIED DESIGN SYSTEM ─── */

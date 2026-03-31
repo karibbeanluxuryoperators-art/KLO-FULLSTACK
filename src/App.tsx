@@ -25,6 +25,7 @@ import { LeadsManagement } from './components/LeadsManagement';
 import { SuppliersManagement } from './components/SuppliersManagement';
 import { SupplierPortal } from './components/SupplierPortal';
 import { ChatDrawer } from './components/ChatDrawer';
+import { PartnersPage } from './components/PartnersPage';
 import { Asset, Booking, AdminStats, ViewMode, Language, Incident, GuestProfile, AgentialRule, MaintenanceAlert, FinancialDeepDive, ChatMessage } from './types';
 
 // Mock Data for expanded operations
@@ -243,6 +244,7 @@ export default function App() {
   const [assets, setAssets] = useState<Asset[]>(MOCK_ASSETS);
   const [isMissionControl, setIsMissionControl] = useState(false);
   const [showMarketplace, setShowMarketplace] = useState(false);
+  const [showPartners, setShowPartners] = useState(false);
   const [agentialRules, setAgentialRules] = useState<AgentialRule[]>(MOCK_RULES);
   const [guestProfiles, setGuestProfiles] = useState<GuestProfile[]>(MOCK_GUEST_PROFILES);
   const [bookingSuccess, setBookingSuccess] = useState(false);
@@ -408,6 +410,20 @@ export default function App() {
   };
 
   const renderClientView = () => {
+    if (showPartners) {
+      return (
+        <PartnersPage 
+          lang={lang}
+          onApply={() => {
+            setShowPartners(false);
+            window.history.pushState({}, '', '/supplier');
+            setViewMode('SUPPLIER');
+          }}
+          onBack={() => setShowPartners(false)}
+        />
+      );
+    }
+
     if (showMarketplace) {
       return (
         <Marketplace 
@@ -777,12 +793,13 @@ export default function App() {
                   <button 
                     key={tab.id}
                     onClick={() => setAdminActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-4 px-6 py-4 rounded-xl transition-all ${
-                      adminActiveTab === tab.id ? 'bg-gold text-luxury-black font-bold' : 'text-luxury-black/40 hover:bg-black/5'
-                    }`}
+                    className={adminActiveTab === tab.id 
+                      ? "w-full flex items-center gap-3 px-4 py-3 rounded-r-lg transition-all text-white border-l-2 border-gold bg-white/[0.06]"
+                      : "w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-white/40 hover:text-white/70 hover:bg-white/[0.04] border-l-2 border-transparent"
+                    }
                   >
                     <tab.icon size={18} />
-                    <span className="text-[11px] font-sans uppercase tracking-tight font-semibold">{tab.label}</span>
+                    <span className="text-[11px] tracking-normal">{tab.label}</span>
                   </button>
                 ))}
               </div>
@@ -790,10 +807,10 @@ export default function App() {
               <div className="mt-12 pt-12 border-t border-white/5">
                 <button 
                   onClick={() => setIsMissionControl(true)}
-                  className="w-full flex items-center gap-4 px-6 py-4 rounded-xl bg-gold/10 text-gold border border-gold/20 hover:bg-gold/20 transition-all"
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-500/5 text-red-400/70 border border-red-500/10 hover:bg-red-500/10 hover:text-red-400 transition-all"
                 >
                   <Zap size={18} />
-                  <span className="text-[11px] font-sans uppercase tracking-tight font-semibold">
+                  <span className="text-[11px] tracking-normal">
                     {lang === 'EN' ? 'Mission Control' : lang === 'ES' ? 'Control de Misión' : 'Controle de Missão'}
                   </span>
                 </button>
@@ -803,7 +820,7 @@ export default function App() {
         )}
 
         {/* Admin Content */}
-        <div className={`flex-1 overflow-y-auto p-8 lg:p-12 custom-scrollbar ${isMissionControl ? 'max-w-none' : ''}`}>
+        <div className={`flex-1 overflow-y-auto p-8 lg:p-10 custom-scrollbar bg-[#0d0d0b] ${isMissionControl ? 'max-w-none' : ''}`}>
           {isMissionControl && (
             <div className="fixed inset-0 z-[200] bg-luxury-paper p-8 overflow-y-auto custom-scrollbar text-luxury-black">
               <div className="flex justify-between items-center mb-12">
@@ -855,7 +872,11 @@ export default function App() {
           )}
 
           {!isMissionControl && (
-            <>
+            <div className="space-y-8">
+              <div className="border-b border-white/[0.06] pb-6">
+                <p className="text-[10px] uppercase tracking-widest text-gold/60 mb-1">KLO Operations</p>
+                <h1 className="text-3xl font-serif">{tabs.find(t => t.id === adminActiveTab)?.label}</h1>
+              </div>
               {adminActiveTab === 'OCC' && <OperationalCommandCenter bookings={MOCK_BOOKINGS} incidents={MOCK_INCIDENTS} lang={lang} />}
               {adminActiveTab === 'Map' && <GeospatialTracker assets={assets} lang={lang} />}
               {adminActiveTab === 'Rules' && <AgentialRuleEngine rules={agentialRules} lang={lang} onUpdateRules={setAgentialRules} />}
@@ -899,8 +920,7 @@ export default function App() {
                   }} 
                 />
               )}
-
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -1011,9 +1031,10 @@ export default function App() {
                   {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
                 </button>
                 <button 
-                  onClick={() => {
-                    window.history.pushState({}, '', '/supplier');
-                    setViewMode('SUPPLIER');
+                  onClick={() => { 
+                    setViewMode('CLIENT'); 
+                    setShowMarketplace(false);
+                    setShowPartners(true); 
                   }} 
                   className="px-4 py-1.5 border border-gold/40 rounded-full text-gold hover:bg-gold hover:text-luxury-black transition-all duration-300 text-[10px] uppercase tracking-widest"
                 >
@@ -1136,12 +1157,11 @@ export default function App() {
                       {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
                     </button>
                     <button onClick={() => {
-                      window.history.pushState({}, '', '/supplier');
-                      setViewMode('SUPPLIER');
+                      setShowPartners(true);
                       setIsMenuOpen(false);
                       setSectionConfirmation(lang === 'EN' ? 'Partner Portal' : lang === 'ES' ? 'Portal de Socios' : 'Portal de Parceiros');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${showPartners ? 'text-gold' : 'text-luxury-black/60'}`}>
                       {lang === 'EN' ? 'List with KLO' : lang === 'ES' ? 'Unirse a KLO' : 'Listar com KLO'}
                     </button>
 
@@ -1333,15 +1353,10 @@ export default function App() {
             </p>
           </div>
           <button
-            onClick={() => {
-              window.history.pushState({}, '', '/supplier');
-              setViewMode('SUPPLIER');
-            }}
+            onClick={() => setShowPartners(true)}
             className="px-8 py-3 border border-luxury-black/20 rounded-full text-xs uppercase tracking-widest font-medium hover:bg-luxury-black hover:text-white transition-all duration-300 whitespace-nowrap"
           >
-            {lang === 'EN' ? 'Apply to become a partner'
-            : lang === 'ES' ? 'Solicitar ser socio'
-            : 'Candidatar-se a parceiro'}
+            {lang === 'EN' ? 'Learn More' : lang === 'ES' ? 'Saber más' : 'Saiba mais'}
           </button>
         </div>
       </section>
