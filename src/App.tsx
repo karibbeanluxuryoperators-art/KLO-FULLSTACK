@@ -1166,7 +1166,22 @@ export default function App() {
               {lang === 'EN' ? 'Caribbean Ultra-Luxury · AI-Orchestrated' : lang === 'ES' ? 'Ultra-Lujo del Caribe · Orquestado por IA' : 'Ultra-Luxo do Caribe · Orquestrado por IA'}
             </span>
             <h1 className="text-5xl md:text-8xl font-serif italic mb-8 leading-tight tracking-wide">
-              {lang === 'EN' ? 'One conversation. Jet to yacht to villa.' : lang === 'ES' ? 'Una conversación. Del jet al yate a la villa.' : 'Uma conversa. Do jato ao iate à vila.'}
+              {lang === 'EN' ? (
+                <>
+                  One conversation.<br />
+                  <span className="whitespace-nowrap">Jet to Yacht to Villa.</span>
+                </>
+              ) : lang === 'ES' ? (
+                <>
+                  Una conversación.<br />
+                  <span className="whitespace-nowrap">Del jet al yate a la villa.</span>
+                </>
+              ) : (
+                <>
+                  Uma conversa.<br />
+                  <span className="whitespace-nowrap">Do jato ao iate à vila.</span>
+                </>
+              )}
             </h1>
             <p className="text-white/60 text-lg md:text-xl font-sans font-light max-w-2xl mx-auto mb-12 leading-relaxed">
               {lang === 'EN' 

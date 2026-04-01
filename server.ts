@@ -7,6 +7,8 @@ import Stripe from "stripe";
 import crypto from "crypto";
 import { google } from "googleapis";
 import { createClient } from "@supabase/supabase-js";
+import { GoogleGenAI } from "@google/genai";
+import fetch from "node-fetch";
 
 dotenv.config();
 
@@ -700,49 +702,215 @@ async function startServer() {
 
   app.post('/api/ai/chat', async (req, res) => {
     const { message, lang, mode } = req.body;
-    const systemPrompt = `You are Maria Fernanda,
-      the AI orchestration engine for KLO (Karibbean Luxury Operators),
-      an ultra-luxury travel brokerage in the Caribbean.
-      You help UHNW clients plan extraordinary experiences across 5 pillars:
-      AIR: Private aviation (jets, helicopters)
-      SEA: Yachts and maritime experiences
-      STAY: Ultra-luxury villas and residences
-      LAND: Armored transport via Vianco VIP
-      STAFF: Private chefs, security, DJs, butlers
-      KLO charges 20% management fee on all bookings.
-      Always respond in ${lang} language.
-      Be concise, elegant, ultra-luxury in tone.
-      When user asks to plan a journey respond ONLY
-      with valid raw JSON no markdown no extra text:
-      {title, estimatedTotal, managementFee,
-       pillars:{air,sea,stay,land,staff},
-       itinerary:[{time,activity,pillar,location,status,tte}],
-       securityBrief:{level,riskAssessment,protocols},
-       legalRequirements:[]}`;
+    
+    async function callAI(systemPrompt: string, 
+                          userMessage: string, 
+                          maxTokens: number = 1500) {
+      
+      const AI_PROVIDER = process.env.AI_PROVIDER || 'gemini';
+
+      if (AI_PROVIDER === 'claude') {
+        // Claude via direct Anthropic API
+        try {
+          const apiKey = process.env.ANTHROPIC_API_KEY;
+          if (!apiKey) throw new Error("ANTHROPIC_API_KEY is missing");
+
+          const response = await fetch(
+            'https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': apiKey,
+              'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+              model: 'claude-3-5-sonnet-20240620',
+              max_tokens: maxTokens,
+              system: systemPrompt,
+              messages: [{ role: 'user', content: userMessage }]
+            })
+          });
+          const data: any = await response.json();
+          if (data.error) throw new Error(data.error.message || 'Claude API error');
+          return data.content?.[0]?.text || '';
+        } catch (err) {
+          console.error('Claude API failed:', err);
+          return `Error calling Claude: ${err instanceof Error ? err.message : String(err)}`;
+        }
+      }
+      
+      if (AI_PROVIDER === 'openrouter') {
+        // OpenRouter
+        try {
+          const apiKey = process.env.OPENROUTER_API_KEY;
+          if (!apiKey) throw new Error("OPENROUTER_API_KEY is missing");
+
+          const response = await fetch(
+            'https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`,
+              'HTTP-Referer': 'https://karibbeanluxuryoperators.lat',
+              'X-Title': 'KLO Karibbean Luxury Operators'
+            },
+            body: JSON.stringify({
+              model: 'meta-llama/llama-3.3-70b-instruct:free',
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userMessage }
+              ],
+              temperature: 0.7,
+              max_tokens: maxTokens
+            })
+          });
+          const data: any = await response.json();
+          if (data.error) throw new Error(data.error.message || 'OpenRouter API error');
+          return data.choices?.[0]?.message?.content || '';
+        } catch (err) {
+          console.error('OpenRouter API failed:', err);
+          return `Error calling OpenRouter: ${err instanceof Error ? err.message : String(err)}`;
+        }
+      }
+
+      // Default: Gemini via Google GenAI SDK
+      try {
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+          console.error("GEMINI_API_KEY is missing from environment");
+          return "I apologize, but my intelligence core is currently disconnected. Please check the API configuration.";
+        }
+
+        const genai = new GoogleGenAI({ apiKey });
+        const result = await genai.models.generateContent({
+          model: 'gemini-3-flash-preview',
+          contents: userMessage,
+          config: { systemInstruction: systemPrompt }
+        });
+        return result.text || '';
+      } catch (err) {
+        console.error('Gemini API failed:', err);
+        // If it's an invalid API key, provide a more helpful message
+        if (err instanceof Error && err.message.includes('API key not valid')) {
+          return "I apologize, but there is an issue with my API key configuration. Please ensure a valid Gemini API key is set in the Secrets panel.";
+        }
+        return `Error calling Gemini: ${err instanceof Error ? err.message : String(err)}`;
+      }
+    }
+
+    // Fetch active assets to give AI real inventory
+    let assetContext = '';
+    try {
+      if (_supabase) {
+        const { data: activeAssets, error: assetError } = await supabase
+          .from('assets')
+          .select('name, type, location, description, price_per_unit, price_type, capacity, amenities')
+          .eq('status', 'ACTIVE')
+          .order('type');
+        
+        if (assetError) throw assetError;
+        
+        if (activeAssets && activeAssets.length > 0) {
+          assetContext = '\n\nCURRENT AVAILABLE INVENTORY IN CARTAGENA:\n';
+          activeAssets.forEach((asset: any) => {
+            const amenities = Array.isArray(asset.amenities) ? asset.amenities : JSON.parse(asset.amenities || '[]');
+            assetContext += `
+- ${asset.name} (${asset.type})
+  Location: ${asset.location}
+  Rate: ${asset.price_per_unit}
+  Capacity: ${asset.capacity} guests
+  Description: ${asset.description}
+  Features: ${amenities.slice(0,4).join(', ')}
+`;
+          });
+          assetContext += '\nOnly recommend assets from this list. If asked about something not in the list, say KLO is curating additional options and a concierge will follow up.\n';
+        }
+      } else {
+        console.info('Supabase not configured, skipping asset context fetching.');
+      }
+    } catch (err) {
+      console.error('Could not fetch assets for AI context', err);
+    }
+
+    const systemPrompt = `You are Maria Fernanda, 
+the personal AI concierge for KLO — Karibbean 
+Luxury Operators. KLO is Cartagena's most exclusive 
+ultra-luxury travel platform, currently in its 
+founding phase and expanding across Colombia 
+and the Caribbean.
+
+YOUR ROLE:
+You help ultra-high-net-worth clients plan bespoke 
+journeys in and around Cartagena, Colombia. You 
+orchestrate across five pillars:
+- AIR: Private jets and helicopters
+- SEA: Yachts and maritime experiences  
+- STAY: Ultra-luxury villas and residences
+- LAND: Armored and luxury ground transport 
+  (Vianco Protocol)
+- STAFF: Private chefs, security, concierge staff
+
+YOUR PERSONALITY:
+- Warm, discreet, and effortlessly knowledgeable
+- Never use jargon, acronyms, or startup language
+- Never mention internal terms like "UHNWI", 
+  "B2B2C", "agential", or "middleware"
+- Speak as a trusted personal advisor, not a 
+  booking system
+- If you don't know something, offer to have a 
+  human concierge follow up
+
+PRICING:
+KLO charges a 20% management fee included in all 
+quoted prices. Never mention this fee explicitly 
+unless directly asked. Quote total all-in prices only.
+
+LOCATION FOCUS:
+You are the expert on Cartagena and coastal Colombia.
+You know the best anchorages, the finest villas in 
+Bocagrande and Manga, the private jet routes from 
+Bogotá and Miami, and the security considerations 
+for ground transport in Colombia.
+
+WHEN PLANNING A JOURNEY:
+If the client asks to plan a complete experience, 
+respond ONLY with valid raw JSON — no markdown, 
+no extra text:
+{
+  "title": "Journey name",
+  "estimatedTotal": "$XX,XXX",
+  "managementFee": "Included",
+  "pillars": {
+    "air": "Description or null",
+    "sea": "Description or null", 
+    "stay": "Description or null",
+    "land": "Description or null",
+    "staff": "Description or null"
+  },
+  "itinerary": [
+    {
+      "time": "09:00",
+      "activity": "Activity name",
+      "pillar": "AIR",
+      "location": "Cartagena",
+      "status": "Confirmed",
+      "tte": "30m"
+    }
+  ],
+  "securityBrief": {
+    "level": "STANDARD",
+    "riskAssessment": "Brief assessment",
+    "protocols": ["Protocol 1", "Protocol 2"]
+  },
+  "legalRequirements": []
+}
+
+Always respond in ${lang} language.
+${assetContext}`;
 
     try {
-      const response = await fetch(
-        'https://openrouter.ai/api/v1/chat/completions',
-        { method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-            'HTTP-Referer': 'https://karibbeanluxuryoperators.lat',
-            'X-Title': 'KLO Karibbean Luxury Operators'
-          },
-          body: JSON.stringify({
-            model: 'meta-llama/llama-3.3-70b-instruct:free',
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: message }
-            ],
-            temperature: 0.7,
-            max_tokens: 1500
-          })
-        }
-      );
-      const data = await response.json();
-      const text = data.choices?.[0]?.message?.content || '';
+      const text = await callAI(systemPrompt, message, 1500);
+      
       if (mode === 'plan') {
         try {
           const clean = text.replace(/```json|```/g,'').trim();
@@ -814,3 +982,13 @@ async function startServer() {
 }
 
 startServer();
+
+/*
+# AI PROVIDER SELECTION
+# Options: gemini (default), claude, openrouter
+# Change this one variable to switch AI providers
+AI_PROVIDER=gemini
+
+# Required for Claude:
+ANTHROPIC_API_KEY=
+*/
