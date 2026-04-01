@@ -832,7 +832,7 @@ async function startServer() {
       console.error('Could not fetch assets for AI context', err);
     }
 
-    const systemPrompt = `You are Maria Fernanda, 
+    const systemPrompt = `You are Maria, 
 the personal AI concierge for KLO — Karibbean 
 Luxury Operators. KLO is Cartagena's most exclusive 
 ultra-luxury travel platform, currently in its 

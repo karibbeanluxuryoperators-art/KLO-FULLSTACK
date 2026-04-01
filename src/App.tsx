@@ -6,7 +6,7 @@ import {
   Send, Loader2, Menu, X, ArrowRight, ArrowLeft, Star, Quote,
   LayoutDashboard, Users, Briefcase, CreditCard, Settings,
   TrendingUp, Activity, Package, ExternalLink, Timer, AlertTriangle,
-  Zap, DollarSign, CheckCircle2
+  Zap, DollarSign, CheckCircle2, Sun, Moon
 } from 'lucide-react';
 import { KLOExperience } from './services/kloBrain';
 import { PILLARS, LUXURY_IMAGES } from './constants';
@@ -943,6 +943,16 @@ export default function App() {
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('light');
+    } else {
+      root.classList.remove('light');
+    }
+  }, [theme]);
   const [isHeroNav, setIsHeroNav] = useState(true);
   
   useEffect(() => {
@@ -1047,7 +1057,7 @@ export default function App() {
               type="email" 
               value={authEmail}
               onChange={(e) => setAuthEmail(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-white"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-text-main"
               placeholder="admin@klo.com"
               required
             />
@@ -1060,7 +1070,7 @@ export default function App() {
               type="password" 
               value={authPassword}
               onChange={(e) => setAuthPassword(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-white"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-text-main"
               placeholder="••••••••"
               required
             />
@@ -1075,7 +1085,7 @@ export default function App() {
         </form>
 
         <div className="mt-8 pt-8 border-t border-white/5 text-center">
-          <p className="text-[10px] font-sans uppercase tracking-tight text-white/40">
+          <p className="text-[10px] font-sans uppercase tracking-tight text-text-main/40">
             {lang === 'EN' ? 'Demo Credentials' : lang === 'ES' ? 'Credenciales de Demostración' : 'Credenciais de Demonstração'}:<br />
             admin@klo.com | provider@klo.com | client@klo.com
           </p>
@@ -1354,7 +1364,7 @@ export default function App() {
                   const pillarInfo = PILLARS.find(p => p.id === key.toUpperCase());
                   if (!value) return null;
                   return (
-                    <motion.div key={key} whileHover={{ y: -5 }} className="bg-[#111109] border border-white/[0.07] rounded-xl p-8 relative overflow-hidden group">
+                    <motion.div key={key} whileHover={{ y: -5 }} className="bg-luxury-slate border border-white/[0.07] rounded-xl p-8 relative overflow-hidden group">
                       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         {pillarInfo && <pillarInfo.icon size={80} />}
                       </div>
@@ -1366,28 +1376,28 @@ export default function App() {
                           {lang === 'EN' ? key : lang === 'ES' ? (key === 'stay' ? 'estancia' : key === 'ground' ? 'tierra' : key) : (key === 'stay' ? 'estadia' : key === 'ground' ? 'terra' : key)}
                         </h3>
                       </div>
-                      <p className="text-luxury-black/70 font-sans font-light leading-relaxed">{value}</p>
+                      <p className="text-text-main/70 font-sans font-light leading-relaxed">{value}</p>
                     </motion.div>
                   );
                 })}
                 
                 {/* Legal & Security */}
                 <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-[#111109] border border-gold/20 rounded-xl p-8">
+                  <div className="bg-luxury-slate border border-gold/20 rounded-xl p-8">
                     <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <Shield size={20} className="text-gold" /> {lang === 'EN' ? 'Security Brief' : 'Resumen de Seguridad'}
                     </h3>
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-[11px] font-sans uppercase tracking-tight text-white/40 font-semibold">Level</span>
+                        <span className="text-[11px] font-sans uppercase tracking-tight text-text-main/40 font-semibold">Level</span>
                         <span className="text-xs font-sans font-semibold text-gold">{plannedExperience.securityBrief.level}</span>
                       </div>
-                      <p className="text-xs font-sans text-white/60 italic leading-relaxed">
+                      <p className="text-xs font-sans text-text-main/60 italic leading-relaxed">
                         "{plannedExperience.securityBrief.riskAssessment}"
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {plannedExperience.securityBrief.protocols.map((p, i) => (
-                          <span key={i} className="px-3 py-1 bg-white/5 rounded-md text-[10px] font-sans font-semibold uppercase tracking-tight border border-white/10 text-white/70">
+                          <span key={i} className="px-3 py-1 bg-white/5 rounded-md text-[10px] font-sans font-semibold uppercase tracking-tight border border-white/10 text-text-main/70">
                             {p}
                           </span>
                         ))}
@@ -1395,7 +1405,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
+                  <div className="bg-luxury-slate border border-white/[0.07] rounded-xl p-8">
                     <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
                       <UserCheck size={20} className="text-gold" /> {lang === 'EN' ? 'Compliance' : 'Cumplimiento'}
                     </h3>
@@ -1817,6 +1827,14 @@ export default function App() {
                 <button onClick={() => setChatOpen(true)} className="px-5 py-2 border border-gold/50 rounded-full hover:bg-gold hover:text-luxury-black transition-all duration-300 text-gold">
                   {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
                 </button>
+
+                <button 
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className={`p-2 rounded-full transition-all duration-300 ${isHeroNav ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-black/5 text-luxury-black hover:bg-black/10'}`}
+                  title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                >
+                  {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
               </div>
 
               <button className={`md:hidden ${isHeroNav ? 'text-white' : 'text-luxury-black'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -1936,6 +1954,17 @@ export default function App() {
                       <MessageSquare size={20} />
                       WHATSAPP
                     </a>
+
+                    <button 
+                      onClick={() => {
+                        setTheme(theme === 'dark' ? 'light' : 'dark');
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center gap-2 text-left hover:text-gold transition-colors"
+                    >
+                      {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                      {theme === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
+                    </button>
                   </div>
 
                   <div className="mt-auto pt-8 border-t border-black/5 flex items-center justify-between">
@@ -2021,6 +2050,26 @@ export default function App() {
                   <Sparkles size={20} />
                 </div>
               </motion.div>
+
+              {/* Theme Toggle Sub-button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                transition={{ delay: 0.1 }}
+                className="flex items-center gap-3 group cursor-pointer"
+                onClick={() => {
+                  setTheme(theme === 'dark' ? 'light' : 'dark');
+                  setIsSpeedDialOpen(false);
+                }}
+              >
+                <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-sans font-semibold rounded-full shadow-xl uppercase tracking-tight opacity-0 group-hover:opacity-100 transition-opacity">
+                  {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                </span>
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 text-gold rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+                  {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                </div>
+              </motion.div>
             </>
           )}
         </AnimatePresence>
@@ -2049,12 +2098,12 @@ export default function App() {
       <section className="py-10 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-luxury-black/40 mb-1">
+            <p className="text-xs uppercase tracking-[0.2em] text-text-main/40 mb-1">
               {lang === 'EN' ? 'For villa, yacht & aviation partners' 
               : lang === 'ES' ? 'Para socios de villas, yates y aviación' 
               : 'Para parceiros de vilas, iates e aviação'}
             </p>
-            <p className="text-lg font-serif text-luxury-black">
+            <p className="text-lg font-serif text-text-main">
               {lang === 'EN' ? 'List your asset with KLO' 
               : lang === 'ES' ? 'Liste su activo con KLO'
               : 'Liste seu ativo com KLO'}
@@ -2062,7 +2111,7 @@ export default function App() {
           </div>
           <button
             onClick={() => setShowPartners(true)}
-            className="px-8 py-3 border border-luxury-black/20 rounded-full text-xs uppercase tracking-widest font-medium hover:bg-luxury-black hover:text-white transition-all duration-300 whitespace-nowrap"
+            className="px-8 py-3 border border-text-main/20 rounded-full text-xs uppercase tracking-widest font-medium hover:bg-text-main hover:text-luxury-black transition-all duration-300 whitespace-nowrap"
           >
             {lang === 'EN' ? 'Learn More' : lang === 'ES' ? 'Saber más' : 'Saiba mais'}
           </button>
@@ -2077,9 +2126,9 @@ export default function App() {
               <div className="w-8 h-8 bg-gold rounded-full flex items-center justify-center shrink-0">
                 <span className="text-luxury-black font-bold text-sm">K</span>
               </div>
-              <span className="font-serif text-xl tracking-wide uppercase">Karibbean Luxury Operators</span>
+              <span className="font-serif text-xl tracking-wide uppercase text-text-main">Karibbean Luxury Operators</span>
             </div>
-            <p className="text-luxury-black/40 font-light max-w-sm leading-relaxed">
+            <p className="text-text-main/40 font-light max-w-sm leading-relaxed">
               {lang === 'EN' 
                 ? "Ultra-luxury travel, curated in Cartagena. Expanding across Colombia and the Caribbean."
                 : lang === 'ES'
@@ -2088,10 +2137,10 @@ export default function App() {
             </p>
           </div>
           <div>
-            <h4 className="font-serif text-lg mb-6">
+            <h4 className="font-serif text-lg mb-6 text-text-main">
               {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
             </h4>
-            <ul className="space-y-4 text-sm text-luxury-black/40 font-light">
+            <ul className="space-y-4 text-sm text-text-main/40 font-light">
               <li><button onClick={() => setViewMode('CLIENT')} className="hover:text-gold">
                 {lang === 'EN' ? 'Client Panel' : lang === 'ES' ? 'Panel de Cliente' : 'Painel do Cliente'}
               </button></li>
@@ -2110,10 +2159,10 @@ export default function App() {
             </ul>
           </div>
           <div>
-            <h4 className="font-serif text-lg mb-6">
+            <h4 className="font-serif text-lg mb-6 text-text-main">
               {lang === 'EN' ? 'Legal' : lang === 'ES' ? 'Legal' : 'Legal'}
             </h4>
-            <ul className="space-y-4 text-sm text-luxury-black/40 font-light">
+            <ul className="space-y-4 text-sm text-text-main/40 font-light">
               <li><a href="#" className="hover:text-gold">
                 {lang === 'EN' ? 'Privacy Policy' : lang === 'ES' ? 'Política de Privacidad' : 'Política de Privacidade'}
               </a></li>

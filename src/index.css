@@ -6,15 +6,38 @@
   --font-serif: "Cormorant Garamond", serif;
   
   --color-gold: #C5A028;
-  --color-luxury-black: #050505;
-  --color-luxury-cream: #FDFCFB;
-  --color-luxury-paper: #F8F7F4;
-  --color-luxury-slate: #121212;
+  --color-luxury-black: var(--luxury-black-val, #050505);
+  --color-luxury-cream: var(--luxury-cream-val, #FDFCFB);
+  --color-luxury-paper: var(--luxury-paper-val, #F8F7F4);
+  --color-luxury-slate: var(--luxury-slate-val, #121212);
+  --color-text-main: var(--text-main-val, #ffffff);
+  --color-border-main: var(--border-main-val, rgba(255, 255, 255, 0.07));
+  --color-panel-bg: var(--panel-bg-val, rgba(17, 17, 9, 0.95));
+}
+
+:root {
+  --luxury-black-val: #050505;
+  --luxury-cream-val: #FDFCFB;
+  --luxury-paper-val: #F8F7F4;
+  --luxury-slate-val: #121212;
+  --text-main-val: #ffffff;
+  --border-main-val: rgba(255, 255, 255, 0.07);
+  --panel-bg-val: rgba(17, 17, 9, 0.95);
+}
+
+.light {
+  --luxury-black-val: #F8F7F4;
+  --luxury-cream-val: #050505;
+  --luxury-paper-val: #ffffff;
+  --luxury-slate-val: #f3f4f6;
+  --text-main-val: #050505;
+  --border-main-val: rgba(0, 0, 0, 0.1);
+  --panel-bg-val: rgba(255, 255, 255, 0.95);
 }
 
 @layer base {
   body {
-    @apply bg-luxury-black text-white font-sans font-light leading-relaxed antialiased;
+    @apply bg-luxury-black text-text-main font-sans font-light leading-relaxed antialiased transition-colors duration-300;
   }
   
   h1, h2 {
@@ -71,10 +94,17 @@
    glass-panel gets a flat dark surface treatment 
    everywhere except nav and overlays */
 .glass-panel {
-  background: rgba(17, 17, 9, 0.95) !important;
+  background: var(--color-panel-bg) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid var(--color-border-main) !important;
+  color: var(--color-text-main) !important;
+}
+
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
 /* Keep glass on nav, drawer, and hero overlays */
@@ -82,9 +112,14 @@ nav .glass-panel,
 .glass-panel.nav-glass,
 [class*="z-[6"] .glass-panel,
 [class*="z-[7"] .glass-panel {
-  background: rgba(13, 13, 11, 0.85) !important;
+  background: var(--color-panel-bg) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.light nav .glass-panel,
+.light .glass-panel.nav-glass {
+  background: rgba(255, 255, 255, 0.7) !important;
 }
 
 /* 3. TYPOGRAPHY HIERARCHY
@@ -104,15 +139,19 @@ nav .glass-panel,
 
 /* 4. ADMIN SIDEBAR REFINEMENT */
 aside {
-  background: #0d0d0b !important;
-  border-right: 1px solid rgba(255,255,255,0.06) !important;
+  background: var(--color-luxury-black) !important;
+  border-right: 1px solid var(--color-border-main) !important;
+}
+
+.light aside {
+  background: #ffffff !important;
 }
 
 /* Active sidebar nav item — gold left border 
    instead of gold background fill */
 aside button.bg-gold {
-  background: rgba(255,255,255,0.06) !important;
-  color: #fff !important;
+  background: var(--color-border-main) !important;
+  color: var(--color-text-main) !important;
   border-left: 2px solid #D4AF37 !important;
   border-radius: 0 6px 6px 0 !important;
   font-weight: 400 !important;
@@ -166,10 +205,10 @@ input[type="date"],
 input[type="password"],
 select,
 textarea {
-  background: rgba(255,255,255,0.04) !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
+  background: var(--color-border-main) !important;
+  border: 1px solid var(--color-border-main) !important;
   border-radius: 6px !important;
-  color: #fff !important;
+  color: var(--color-text-main) !important;
   font-size: 14px !important;
   font-family: 'Jost', sans-serif !important;
 }
