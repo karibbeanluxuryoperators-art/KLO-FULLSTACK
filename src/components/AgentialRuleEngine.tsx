@@ -46,20 +46,20 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
 
   const getTriggerIcon = (trigger: string) => {
     switch (trigger) {
-      case 'DELAY': return <Clock size={16} className="text-white/40" />;
+      case 'DELAY': return <Clock size={16} className="text-text-main/40" />;
       case 'SECURITY': return <Shield size={16} className="text-red-400" />;
-      case 'WEATHER': return <Wind size={16} className="text-white/60" />;
+      case 'WEATHER': return <Wind size={16} className="text-text-main/60" />;
       case 'TTE_CRITICAL': return <AlertTriangle size={16} className="text-gold" />;
       default: return <Zap size={16} className="text-gold" />;
     }
   };
 
   return (
-    <div className="admin-card p-8 rounded-2xl border-white/5">
+    <div className="admin-card p-8 rounded-2xl border-border-main">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h3 className="text-2xl font-serif italic tracking-wide text-white">{t.title}</h3>
-          <p className="text-white/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
+          <h3 className="text-2xl font-serif italic tracking-wide text-text-main">{t.title}</h3>
+          <p className="text-text-main/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
         </div>
         <button 
           onClick={() => setIsAdding(true)}
@@ -72,23 +72,23 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
       <div className="space-y-4">
         {rules.map((rule) => (
           <div key={rule.id} className={`p-6 rounded-2xl border transition-all ${
-            rule.status === 'ACTIVE' ? 'bg-white/5 border-white/10' : 'bg-white/[0.02] border-white/5 opacity-50'
+            rule.status === 'ACTIVE' ? 'bg-luxury-slate/50 border-border-main' : 'bg-luxury-slate/20 border-border-main/50 opacity-50'
           }`}>
             <div className="flex justify-between items-start mb-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-white/5 rounded-xl">
+                <div className="p-2 bg-luxury-slate/50 rounded-xl">
                   {getTriggerIcon(rule.trigger)}
                 </div>
                 <div>
-                  <span className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight block">{t.trigger}: {rule.trigger}</span>
-                  <span className="text-sm font-sans font-medium">{rule.condition}</span>
+                  <span className="text-[11px] font-sans font-semibold text-text-main/40 uppercase tracking-tight block">{t.trigger}: {rule.trigger}</span>
+                  <span className="text-sm font-sans font-medium text-text-main">{rule.condition}</span>
                 </div>
               </div>
               <div className="flex gap-2">
                 <button 
                   onClick={() => toggleRule(rule.id)}
                   className={`p-2 rounded-lg transition-all ${
-                    rule.status === 'ACTIVE' ? 'text-emerald-400 bg-emerald-400/10' : 'text-luxury-cream/40 bg-white/5'
+                    rule.status === 'ACTIVE' ? 'text-emerald-400 bg-emerald-400/10' : 'text-text-main/40 bg-luxury-slate/50'
                   }`}
                 >
                   {rule.status === 'ACTIVE' ? <Pause size={14} /> : <Play size={14} />}
@@ -102,13 +102,13 @@ export const AgentialRuleEngine: React.FC<RuleEngineProps> = ({ rules, lang, onU
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-luxury-black/30 rounded-xl border border-white/5">
+            <div className="flex items-center gap-3 p-3 bg-luxury-black/50 rounded-xl border border-border-main">
               <Zap size={12} className="text-gold" />
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/60">{t.action}: {rule.action}</span>
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/60">{t.action}: {rule.action}</span>
             </div>
 
             {rule.lastTriggered && (
-              <div className="mt-4 flex items-center gap-2 text-[10px] font-sans font-semibold text-luxury-cream/30 uppercase tracking-tight">
+              <div className="mt-4 flex items-center gap-2 text-[10px] font-sans font-semibold text-text-main/30 uppercase tracking-tight">
                 <Clock size={10} />
                 {t.lastTriggered}: {rule.lastTriggered}
               </div>

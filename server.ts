@@ -16,20 +16,38 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Supabase Setup
-const _supabase = (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY)
-  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
-  : null;
+let _supabase: any = null;
+
+const getSupabase = () => {
+  if (!_supabase) {
+    const url = process.env.SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_KEY;
+    
+    if (!url || !key || !url.startsWith('http')) {
+      throw new Error("Supabase is not configured correctly. Please set SUPABASE_URL and SUPABASE_SERVICE_KEY in the Secrets panel.");
+    }
+    
+    _supabase = createClient(url, key);
+  }
+  return _supabase;
+};
 
 const supabase = new Proxy({}, {
   get: (target, prop) => {
-    if (!_supabase) {
-      throw new Error("Supabase is not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_KEY in the Secrets panel.");
+    try {
+      const client = getSupabase();
+      return client[prop];
+    } catch (error: any) {
+      // If we're just checking for a property, don't throw immediately
+      // but throw if it's actually called or used as a function
+      return (...args: any[]) => {
+        throw new Error(error.message);
+      };
     }
-    return (_supabase as any)[prop];
   }
 }) as any;
 
-if (!_supabase) {
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
   console.warn("SUPABASE_URL or SUPABASE_SERVICE_KEY is missing. Supabase features will be disabled.");
 }
 

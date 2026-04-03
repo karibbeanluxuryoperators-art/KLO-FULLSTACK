@@ -112,7 +112,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
             transition={{ type: 'spring', damping: 25, stiffness: 200 }} 
             className="fixed top-0 right-0 h-full w-full md:max-w-md bg-luxury-slate z-[70] shadow-2xl flex flex-col"
           >
-            <div className="p-8 border-b border-white/10 flex items-center justify-between">
+            <div className="p-8 border-b border-border-main flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-gold rounded-xl flex items-center justify-center text-luxury-black">
                   <Sparkles size={24} />
@@ -131,15 +131,15 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
               {chatHistory.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[85%] p-5 rounded-xl text-sm font-light leading-relaxed ${
-                    msg.role === 'user' ? 'bg-gold text-luxury-black rounded-tr-none' : 'bg-[#111109] border border-white/[0.07] rounded-xl rounded-tl-none'
+                    msg.role === 'user' ? 'bg-gold text-luxury-black rounded-tr-none' : 'bg-luxury-black border border-border-main rounded-xl rounded-tl-none'
                   }`}>{msg.content}</div>
                 </div>
               ))}
               {isPlanning && (
                 <div className="flex justify-start">
-                  <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-5 rounded-tl-none flex items-center gap-3">
+                  <div className="bg-luxury-black border border-border-main rounded-xl p-5 rounded-tl-none flex items-center gap-3">
                     <Loader2 size={16} className="animate-spin text-gold" />
-                    <span className="text-xs text-luxury-black/50 italic">
+                    <span className="text-xs text-text-main/50 italic">
                       {lang === 'EN' ? 'Orchestrating 360° pillars...' : lang === 'ES' ? 'Orquestando pilares 360°...' : 'Orquestrando pilares 360°...'}
                     </span>
                   </div>
@@ -148,14 +148,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
               <div ref={chatEndRef} />
             </div>
 
-            <form onSubmit={onSubmit} className="p-8 border-t border-white/10">
+            <form onSubmit={onSubmit} className="p-8 border-t border-border-main">
               <div className="relative">
                 <input 
                   type="text" 
                   value={message} 
                   onChange={(e) => setMessage(e.target.value)} 
                   placeholder={lang === 'EN' ? 'Plan a 360° experience...' : lang === 'ES' ? 'Planifica una experiencia 360°...' : 'Planeje uma experiência 360°...'} 
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-5 pl-6 pr-14 focus:outline-none focus:border-gold/50 transition-colors font-light" 
+                  className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-5 pl-6 pr-14 focus:outline-none focus:border-gold/50 transition-colors font-light text-text-main" 
                 />
                 <button type="submit" disabled={isPlanning} className="absolute right-2 top-2 bottom-2 w-10 bg-gold text-luxury-black rounded-xl flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50"><Send size={18} /></button>
               </div>

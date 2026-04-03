@@ -138,13 +138,13 @@ Notes: ${formData.special_requests}`;
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-luxury-black/60 backdrop-blur-sm z-[100]"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="fixed bottom-32 right-8 w-full max-w-sm bg-luxury-paper rounded-3xl shadow-2xl z-[101] overflow-hidden border border-white/10"
+              className="fixed bottom-32 right-8 w-full max-w-sm bg-luxury-slate rounded-3xl shadow-2xl z-[101] overflow-hidden border border-border-main"
             >
               <div className="bg-emerald-500 p-8 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-10">
@@ -156,7 +156,7 @@ Notes: ${formData.special_requests}`;
                 >
                   <X size={20} />
                 </button>
-                <h3 className="text-2xl font-serif italic mb-2">{t.title}</h3>
+                <h3 className="text-2xl font-serif italic mb-2 text-white">{t.title}</h3>
                 <p className="text-[11px] font-sans font-semibold text-white/80 uppercase tracking-tight">{t.subtitle}</p>
               </div>
 
@@ -166,13 +166,13 @@ Notes: ${formData.special_requests}`;
                     <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto">
                       <CheckCircle2 size={32} />
                     </div>
-                    <h4 className="text-xl font-serif italic">{t.success}</h4>
-                    <p className="text-[11px] font-sans font-semibold text-luxury-black/40 uppercase tracking-tight">{t.successSub}</p>
+                    <h4 className="text-xl font-serif italic text-text-main">{t.success}</h4>
+                    <p className="text-[11px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">{t.successSub}</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1">
-                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.name}</label>
+                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.name}</label>
                       <input 
                         type="text"
                         value={formData.name}
@@ -180,7 +180,7 @@ Notes: ${formData.special_requests}`;
                           setFormData({...formData, name: e.target.value});
                           if (errors.name) setErrors({...errors, name: ''});
                         }}
-                        className={`w-full bg-black/5 border ${errors.name ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light`}
+                        className={`w-full bg-luxury-slate/50 border ${errors.name ? 'border-red-500' : 'border-border-main'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light text-text-main`}
                         placeholder="John Doe"
                       />
                       {errors.name && <p className="text-[10px] font-sans font-semibold text-red-500 uppercase tracking-tight">{errors.name}</p>}
@@ -188,7 +188,7 @@ Notes: ${formData.special_requests}`;
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.whatsapp}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.whatsapp}</label>
                         <input 
                           type="tel"
                           value={formData.whatsapp}
@@ -196,18 +196,18 @@ Notes: ${formData.special_requests}`;
                             setFormData({...formData, whatsapp: e.target.value});
                             if (errors.whatsapp) setErrors({...errors, whatsapp: ''});
                           }}
-                          className={`w-full bg-black/5 border ${errors.whatsapp ? 'border-red-500' : 'border-black/5'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light`}
+                          className={`w-full bg-luxury-slate/50 border ${errors.whatsapp ? 'border-red-500' : 'border-border-main'} rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light text-text-main`}
                           placeholder="+1..."
                         />
                         {errors.whatsapp && <p className="text-[10px] font-sans font-semibold text-red-500 uppercase tracking-tight">{errors.whatsapp}</p>}
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.email}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.email}</label>
                         <input 
                           type="email"
                           value={formData.email}
                           onChange={(e) => setFormData({...formData, email: e.target.value})}
-                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light"
+                          className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light text-text-main"
                           placeholder="john@klo.com"
                         />
                       </div>
@@ -215,11 +215,11 @@ Notes: ${formData.special_requests}`;
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.experience}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.experience}</label>
                         <select 
                           value={formData.experience_type}
                           onChange={(e) => setFormData({...formData, experience_type: e.target.value})}
-                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light appearance-none"
+                          className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light appearance-none text-text-main"
                         >
                           <option value="VILLA">Villa</option>
                           <option value="YACHT">Yacht</option>
@@ -229,34 +229,34 @@ Notes: ${formData.special_requests}`;
                         </select>
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.budget}</label>
+                        <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.budget}</label>
                         <input 
                           type="text"
                           value={formData.budget}
                           onChange={(e) => setFormData({...formData, budget: e.target.value})}
-                          className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light"
+                          className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light text-text-main"
                           placeholder="$10k+"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.dates}</label>
+                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.dates}</label>
                       <input 
                         type="text"
                         value={formData.travel_dates}
                         onChange={(e) => setFormData({...formData, travel_dates: e.target.value})}
-                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light"
+                        className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light text-text-main"
                         placeholder="Dec 20 - Jan 5"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-black/40">{t.requests}</label>
+                      <label className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.requests}</label>
                       <textarea 
                         value={formData.special_requests}
                         onChange={(e) => setFormData({...formData, special_requests: e.target.value})}
-                        className="w-full bg-black/5 border border-black/5 rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light h-20 resize-none"
+                        className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-3 px-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm font-sans font-light h-20 resize-none text-text-main"
                         placeholder="I'm interested in..."
                       />
                     </div>

@@ -276,41 +276,41 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       {/* Header & Controls */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h2 className="text-4xl font-serif italic text-white tracking-wide mb-2">
+          <h2 className="text-4xl font-serif italic text-text-main tracking-wide mb-2">
             {isProvider ? t.providerPortal : t.title}
           </h2>
-          <p className="text-white/40 font-sans font-light leading-relaxed">
+          <p className="text-text-main/40 font-sans font-light leading-relaxed">
             {isProvider ? t.myAssets : t.subtitle}
           </p>
         </div>
         {!isProvider && (
           <div className="flex items-center gap-8 mr-auto ml-12 hidden xl:flex">
             <div className="text-center">
-              <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-1">Staff Readiness</span>
+              <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight block mb-1">Staff Readiness</span>
               <span className="text-xl font-serif italic text-emerald-400">100%</span>
             </div>
             <div className="text-center">
-              <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-1">Fleet Status</span>
+              <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight block mb-1">Fleet Status</span>
               <span className="text-xl font-serif italic text-gold">Optimal</span>
             </div>
             <div className="text-center">
-              <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-1">Maintenance</span>
+              <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight block mb-1">Maintenance</span>
               <span className="text-xl font-serif italic text-amber-400">2 Units</span>
             </div>
           </div>
         )}
         <div className="flex flex-wrap items-center gap-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={18} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-main/30" size={18} />
             <input 
               type="text" 
               placeholder={t.search}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all w-full lg:w-64 text-sm"
+              className="bg-luxury-slate/50 border border-border-main rounded-xl py-3 pl-12 pr-6 focus:outline-none focus:border-gold/50 transition-all w-full lg:w-64 text-sm text-text-main"
             />
           </div>
-          <button className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-white/60">
+          <button className="p-3 bg-luxury-slate/50 border border-border-main rounded-xl hover:bg-luxury-slate/70 transition-all text-text-main/60">
             <Filter size={18} />
           </button>
           {isProvider && (
@@ -353,13 +353,13 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-[#111109] border border-white/[0.07] rounded-xl p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
+              className="relative w-full max-w-2xl bg-luxury-slate border border-border-main rounded-xl p-8 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-5 text-white">
+              <div className="absolute top-0 right-0 p-8 opacity-5 text-text-main">
                 {selectedAssetId ? <Settings size={120} /> : <Plus size={120} />}
               </div>
 
-              <h3 className="text-3xl font-serif italic tracking-wide mb-6 text-white">{selectedAssetId ? t.edit : t.addAsset}</h3>
+              <h3 className="text-3xl font-serif italic tracking-wide mb-6 text-text-main">{selectedAssetId ? t.edit : t.addAsset}</h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
@@ -623,61 +623,61 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               key={asset.id}
-              className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 group hover:border-gold/30 transition-all relative overflow-hidden"
+              className="bg-luxury-slate border border-border-main rounded-xl p-6 group hover:border-gold/30 transition-all relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-white">
+              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-text-main">
                 {getAssetIcon(asset.type)}
               </div>
 
               <div className="flex justify-between items-start mb-6">
-                <div className={`p-3 rounded-2xl bg-white/5 ${
-                  asset.type === 'STAFF' ? 'text-white/40' : 
+                <div className={`p-3 rounded-2xl bg-luxury-slate/50 ${
+                  asset.type === 'STAFF' ? 'text-text-main/40' : 
                   asset.type === 'AIRCRAFT' ? 'text-gold' : 
-                  asset.type === 'VESSEL' ? 'text-white/60' : 
-                  asset.type === 'VEHICLE' ? 'text-white/50' : 'text-gold'
+                  asset.type === 'VESSEL' ? 'text-text-main/60' : 
+                  asset.type === 'VEHICLE' ? 'text-text-main/50' : 'text-gold'
                 }`}>
                   {getAssetIcon(asset.type)}
                 </div>
-                <button className="p-2 text-white/20 hover:text-gold transition-colors">
+                <button className="p-2 text-text-main/20 hover:text-gold transition-colors">
                   <MoreVertical size={18} />
                 </button>
               </div>
 
-              <h3 className="text-xl font-serif italic tracking-wide mb-2 group-hover:text-gold transition-colors text-white">{asset.name}</h3>
+              <h3 className="text-xl font-serif italic tracking-wide mb-2 group-hover:text-gold transition-colors text-text-main">{asset.name}</h3>
               <div className="flex items-center gap-2 mb-4">
-                <MapPin size={12} className="text-white/30" />
-                <span className="text-[11px] font-sans font-semibold text-white/40 uppercase tracking-tight">{asset.location}</span>
+                <MapPin size={12} className="text-text-main/30" />
+                <span className="text-[11px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">{asset.location}</span>
               </div>
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{t.status}</span>
+                  <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight">{t.status}</span>
                   <span className={`text-[10px] px-2 py-1 rounded-full border font-sans font-semibold uppercase tracking-tight ${getStatusColor(asset.status)}`}>
                     {asset.status}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{t.capacity}</span>
-                  <span className="text-xs font-sans font-medium text-white">{asset.capacity} PAX</span>
+                  <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight">{t.capacity}</span>
+                  <span className="text-xs font-sans font-medium text-text-main">{asset.capacity} PAX</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">Rate</span>
+                  <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight">Rate</span>
                   <span className="text-xs font-sans font-semibold text-gold">{asset.pricePerUnit}</span>
                 </div>
                 {(asset as any).supplier_name && (
                   <div className="flex justify-between items-center">
-                    <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">Partner</span>
-                    <span className="text-[11px] font-sans font-medium text-white/60">{(asset as any).supplier_name}</span>
+                    <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight">Partner</span>
+                    <span className="text-[11px] font-sans font-medium text-text-main/60">{(asset as any).supplier_name}</span>
                   </div>
                 )}
               </div>
 
-              <div className="mt-6 pt-6 border-t border-white/5">
-                <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight block mb-4">{t.availability}</span>
+              <div className="mt-6 pt-6 border-t border-border-main">
+                <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight block mb-4">{t.availability}</span>
                 <MiniCalendar bookedDates={asset.bookedDates || []} lang={lang} />
               </div>
 
-              <div className="mt-6 pt-6 border-t border-white/5 flex flex-col gap-3">
+              <div className="mt-6 pt-6 border-t border-border-main flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2">
                     {asset.type === 'STAFF' && (
@@ -744,22 +744,22 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-[#111109] border border-white/[0.07] rounded-xl w-full max-w-4xl max-h-[80vh] overflow-hidden relative z-10 flex flex-col"
+              className="bg-luxury-slate border border-border-main rounded-xl w-full max-w-4xl max-h-[80vh] overflow-hidden relative z-10 flex flex-col"
             >
-              <div className="p-8 border-b border-white/10 flex justify-between items-center">
+              <div className="p-8 border-b border-border-main flex justify-between items-center">
                 <div>
-                  <h2 className="text-3xl font-sans font-medium text-white">{t.crossSell}</h2>
+                  <h2 className="text-3xl font-sans font-medium text-text-main">{t.crossSell}</h2>
                   <p className="text-[10px] text-gold uppercase tracking-tight font-bold">{t.revenueShare}: 15%</p>
                 </div>
-                <button onClick={() => setShowCrossSell(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
-                  <X size={24} className="text-white/40" />
+                <button onClick={() => setShowCrossSell(false)} className="p-2 hover:bg-luxury-slate/50 rounded-full transition-colors">
+                  <X size={24} className="text-text-main/40" />
                 </button>
               </div>
               
               <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
                 <div className="bg-gold/10 p-6 rounded-xl border border-gold/20 flex items-center gap-4">
                   <Sparkles className="text-gold" size={24} />
-                  <p className="text-xs text-white/70 leading-relaxed">
+                  <p className="text-xs text-text-main/70 leading-relaxed">
                     As a certified KLO Provider, you can earn additional revenue by recommending complementary services to your clients. All bookings made through this portal are tracked to your account.
                   </p>
                 </div>
@@ -772,17 +772,17 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                     { id: 'CS3', name: 'Vianco Armor Transfer', price: '$850', type: 'VEHICLE', img: 'https://picsum.photos/seed/car/400/300' },
                     { id: 'CS4', name: 'Bespoke Villa Stay', price: '$3,200', type: 'LODGING', img: 'https://picsum.photos/seed/villa/400/300' },
                   ].map(item => (
-                    <div key={item.id} className="bg-[#111109] border border-white/[0.07] rounded-xl p-4 flex gap-4 group hover:border-gold/30 transition-all">
+                    <div key={item.id} className="bg-luxury-slate border border-border-main rounded-xl p-4 flex gap-4 group hover:border-gold/30 transition-all">
                       <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0">
                         <img src={item.img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                       </div>
                       <div className="flex-1 flex flex-col justify-between py-1">
                         <div>
                           <span className="text-[8px] text-gold uppercase tracking-tight font-bold">{item.type}</span>
-                          <h4 className="text-sm font-sans font-medium text-white">{item.name}</h4>
-                          <p className="text-xs font-bold text-white/60">{item.price}</p>
+                          <h4 className="text-sm font-sans font-medium text-text-main">{item.name}</h4>
+                          <p className="text-xs font-bold text-text-main/60">{item.price}</p>
                         </div>
-                        <button className="text-[10px] uppercase tracking-tight font-bold text-gold hover:text-white transition-colors flex items-center gap-1">
+                        <button className="text-[10px] uppercase tracking-tight font-bold text-gold hover:text-text-main transition-colors flex items-center gap-1">
                           {lang === 'EN' ? 'Recommend' : 'Recomendar'} <ArrowRight size={12} />
                         </button>
                       </div>
@@ -791,7 +791,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                 </div>
               </div>
 
-              <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end">
+              <div className="p-8 border-t border-border-main bg-luxury-slate/50 flex justify-end">
                 <button 
                   onClick={() => setShowCrossSell(false)}
                   className="px-8 py-4 bg-gold text-luxury-black rounded-full text-[10px] uppercase tracking-tight font-bold hover:bg-white transition-all"

@@ -58,7 +58,7 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
   }[lang];
 
   return (
-    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+    <div className="bg-luxury-slate/50 rounded-xl p-4 border border-border-main">
       <div className="flex justify-between items-center mb-4">
         <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-gold">
           {monthNames[currentMonth]} {currentYear}
@@ -66,7 +66,7 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
       </div>
       <div className="grid grid-cols-7 gap-1">
         {daysOfWeek.map((day, i) => (
-          <div key={i} className="text-[10px] font-sans font-semibold text-luxury-cream/30 text-center uppercase tracking-tight">
+          <div key={i} className="text-[10px] font-sans font-semibold text-text-main/30 text-center uppercase tracking-tight">
             {day}
           </div>
         ))}
@@ -75,9 +75,9 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
             key={i} 
             className={`
               h-6 flex items-center justify-center text-[10px] font-sans rounded-lg transition-all
-              ${day === null ? '' : 'hover:bg-white/5 cursor-default'}
-              ${day !== null && isBooked(day) ? 'bg-white/5 text-white/20 border border-white/10' : ''}
-              ${day !== null && isToday(day) ? 'bg-gold text-luxury-black font-semibold' : 'text-luxury-cream/60'}
+              ${day === null ? '' : 'hover:bg-luxury-slate/50 cursor-default'}
+              ${day !== null && isBooked(day) ? 'bg-luxury-slate/50 text-text-main/20 border border-border-main' : ''}
+              ${day !== null && isToday(day) ? 'bg-gold text-luxury-black font-semibold' : 'text-text-main/60'}
               ${day !== null && !isBooked(day) && !isToday(day) ? 'bg-gold/10 text-gold/60' : ''}
             `}
           >
@@ -88,11 +88,11 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ bookedDates, lang })
       <div className="mt-4 flex gap-4 justify-center">
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-gold/30" />
-          <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{t.available}</span>
+          <span className="text-[10px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">{t.available}</span>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-white/20" />
-          <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{t.booked}</span>
+          <div className="w-2 h-2 rounded-full bg-luxury-slate/50" />
+          <span className="text-[10px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">{t.booked}</span>
         </div>
       </div>
     </div>

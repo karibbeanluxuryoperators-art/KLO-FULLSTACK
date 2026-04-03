@@ -1021,7 +1021,7 @@ export default function App() {
   };
 
   const renderAuth = () => (
-    <div className="min-h-screen flex items-center justify-center bg-luxury-paper px-6 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-luxury-black px-6 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20">
         <img src={LUXURY_IMAGES[4]} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-black via-transparent to-luxury-black" />
@@ -1030,16 +1030,16 @@ export default function App() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#111109] border border-white/[0.07] rounded-xl p-12 w-full max-w-md relative z-10"
+        className="bg-luxury-slate border border-border-main rounded-xl p-12 w-full max-w-md relative z-10"
       >
         <div className="text-center mb-10">
           <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-luxury-black font-bold text-3xl">K</span>
           </div>
-          <h2 className="text-2xl font-sans font-medium mb-2 tracking-tight">
+          <h2 className="text-2xl font-sans font-medium mb-2 tracking-tight text-text-main">
             {lang === 'EN' ? 'Access KLO' : lang === 'ES' ? 'Acceder a KLO' : 'Acessar KLO'}
           </h2>
-          <p className="text-white/40 text-sm font-light">
+          <p className="text-text-main/40 text-sm font-light">
             {lang === 'EN' 
               ? 'Enter your credentials to access the orchestration core' 
               : lang === 'ES' 
@@ -1057,7 +1057,7 @@ export default function App() {
               type="email" 
               value={authEmail}
               onChange={(e) => setAuthEmail(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-text-main"
+              className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-text-main"
               placeholder="admin@klo.com"
               required
             />
@@ -1070,7 +1070,7 @@ export default function App() {
               type="password" 
               value={authPassword}
               onChange={(e) => setAuthPassword(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-text-main"
+              className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-colors font-light text-text-main"
               placeholder="••••••••"
               required
             />
@@ -1084,7 +1084,7 @@ export default function App() {
           </button>
         </form>
 
-        <div className="mt-8 pt-8 border-t border-white/5 text-center">
+        <div className="mt-8 pt-8 border-t border-border-main text-center">
           <p className="text-[10px] font-sans uppercase tracking-tight text-text-main/40">
             {lang === 'EN' ? 'Demo Credentials' : lang === 'ES' ? 'Credenciales de Demostración' : 'Credenciais de Demonstração'}:<br />
             admin@klo.com | provider@klo.com | client@klo.com
@@ -1153,338 +1153,338 @@ export default function App() {
     return (
       <>
         {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <motion.img 
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
-            src={LUXURY_IMAGES[activePillar % LUXURY_IMAGES.length]} 
-            className="w-full h-full object-cover opacity-50"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-luxury-black/80 via-transparent to-luxury-black" />
-        </div>
-
-        <div className="relative z-10 text-center max-w-4xl px-6 text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <span className="text-gold font-sans uppercase tracking-tight text-[11px] font-semibold mb-4 block">
-              {lang === 'EN' ? 'Caribbean Ultra-Luxury · AI-Orchestrated' : lang === 'ES' ? 'Ultra-Lujo del Caribe · Orquestado por IA' : 'Ultra-Luxo do Caribe · Orquestrado por IA'}
-            </span>
-            <h1 className="text-5xl md:text-8xl font-serif italic mb-8 leading-tight tracking-wide">
-              {lang === 'EN' ? (
-                <>
-                  One conversation.<br />
-                  <span className="whitespace-nowrap">Jet to Yacht to Villa.</span>
-                </>
-              ) : lang === 'ES' ? (
-                <>
-                  Una conversación.<br />
-                  <span className="whitespace-nowrap">Del jet al yate a la villa.</span>
-                </>
-              ) : (
-                <>
-                  Uma conversa.<br />
-                  <span className="whitespace-nowrap">Do jato ao iate à vila.</span>
-                </>
-              )}
-            </h1>
-            <p className="text-white/60 text-lg md:text-xl font-sans font-light max-w-2xl mx-auto mb-12 leading-relaxed">
-              {lang === 'EN' 
-                ? "Cartagena's most exclusive travel experience. Private aviation, superyachts, and ultra-luxury villas — curated for those who accept nothing less."
-                : lang === 'ES'
-                ? "La experiencia de viaje más exclusiva de Cartagena. Aviación privada, superyates y villas de ultra-lujo — para quienes no aceptan nada menos que lo mejor."
-                : "A experiência de viagem mais exclusiva de Cartagena. Aviação privada, superates e vilas de ultra-luxo — para quem não aceita nada menos que o melhor."}
-            </p>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6 px-4">
-              <button 
-                onClick={() => setChatOpen(true)}
-                className="group px-10 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide flex items-center gap-3 hover:bg-white transition-all duration-300"
-              >
-                {lang === 'EN' ? 'Curate My Journey' : lang === 'ES' ? 'Organizar mi Viaje' : 'Curar Minha Jornada'} <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button 
-                onClick={() => setShowMarketplace(true)}
-                className="px-10 py-4 border border-white/20 rounded-xl font-medium text-xs tracking-wide hover:bg-white/5 transition-all text-white"
-              >
-                {lang === 'EN' ? 'Explore Marketplace' : lang === 'ES' ? 'Explorar Mercado' : 'Explorar Mercado'}
-              </button>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-4">
-          {PILLARS.map((pillar, idx) => (
-            <button 
-              key={pillar.id}
-              onClick={() => setActivePillar(idx)}
-              className={`w-12 h-1 flex transition-all duration-500 ${activePillar === idx ? 'bg-gold w-24' : 'bg-white/20'}`}
+        <section className="relative h-screen flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <motion.img 
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
+              src={LUXURY_IMAGES[activePillar % LUXURY_IMAGES.length]} 
+              className="w-full h-full object-cover opacity-50"
+              referrerPolicy="no-referrer"
             />
-          ))}
-        </div>
-      </section>
-
-      {/* Social Proof Section */}
-      <section className="bg-luxury-black py-24 px-6 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-4xl md:text-6xl font-serif italic text-white mb-6 tracking-wide">
-              {lang === 'EN' ? 'The Standard for' : lang === 'ES' ? 'El Estándar para' : 'O Padrão para'} <br />
-              <span className="text-gold italic">{lang === 'EN' ? 'Caribbean Ultra-Luxury' : lang === 'ES' ? 'Ultra-Lujo del Caribe' : 'Ultra-Luxo do Caribe'}</span>
-            </h2>
-            <div className="w-24 h-1 bg-gold mx-auto" />
-          </motion.div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-            {[
-              { 
-                label: lang === 'EN' ? "Cartagena, Colombia" : lang === 'ES' ? "Cartagena, Colombia" : "Cartagena, Colômbia", 
-                icon: MapPin 
-              },
-              { 
-                label: lang === 'EN' ? "Every asset personally vetted" : lang === 'ES' ? "Cada activo verificado personalmente" : "Cada ativo verificado pessoalmente", 
-                icon: Shield 
-              },
-              { 
-                label: "Air · Sea · Stay · Ground · Staff", 
-                icon: LayoutDashboard 
-              },
-              { 
-                label: lang === 'EN' ? "By invitation only" : lang === 'ES' ? "Solo por invitación" : "Somente por convite", 
-                icon: Star 
-              },
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-[#111109] border border-white/[0.07] rounded-xl p-8 text-center hover:border-gold/30 transition-all group"
-              >
-                <stat.icon className="mx-auto mb-4 text-gold/50 group-hover:text-gold transition-colors" size={32} />
-                <p className="text-white font-sans font-medium text-base">{stat.label}</p>
-              </motion.div>
-            ))}
+            <div className="absolute inset-0 bg-gradient-to-b from-luxury-black/80 via-transparent to-luxury-black" />
           </div>
 
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: lang === 'EN' ? 'Absolute discretion' : lang === 'ES' ? 'Discreción absoluta' : 'Discrição absoluta',
-                desc: lang === 'EN' 
-                  ? 'Every asset physically verified by our security team. Ex-military intelligence protocols. Your privacy is non-negotiable.'
+          <div className="relative z-10 text-center max-w-4xl px-6 text-text-main">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <span className="text-gold font-sans uppercase tracking-tight text-[11px] font-semibold mb-4 block">
+                {lang === 'EN' ? 'Caribbean Ultra-Luxury · AI-Orchestrated' : lang === 'ES' ? 'Ultra-Lujo del Caribe · Orquestado por IA' : 'Ultra-Luxo do Caribe · Orquestrado por IA'}
+              </span>
+              <h1 className="text-5xl md:text-8xl font-serif italic mb-8 leading-tight tracking-wide">
+                {lang === 'EN' ? (
+                  <>
+                    One conversation.<br />
+                    <span className="whitespace-nowrap">Jet to Yacht to Villa.</span>
+                  </>
+                ) : lang === 'ES' ? (
+                  <>
+                    Una conversación.<br />
+                    <span className="whitespace-nowrap">Del jet al yate a la villa.</span>
+                  </>
+                ) : (
+                  <>
+                    Uma conversa.<br />
+                    <span className="whitespace-nowrap">Do jato ao iate à vila.</span>
+                  </>
+                )}
+              </h1>
+              <p className="text-text-main/60 text-lg md:text-xl font-sans font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+                {lang === 'EN' 
+                  ? "Cartagena's most exclusive travel experience. Private aviation, superyachts, and ultra-luxury villas — curated for those who accept nothing less."
                   : lang === 'ES'
-                  ? 'Cada activo verificado físicamente por nuestro equipo de seguridad. Protocolos de inteligencia ex-militar. Su privacidad no es negociable.'
-                  : 'Cada ativo verificado fisicamente por nossa equipe de segurança. Protocolos de inteligência ex-militar. Sua privacidade é inegociável.'
-              },
-              {
-                icon: Zap,
-                title: lang === 'EN' ? 'Your journey, orchestrated' : lang === 'ES' ? 'Su viaje, orquestado' : 'Sua jornada, orquestrada',
-                desc: lang === 'EN'
-                  ? 'Tell us what you have in mind. Our concierge team — backed by AI — assembles your complete Cartagena itinerary and presents it for your approval. One conversation is all it takes.'
-                  : lang === 'ES'
-                  ? 'Cuéntenos qué tiene en mente. Nuestro equipo de conserjería, respaldado por IA, organiza su itinerario completo en Cartagena y se lo presenta para su aprobación. Una conversación es todo lo que se necesita.'
-                  : 'Conte-nos o que você tem em mente. Nossa equipe de concierge — apoiada por IA — monta seu itinerário completo em Cartagena e o apresenta para sua aprovação. Uma conversa é tudo o que basta.'
-              },
-              {
-                icon: Users,
-                title: lang === 'EN' ? 'White-glove from first contact' : lang === 'ES' ? 'Guante blanco desde el primer contacto' : 'Luva branca desde o primeiro contato',
-                desc: lang === 'EN'
-                  ? 'From your first message to your final transfer, a dedicated KLO concierge manages every detail. No call centres. No waiting. No exceptions.'
-                  : lang === 'ES'
-                  ? 'Desde su primer mensaje hasta su traslado final, un conserje dedicado de KLO gestiona cada detalle. Sin centros de llamadas. Sin esperas. Sin excepciones.'
-                  : 'Luva branca desde o primeiro contato. Desde a sua primeira mensagem até a sua transferência final, um concierge dedicado da KLO gerencia cada detalhe. Sem centros de chamadas. Sem espera. Sem exceções.'
-              }
-            ].map((feature, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: idx === 0 ? -50 : idx === 2 ? 50 : 0, y: idx === 1 ? 50 : 0 }}
-                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + (idx * 0.1) }}
-                className="bg-[#111109] border border-white/[0.07] rounded-xl p-10 hover:border-gold/20 transition-all"
-              >
-                <div className="w-16 h-16 bg-gold/10 rounded-xl flex items-center justify-center text-gold mb-8">
-                  <feature.icon size={32} />
-                </div>
-                <h3 className="text-xl font-sans font-medium text-white mb-2">{feature.title}</h3>
-                <p className="text-white/50 font-sans font-light leading-relaxed">{feature.desc}</p>
-              </motion.div>
+                  ? "La experiencia de viaje más exclusiva de Cartagena. Aviación privada, superyates y villas de ultra-lujo — para quienes no aceptan nada menos que lo mejor."
+                  : "A experiência de viagem mais exclusiva de Cartagena. Aviação privada, superates e vilas de ultra-luxo — para quem não aceita nada menos que o melhor."}
+              </p>
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6 px-4">
+                <button 
+                  onClick={() => setChatOpen(true)}
+                  className="group px-10 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide flex items-center gap-3 hover:bg-white transition-all duration-300"
+                >
+                  {lang === 'EN' ? 'Curate My Journey' : lang === 'ES' ? 'Organizar mi Viaje' : 'Curar Minha Jornada'} <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button 
+                  onClick={() => setShowMarketplace(true)}
+                  className="px-10 py-4 border border-border-main rounded-xl font-medium text-xs tracking-wide hover:bg-text-main/5 transition-all text-text-main"
+                >
+                  {lang === 'EN' ? 'Explore Marketplace' : lang === 'ES' ? 'Explorar Mercado' : 'Explorar Mercado'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-4">
+            {PILLARS.map((pillar, idx) => (
+              <button 
+                key={pillar.id}
+                onClick={() => setActivePillar(idx)}
+                className={`w-12 h-1 transition-all duration-500 ${activePillar === idx ? 'bg-gold w-24' : 'bg-text-main/20'}`}
+              />
             ))}
           </div>
-        </div>
-        
-        {/* Background Accents */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-          <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full" />
-          <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full" />
-        </div>
-      </section>
+        </section>
 
-      {/* Planned Experience Dashboard */}
-      <AnimatePresence>
-        {plannedExperience && (
-          <motion.section 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="py-24 px-6 max-w-7xl mx-auto"
-          >
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-              <div>
-                <span className="text-gold font-sans uppercase tracking-tight text-[11px] font-semibold mb-1 block">
-                  {lang === 'EN' ? 'Central Guest Profile' : lang === 'ES' ? 'Perfil Central del Huésped' : 'Perfil Central do Hóspede'}: UHNWI_001
-                </span>
-                <h2 className="text-4xl md:text-5xl font-serif italic tracking-wide">{plannedExperience.title}</h2>
-              </div>
-              <div className="text-right">
-                <span className="text-luxury-black/40 text-sm font-sans block mb-1">
-                  {lang === 'EN' ? 'Total Investment' : lang === 'ES' ? 'Inversión Total' : 'Investimento Total'} (incl. {plannedExperience.managementFee} {lang === 'EN' ? 'fee' : lang === 'ES' ? 'tarifa' : 'taxa'})
-                </span>
-                <span className="text-3xl font-sans font-light text-gold">{plannedExperience.estimatedTotal}</span>
-              </div>
+        {/* Social Proof Section */}
+          <section className="bg-luxury-black py-24 px-6 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-20"
+            >
+              <h2 className="text-4xl md:text-6xl font-serif italic text-text-main mb-6 tracking-wide">
+                {lang === 'EN' ? 'The Standard for' : lang === 'ES' ? 'El Estándar para' : 'O Padrão para'} <br />
+                <span className="text-gold italic">{lang === 'EN' ? 'Caribbean Ultra-Luxury' : lang === 'ES' ? 'Ultra-Lujo del Caribe' : 'Ultra-Luxo do Caribe'}</span>
+              </h2>
+              <div className="w-24 h-1 bg-gold mx-auto" />
+            </motion.div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+              {[
+                { 
+                  label: lang === 'EN' ? "Cartagena, Colombia" : lang === 'ES' ? "Cartagena, Colombia" : "Cartagena, Colômbia", 
+                  icon: MapPin 
+                },
+                { 
+                  label: lang === 'EN' ? "Every asset personally vetted" : lang === 'ES' ? "Cada activo verificado personalmente" : "Cada ativo verificado pessoalmente", 
+                  icon: Shield 
+                },
+                { 
+                  label: "Air · Sea · Stay · Ground · Staff", 
+                  icon: LayoutDashboard 
+                },
+                { 
+                  label: lang === 'EN' ? "By invitation only" : lang === 'ES' ? "Solo por invitación" : "Somente por convite", 
+                  icon: Star 
+                },
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-luxury-slate border border-border-main rounded-xl p-8 text-center hover:border-gold/30 transition-all group"
+                >
+                  <stat.icon className="mx-auto mb-4 text-gold/50 group-hover:text-gold transition-colors" size={32} />
+                  <p className="text-text-main font-sans font-medium text-base">{stat.label}</p>
+                </motion.div>
+              ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {Object.entries(plannedExperience.pillars).map(([key, value]) => {
-                  const pillarInfo = PILLARS.find(p => p.id === key.toUpperCase());
-                  if (!value) return null;
-                  return (
-                    <motion.div key={key} whileHover={{ y: -5 }} className="bg-luxury-slate border border-white/[0.07] rounded-xl p-8 relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        {pillarInfo && <pillarInfo.icon size={80} />}
-                      </div>
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className={`p-3 rounded-lg bg-white/5 ${pillarInfo?.color}`}>
-                          {pillarInfo && <pillarInfo.icon size={24} />}
+            {/* Feature Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: Shield,
+                  title: lang === 'EN' ? 'Absolute discretion' : lang === 'ES' ? 'Discreción absoluta' : 'Discrição absoluta',
+                  desc: lang === 'EN' 
+                    ? 'Every asset physically verified by our security team. Ex-military intelligence protocols. Your privacy is non-negotiable.'
+                    : lang === 'ES'
+                    ? 'Cada activo verificado físicamente por nuestro equipo de seguridad. Protocolos de inteligencia ex-militar. Su privacidad no es negociable.'
+                    : 'Cada ativo verificado fisicamente por nossa equipe de segurança. Protocolos de inteligência ex-militar. Sua privacidade é inegociável.'
+                },
+                {
+                  icon: Zap,
+                  title: lang === 'EN' ? 'Your journey, orchestrated' : lang === 'ES' ? 'Su viaje, orquestado' : 'Sua jornada, orquestrada',
+                  desc: lang === 'EN'
+                    ? 'Tell us what you have in mind. Our concierge team — backed by AI — assembles your complete Cartagena itinerary and presents it for your approval. One conversation is all it takes.'
+                    : lang === 'ES'
+                    ? 'Cuéntenos qué tiene en mente. Nuestro equipo de conserjería, respaldado por IA, organiza su itinerario completo en Cartagena y se lo presenta para su aprobación. Una conversación es todo lo que se necesita.'
+                    : 'Conte-nos o que você tem em mente. Nossa equipe de concierge — apoiada por IA — monta seu itinerário completo em Cartagena e o apresenta para sua aprovação. Uma conversa é tudo o que basta.'
+                },
+                {
+                  icon: Users,
+                  title: lang === 'EN' ? 'White-glove from first contact' : lang === 'ES' ? 'Guante blanco desde el primer contacto' : 'Luva branca desde o primeiro contato',
+                  desc: lang === 'EN'
+                    ? 'From your first message to your final transfer, a dedicated KLO concierge manages every detail. No call centres. No waiting. No exceptions.'
+                    : lang === 'ES'
+                    ? 'Desde su primer mensaje hasta su traslado final, un conserje dedicado de KLO gestiona cada detalle. Sin centros de llamadas. Sin esperas. Sin excepciones.'
+                    : 'Luva branca desde o primeiro contacto. Desde a sua primeira mensagem até a sua transferência final, um concierge dedicado da KLO gerencia cada detalhe. Sem centros de chamadas. Sem espera. Sem exceções.'
+                }
+              ].map((feature, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: idx === 0 ? -50 : idx === 2 ? 50 : 0, y: idx === 1 ? 50 : 0 }}
+                  whileInView={{ opacity: 1, x: 0, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 + (idx * 0.1) }}
+                  className="bg-luxury-slate border border-border-main rounded-xl p-10 hover:border-gold/20 transition-all"
+                >
+                  <div className="w-16 h-16 bg-gold/10 rounded-xl flex items-center justify-center text-gold mb-8">
+                    <feature.icon size={32} />
+                  </div>
+                  <h3 className="text-xl font-sans font-medium text-text-main mb-2">{feature.title}</h3>
+                  <p className="text-text-main/50 font-sans font-light leading-relaxed">{feature.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Background Accents */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+            <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full" />
+            <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full" />
+          </div>
+        </section>
+
+        {/* Planned Experience Dashboard */}
+        <AnimatePresence>
+          {plannedExperience && (
+            <motion.section 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              className="py-24 px-6 max-w-7xl mx-auto"
+            >
+              <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                  <span className="text-gold font-sans uppercase tracking-tight text-[11px] font-semibold mb-1 block">
+                    {lang === 'EN' ? 'Central Guest Profile' : lang === 'ES' ? 'Perfil Central del Huésped' : 'Perfil Central do Hóspede'}: UHNWI_001
+                  </span>
+                  <h2 className="text-4xl md:text-5xl font-serif italic tracking-wide">{plannedExperience.title}</h2>
+                </div>
+                <div className="text-right">
+                  <span className="text-text-main/40 text-sm font-sans block mb-1">
+                    {lang === 'EN' ? 'Total Investment' : lang === 'ES' ? 'Inversión Total' : 'Investimento Total'} (incl. {plannedExperience.managementFee} {lang === 'EN' ? 'fee' : lang === 'ES' ? 'tarifa' : 'taxa'})
+                  </span>
+                  <span className="text-3xl font-sans font-light text-gold">{plannedExperience.estimatedTotal}</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {Object.entries(plannedExperience.pillars).map(([key, value]) => {
+                    const pillarInfo = PILLARS.find(p => p.id === key.toUpperCase());
+                    if (!value) return null;
+                    return (
+                      <motion.div key={key} whileHover={{ y: -5 }} className="bg-luxury-slate border border-border-main rounded-xl p-8 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                          {pillarInfo && <pillarInfo.icon size={80} />}
                         </div>
-                        <h3 className="text-lg font-sans font-medium">
-                          {lang === 'EN' ? key : lang === 'ES' ? (key === 'stay' ? 'estancia' : key === 'ground' ? 'tierra' : key) : (key === 'stay' ? 'estadia' : key === 'ground' ? 'terra' : key)}
-                        </h3>
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className={`p-3 rounded-lg bg-text-main/5 ${pillarInfo?.color}`}>
+                            {pillarInfo && <pillarInfo.icon size={24} />}
+                          </div>
+                          <h3 className="text-lg font-sans font-medium">
+                            {lang === 'EN' ? key : lang === 'ES' ? (key === 'stay' ? 'estancia' : key === 'ground' ? 'tierra' : key) : (key === 'stay' ? 'estadia' : key === 'ground' ? 'terra' : key)}
+                          </h3>
+                        </div>
+                        <p className="text-text-main/70 font-sans font-light leading-relaxed">{value}</p>
+                      </motion.div>
+                    );
+                  })}
+                  
+                  {/* Legal & Security */}
+                  <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-luxury-slate border border-gold/20 rounded-xl p-8">
+                      <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
+                        <Shield size={20} className="text-gold" /> {lang === 'EN' ? 'Security Brief' : 'Resumen de Seguridad'}
+                      </h3>
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[11px] font-sans uppercase tracking-tight text-text-main/40 font-semibold">Level</span>
+                          <span className="text-xs font-sans font-semibold text-gold">{plannedExperience.securityBrief.level}</span>
+                        </div>
+                        <p className="text-xs font-sans text-text-main/60 italic leading-relaxed">
+                          "{plannedExperience.securityBrief.riskAssessment}"
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {plannedExperience.securityBrief.protocols.map((p, i) => (
+                            <span key={i} className="px-3 py-1 bg-text-main/5 rounded-md text-[10px] font-sans font-semibold uppercase tracking-tight border border-border-main text-text-main/70">
+                              {p}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <p className="text-text-main/70 font-sans font-light leading-relaxed">{value}</p>
-                    </motion.div>
-                  );
-                })}
-                
-                {/* Legal & Security */}
-                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-luxury-slate border border-gold/20 rounded-xl p-8">
-                    <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
-                      <Shield size={20} className="text-gold" /> {lang === 'EN' ? 'Security Brief' : 'Resumen de Seguridad'}
-                    </h3>
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-[11px] font-sans uppercase tracking-tight text-text-main/40 font-semibold">Level</span>
-                        <span className="text-xs font-sans font-semibold text-gold">{plannedExperience.securityBrief.level}</span>
-                      </div>
-                      <p className="text-xs font-sans text-text-main/60 italic leading-relaxed">
-                        "{plannedExperience.securityBrief.riskAssessment}"
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {plannedExperience.securityBrief.protocols.map((p, i) => (
-                          <span key={i} className="px-3 py-1 bg-white/5 rounded-md text-[10px] font-sans font-semibold uppercase tracking-tight border border-white/10 text-text-main/70">
-                            {p}
+                    </div>
+
+                    <div className="bg-luxury-slate border border-border-main rounded-xl p-8">
+                      <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
+                        <UserCheck size={20} className="text-gold" /> {lang === 'EN' ? 'Compliance' : 'Cumplimiento'}
+                      </h3>
+                      <div className="flex flex-wrap gap-3">
+                        {plannedExperience.legalRequirements.map((req, i) => (
+                          <span key={i} className="px-4 py-2 bg-text-main/5 rounded-xl text-xs font-sans font-light border border-border-main text-text-main/70">
+                            {req}
                           </span>
                         ))}
                       </div>
                     </div>
                   </div>
-
-                  <div className="bg-luxury-slate border border-white/[0.07] rounded-xl p-8">
-                    <h3 className="text-lg font-sans font-medium mb-4 flex items-center gap-3">
-                      <UserCheck size={20} className="text-gold" /> {lang === 'EN' ? 'Compliance' : 'Cumplimiento'}
-                    </h3>
-                    <div className="flex flex-wrap gap-3">
-                      {plannedExperience.legalRequirements.map((req, i) => (
-                        <span key={i} className="px-4 py-2 bg-white/5 rounded-xl text-xs font-sans font-light border border-white/10 text-white/70">
-                          {req}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
-              </div>
 
-              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
-                <h3 className="text-lg font-sans font-medium mb-8 flex items-center gap-3">
-                  <Clock size={20} className="text-gold" /> {lang === 'EN' ? 'Agential Timeline' : 'Cronograma Agéntico'}
-                </h3>
-                <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white/10">
-                  {plannedExperience.itinerary.map((item, idx) => (
-                    <div key={idx} className="relative pl-10">
-                      <div className={`absolute left-0 top-1.5 w-[23px] h-[23px] rounded-full bg-luxury-black border-2 flex items-center justify-center z-10 ${
-                        item.status === 'Auto-Scheduled' ? 'border-cyan-400' : 'border-gold'
-                      }`}>
-                        <div className={`w-1.5 h-1.5 rounded-full ${item.status === 'Auto-Scheduled' ? 'bg-cyan-400' : 'bg-gold'}`} />
-                      </div>
-                      <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[11px] text-gold font-sans font-semibold uppercase tracking-tight block mb-1">{item.time}</span>
-                          <span className="text-[9px] text-emerald-400 font-sans">TTE: {item.tte}</span>
-                        </div>
-                        <span className={`text-[10px] font-sans font-semibold uppercase tracking-tight px-2 py-0.5 rounded-md ${
-                          item.status === 'Auto-Scheduled' ? 'bg-cyan-400/10 text-cyan-400' : 'bg-gold/10 text-gold'
+                <div className="bg-luxury-slate border border-border-main rounded-xl p-8">
+                  <h3 className="text-lg font-sans font-medium mb-8 flex items-center gap-3">
+                    <Clock size={20} className="text-gold" /> {lang === 'EN' ? 'Agential Timeline' : 'Cronograma Agéntico'}
+                  </h3>
+                  <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border-main">
+                    {plannedExperience.itinerary.map((item, idx) => (
+                      <div key={idx} className="relative pl-10">
+                        <div className={`absolute left-0 top-1.5 w-[23px] h-[23px] rounded-full bg-luxury-black border-2 flex items-center justify-center z-10 ${
+                          item.status === 'Auto-Scheduled' ? 'border-cyan-400' : 'border-gold'
                         }`}>
-                          {lang === 'EN' ? item.status : lang === 'ES' ? (item.status === 'Auto-Scheduled' ? 'Auto-Programado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendiente') : (item.status === 'Auto-Scheduled' ? 'Auto-Agendado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendente')}
-                        </span>
+                          <div className={`w-1.5 h-1.5 rounded-full ${item.status === 'Auto-Scheduled' ? 'bg-cyan-400' : 'bg-gold'}`} />
+                        </div>
+                        <div className="flex justify-between items-start">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] text-gold font-sans font-semibold uppercase tracking-tight block mb-1">{item.time}</span>
+                            <span className="text-[9px] text-emerald-400 font-sans">TTE: {item.tte}</span>
+                          </div>
+                          <span className={`text-[10px] font-sans font-semibold uppercase tracking-tight px-2 py-0.5 rounded-md ${
+                            item.status === 'Auto-Scheduled' ? 'bg-cyan-400/10 text-cyan-400' : 'bg-gold/10 text-gold'
+                          }`}>
+                            {lang === 'EN' ? item.status : lang === 'ES' ? (item.status === 'Auto-Scheduled' ? 'Auto-Programado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendiente') : (item.status === 'Auto-Scheduled' ? 'Auto-Agendado' : item.status === 'Confirmed' ? 'Confirmado' : 'Pendente')}
+                          </span>
+                        </div>
+                        <p className="text-sm font-sans font-light text-text-main/90">{item.activity}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight">{item.pillar}</span>
+                          <span className="text-[11px] text-text-main/20">•</span>
+                          <span className="text-[11px] font-sans font-semibold text-text-main/30 uppercase tracking-tight">{item.location}</span>
+                        </div>
                       </div>
-                      <p className="text-sm font-sans font-light text-white/90">{item.activity}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{item.pillar}</span>
-                        <span className="text-[11px] text-white/20">•</span>
-                        <span className="text-[11px] font-sans font-semibold text-white/30 uppercase tracking-tight">{item.location}</span>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                  {paymentConfirmed ? (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="w-full mt-10 py-6 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex flex-col items-center justify-center gap-3 text-center"
+                    >
+                      <CheckCircle2 className="text-emerald-500" size={32} />
+                      <p className="text-emerald-500 font-sans font-medium px-4">
+                        {lang === 'EN' 
+                          ? 'Payment confirmed — your KLO concierge will contact you within 2 hours' 
+                          : lang === 'ES' 
+                          ? 'Pago confirmado — su conserje de KLO lo contactará en 2 horas' 
+                          : 'Pagamento confirmado — seu concierge KLO entrará em contato em 2 horas'}
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <button 
+                      onClick={handlePayment}
+                      disabled={isProcessingPayment}
+                      className="w-full mt-10 py-4 bg-white text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-gold transition-colors flex items-center justify-center gap-3"
+                    >
+                      {isProcessingPayment ? <Loader2 className="animate-spin" /> : <CreditCard size={18} />}
+                      {lang === 'EN' ? 'Confirm Invisible Payment' : lang === 'ES' ? 'Confirmar Pago Invisible' : 'Confirmar Pagamento Invisível'}
+                    </button>
+                  )}
                 </div>
-                {paymentConfirmed ? (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="w-full mt-10 py-6 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex flex-col items-center justify-center gap-3 text-center"
-                  >
-                    <CheckCircle2 className="text-emerald-500" size={32} />
-                    <p className="text-emerald-500 font-sans font-medium px-4">
-                      {lang === 'EN' 
-                        ? 'Payment confirmed — your KLO concierge will contact you within 2 hours' 
-                        : lang === 'ES' 
-                        ? 'Pago confirmado — su conserje de KLO lo contactará en 2 horas' 
-                        : 'Pagamento confirmado — seu concierge KLO entrará em contato em 2 horas'}
-                    </p>
-                  </motion.div>
-                ) : (
-                  <button 
-                    onClick={handlePayment}
-                    disabled={isProcessingPayment}
-                    className="w-full mt-10 py-4 bg-white text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-gold transition-colors flex items-center justify-center gap-3"
-                  >
-                    {isProcessingPayment ? <Loader2 className="animate-spin" /> : <CreditCard size={18} />}
-                    {lang === 'EN' ? 'Confirm Invisible Payment' : lang === 'ES' ? 'Confirmar Pago Invisible' : 'Confirmar Pagamento Invisível'}
-                  </button>
-                )}
               </div>
-            </div>
-          </motion.section>
-        )}
-      </AnimatePresence>
-    </>
-  );
-};
+            </motion.section>
+          )}
+        </AnimatePresence>
+      </>
+    );
+  };
 
   const renderAdminView = () => {
     const tabs = [
@@ -1501,10 +1501,10 @@ export default function App() {
     ];
 
     return (
-      <div className={`pt-20 flex min-h-screen ${isMissionControl ? 'bg-luxury-paper' : ''}`}>
+      <div className={`pt-20 flex min-h-screen ${isMissionControl ? 'bg-luxury-black' : ''}`}>
         {/* Admin Sidebar */}
         {!isMissionControl && (
-          <aside className="w-64 border-r border-white/5 bg-luxury-slate/50 backdrop-blur-md hidden lg:block">
+          <aside className="w-64 border-r border-border-main bg-luxury-slate/50 backdrop-blur-md hidden lg:block">
             <div className="p-8">
               <div className="space-y-2">
                 {tabs.map(tab => (
@@ -1512,8 +1512,8 @@ export default function App() {
                     key={tab.id}
                     onClick={() => setAdminActiveTab(tab.id)}
                     className={adminActiveTab === tab.id 
-                      ? "w-full flex items-center gap-3 px-4 py-3 rounded-r-lg transition-all text-white border-l-2 border-gold bg-white/[0.06]"
-                      : "w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-white/40 hover:text-white/70 hover:bg-white/[0.04] border-l-2 border-transparent"
+                      ? "w-full flex items-center gap-3 px-4 py-3 rounded-r-lg transition-all text-text-main border-l-2 border-gold bg-luxury-slate/50"
+                      : "w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-text-main/40 hover:text-text-main/70 hover:bg-luxury-slate/30 border-l-2 border-transparent"
                     }
                   >
                     <tab.icon size={18} />
@@ -1522,7 +1522,7 @@ export default function App() {
                 ))}
               </div>
               
-              <div className="mt-12 pt-12 border-t border-white/5">
+              <div className="mt-12 pt-12 border-t border-border-main">
                 <button 
                   onClick={() => setIsMissionControl(true)}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-500/5 text-red-400/70 border border-red-500/10 hover:bg-red-500/10 hover:text-red-400 transition-all"
@@ -1538,9 +1538,9 @@ export default function App() {
         )}
 
         {/* Admin Content */}
-        <div className={`flex-1 overflow-y-auto p-8 lg:p-10 custom-scrollbar bg-[#0d0d0b] ${isMissionControl ? 'max-w-none' : ''}`}>
+        <div className={`flex-1 overflow-y-auto p-8 lg:p-10 custom-scrollbar bg-luxury-black ${isMissionControl ? 'max-w-none' : ''}`}>
           {isMissionControl && (
-            <div className="fixed inset-0 z-[200] bg-luxury-paper p-8 overflow-y-auto custom-scrollbar text-luxury-black">
+            <div className="fixed inset-0 z-[200] bg-luxury-black p-8 overflow-y-auto custom-scrollbar text-text-main">
               <div className="flex justify-between items-center mb-12">
                 <div className="flex items-center gap-6">
                   <button 
@@ -1549,7 +1549,7 @@ export default function App() {
                       setViewMode('CLIENT');
                       setShowMarketplace(false);
                     }}
-                    className="p-4 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-white/10 transition-all"
+                    className="p-4 bg-luxury-slate/50 border border-border-main rounded-2xl text-text-main hover:bg-luxury-slate/70 transition-all"
                     title="Back to Home"
                   >
                     <Home size={24} />
@@ -1558,7 +1558,7 @@ export default function App() {
                     <Zap size={32} />
                   </div>
                   <div>
-                    <h2 className="text-5xl font-serif italic tracking-wide text-white">
+                    <h2 className="text-5xl font-serif italic tracking-wide text-text-main">
                       {lang === 'EN' ? 'Mission Control Mode' : lang === 'ES' ? 'Modo Control de Misión' : 'Modo Controle de Missão'}
                     </h2>
                     <p className="text-gold/60 font-sans text-[11px] uppercase tracking-tight font-semibold">
@@ -1591,9 +1591,9 @@ export default function App() {
 
           {!isMissionControl && (
             <div className="space-y-8">
-              <div className="border-b border-white/[0.06] pb-6">
+              <div className="border-b border-border-main pb-6">
                 <p className="text-[10px] uppercase tracking-widest text-gold/60 mb-1">KLO Operations</p>
-                <h1 className="text-3xl font-serif">{tabs.find(t => t.id === adminActiveTab)?.label}</h1>
+                <h1 className="text-3xl font-serif text-text-main">{tabs.find(t => t.id === adminActiveTab)?.label}</h1>
               </div>
               {adminActiveTab === 'OCC' && <OperationalCommandCenter bookings={MOCK_BOOKINGS} incidents={MOCK_INCIDENTS} lang={lang} />}
               {adminActiveTab === 'Map' && <GeospatialTracker assets={assets} lang={lang} />}
@@ -1650,7 +1650,7 @@ export default function App() {
       <div className="mb-8">
         <button 
           onClick={() => setViewMode('CLIENT')}
-          className="flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold text-luxury-black hover:bg-black/5 transition-all group"
+          className="flex items-center gap-2 px-6 py-3 bg-luxury-slate/50 backdrop-blur-md border border-border-main rounded-full text-[11px] font-sans uppercase tracking-tight font-semibold text-text-main hover:bg-luxury-slate/70 transition-all group"
         >
           <ChevronRight className="rotate-180 group-hover:text-gold transition-colors" size={14} /> 
           {lang === 'EN' ? 'Back to Client View' : lang === 'ES' ? 'Volver a Vista Cliente' : 'Voltar à Vista do Cliente'}
@@ -1681,16 +1681,16 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen bg-luxury-paper text-luxury-black selection:bg-gold/30">
+    <div className="min-h-screen bg-luxury-black text-text-main selection:bg-gold/30">
       {viewMode === 'SUPPLIER' ? renderSupplierView() : (showAuth && !user) ? renderAuth() : (
         <>
           {/* Navigation */}
           <nav 
             className="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-md"
             style={{
-              background: isHeroNav ? 'rgba(0,0,0,0.3)' : 'rgba(250,248,244,0.95)',
-              borderBottom: isHeroNav ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
-              color: isHeroNav ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.6)'
+              background: isHeroNav ? 'rgba(0,0,0,0.3)' : 'var(--bg-luxury-slate)',
+              borderBottom: isHeroNav ? '1px solid rgba(255,255,255,0.08)' : '1px solid var(--border-border-main)',
+              color: isHeroNav ? 'rgba(255,255,255,0.8)' : 'var(--text-text-main)'
             }}
           >
             {/* Section Confirmation Toast */}
@@ -1711,7 +1711,7 @@ export default function App() {
                 <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
                   <Home size={20} className="text-luxury-black" />
                 </div>
-                <span className={`font-serif text-xl md:text-2xl tracking-wide uppercase font-light ${isHeroNav ? 'text-white' : 'text-luxury-black'}`}>
+                <span className={`font-serif text-xl md:text-2xl tracking-wide uppercase font-light ${isHeroNav ? 'text-white' : 'text-text-main'}`}>
                   <span className="hidden lg:inline">Karibbean Luxury Operators</span>
                   <span className="lg:hidden">KLO</span>
                 </span>
@@ -1830,7 +1830,7 @@ export default function App() {
 
                 <button 
                   onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                  className={`p-2 rounded-full transition-all duration-300 ${isHeroNav ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-black/5 text-luxury-black hover:bg-black/10'}`}
+                  className={`p-2 rounded-full transition-all duration-300 ${isHeroNav ? 'bg-text-main/10 text-text-main hover:bg-text-main/20' : 'bg-black/5 text-luxury-black hover:bg-black/10'}`}
                   title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                 >
                   {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -1849,16 +1849,16 @@ export default function App() {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="fixed inset-0 z-[60] bg-luxury-paper flex flex-col p-8"
+                  className="fixed inset-0 z-[60] bg-luxury-black flex flex-col p-8"
                 >
                   <div className="flex items-center justify-between mb-12">
                     <div className="flex items-center gap-2">
                       <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shrink-0">
                         <span className="text-luxury-black font-bold text-xl">K</span>
                       </div>
-                      <span className="font-serif text-xl tracking-wide uppercase font-light">KLO</span>
+                      <span className="font-serif text-xl tracking-wide uppercase font-light text-text-main">KLO</span>
                     </div>
-                    <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-black/5 rounded-full transition-colors">
+                    <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-luxury-slate/50 rounded-full transition-colors text-text-main">
                       <X size={24} />
                     </button>
                   </div>
@@ -1870,7 +1870,7 @@ export default function App() {
                       setIsMenuOpen(false);
                       setSectionConfirmation(lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-text-main/60'}`}>
                       {lang === 'EN' ? 'Concierge' : lang === 'ES' ? 'Conserje' : 'Concierge'}
                     </button>
                     <button onClick={() => {
@@ -1879,7 +1879,7 @@ export default function App() {
                       setIsMenuOpen(false);
                       setSectionConfirmation(lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && showMarketplace ? 'text-gold' : 'text-text-main/60'}`}>
                       {lang === 'EN' ? 'Marketplace' : lang === 'ES' ? 'Mercado' : 'Mercado'}
                     </button>
                     <button onClick={() => {
@@ -1887,18 +1887,18 @@ export default function App() {
                       setIsMenuOpen(false);
                       setSectionConfirmation(lang === 'EN' ? 'Partner Portal' : lang === 'ES' ? 'Portal de Socios' : 'Portal de Parceiros');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${showPartners ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${showPartners ? 'text-gold' : 'text-text-main/60'}`}>
                       {lang === 'EN' ? 'List with KLO' : lang === 'ES' ? 'Unirse a KLO' : 'Listar com KLO'}
                     </button>
 
-                    <div className="h-[1px] w-full bg-black/5 my-2" />
+                    <div className="h-[1px] w-full bg-border-main my-2" />
 
                     <button onClick={() => { 
                       setViewMode('ADMIN'); 
                       setIsMenuOpen(false); 
                       setSectionConfirmation('Admin');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${viewMode === 'ADMIN' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${viewMode === 'ADMIN' ? 'text-gold' : 'text-text-main/60'}`}>
                       Admin
                     </button>
                     <button onClick={() => { 
@@ -1907,7 +1907,7 @@ export default function App() {
                       setIsMenuOpen(false); 
                       setSectionConfirmation('Client');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${viewMode === 'CLIENT' && !showMarketplace ? 'text-gold' : 'text-text-main/60'}`}>
                       Client
                     </button>
                     <button onClick={() => { 
@@ -1916,7 +1916,7 @@ export default function App() {
                       setIsMenuOpen(false); 
                       setSectionConfirmation('Supplier');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${viewMode === 'SUPPLIER' ? 'text-gold' : 'text-text-main/60'}`}>
                       Supplier
                     </button>
                     <button onClick={() => { 
@@ -1924,15 +1924,15 @@ export default function App() {
                       setIsMenuOpen(false); 
                       setSectionConfirmation('Provider');
                       setTimeout(() => setSectionConfirmation(null), 2000);
-                    }} className={`text-left transition-colors ${viewMode === 'PROVIDER' ? 'text-gold' : 'text-luxury-black/60'}`}>
+                    }} className={`text-left transition-colors ${viewMode === 'PROVIDER' ? 'text-gold' : 'text-text-main/60'}`}>
                       Provider
                     </button>
 
-                    <div className="h-[1px] w-full bg-black/5 my-2" />
+                    <div className="h-[1px] w-full bg-border-main my-2" />
 
                     {user ? (
                       <div className="flex flex-col gap-2">
-                        <span className="text-[10px] opacity-40 lowercase">{user.name}</span>
+                        <span className="text-[10px] opacity-40 lowercase text-text-main">{user.name}</span>
                         <button onClick={() => { handleLogout(); setIsMenuOpen(false); }} className="text-left text-red-500 font-bold">
                           {lang === 'EN' ? 'Sign Out' : lang === 'ES' ? 'Cerrar Sesión' : 'Sair'}
                         </button>
@@ -1941,7 +1941,7 @@ export default function App() {
                       <button onClick={() => {
                         setShowAuth(true);
                         setIsMenuOpen(false);
-                      }} className="text-left hover:text-gold transition-colors">
+                      }} className="text-left hover:text-gold transition-colors text-text-main">
                         {lang === 'EN' ? 'Sign In' : lang === 'ES' ? 'Iniciar Sesión' : 'Entrar'}
                       </button>
                     )}
@@ -1960,21 +1960,21 @@ export default function App() {
                         setTheme(theme === 'dark' ? 'light' : 'dark');
                         setIsMenuOpen(false);
                       }}
-                      className="flex items-center gap-2 text-left hover:text-gold transition-colors"
+                      className="flex items-center gap-2 text-left hover:text-gold transition-colors text-text-main"
                     >
                       {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                       {theme === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
                     </button>
                   </div>
 
-                  <div className="mt-auto pt-8 border-t border-black/5 flex items-center justify-between">
+                  <div className="mt-auto pt-8 border-t border-border-main flex items-center justify-between">
                     <button 
                       onClick={() => {
                         if (lang === 'EN') setLang('ES');
                         else if (lang === 'ES') setLang('PT');
                         else setLang('EN');
                       }}
-                      className="px-6 py-3 border border-black/10 rounded-xl font-bold"
+                      className="px-6 py-3 border border-border-main rounded-xl font-bold text-text-main"
                     >
                       LANGUAGE: {lang}
                     </button>
@@ -2026,7 +2026,7 @@ export default function App() {
                 <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-sans font-semibold rounded-full shadow-xl uppercase tracking-tight opacity-0 group-hover:opacity-100 transition-opacity">
                   WhatsApp
                 </span>
-                <div className="w-12 h-12 bg-[#25D366] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-emerald-500 text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
                   <MessageSquare size={20} />
                 </div>
               </motion.div>
@@ -2066,7 +2066,7 @@ export default function App() {
                 <span className="px-3 py-1.5 bg-luxury-black text-white text-[10px] font-sans font-semibold rounded-full shadow-xl uppercase tracking-tight opacity-0 group-hover:opacity-100 transition-opacity">
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </span>
-                <div className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 text-gold rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-text-main/10 backdrop-blur-md border border-border-main text-gold rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
                   {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                 </div>
               </motion.div>
@@ -2095,7 +2095,7 @@ export default function App() {
         </motion.button>
       </div>
 
-      <section className="py-10 px-6 border-t border-white/5">
+      <section className="py-10 px-6 border-t border-border-main">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-text-main/40 mb-1">
@@ -2119,7 +2119,7 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="py-20 px-6 border-t border-white/5">
+      <footer className="py-20 px-6 border-t border-border-main">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-8">
@@ -2175,8 +2175,8 @@ export default function App() {
             </ul>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-[10px] font-sans text-luxury-black/20 uppercase tracking-tight">
+        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-border-main flex flex-col md:flex-row justify-between items-center gap-6">
+          <span className="text-[10px] font-sans text-text-main/20 uppercase tracking-tight">
             © 2026 Karibbean Luxury Operators. {lang === 'EN' ? 'All rights reserved.' : lang === 'ES' ? 'Todos los derechos reservados.' : 'Todos os direitos reservados.'}
           </span>
         </div>

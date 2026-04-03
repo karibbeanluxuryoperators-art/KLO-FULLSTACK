@@ -59,8 +59,8 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
         .enter()
         .append('path')
         .attr('d', path as any)
-        .attr('fill', '#ffffff05')
-        .attr('stroke', '#ffffff10')
+        .attr('fill', 'var(--color-text-main/2)')
+        .attr('stroke', 'var(--color-text-main/5)')
         .attr('stroke-width', 0.5);
 
       // Add asset points
@@ -117,22 +117,22 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
     <div className="admin-card p-8 rounded-2xl border-gold/20 overflow-hidden relative">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h3 className="text-2xl font-serif italic tracking-wide">{t.title}</h3>
-          <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
+          <h3 className="text-2xl font-serif italic tracking-wide text-text-main">{t.title}</h3>
+          <p className="text-text-main/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
         </div>
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span className="text-[11px] font-sans font-semibold text-luxury-cream/60 uppercase tracking-tight">{t.activeAssets}</span>
+            <span className="text-[11px] font-sans font-semibold text-text-main/60 uppercase tracking-tight">{t.activeAssets}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-blue-400" />
-            <span className="text-[11px] font-sans font-semibold text-luxury-cream/60 uppercase tracking-tight">{t.secureZones}</span>
+            <span className="text-[11px] font-sans font-semibold text-text-main/60 uppercase tracking-tight">{t.secureZones}</span>
           </div>
         </div>
       </div>
 
-      <div className="relative w-full aspect-[16/9] bg-luxury-black/30 rounded-2xl border border-white/5 overflow-hidden">
+      <div className="relative w-full aspect-[16/9] bg-luxury-black/30 rounded-2xl border border-border-main overflow-hidden">
         <svg 
           ref={svgRef} 
           viewBox="0 0 800 450" 
@@ -142,13 +142,13 @@ export const GeospatialTracker: React.FC<GeospatialTrackerProps> = ({ assets, la
         {/* Overlay Info */}
         <div className="absolute bottom-6 left-6 space-y-2">
           {Array.isArray(assets) && assets.slice(0, 3).map((asset, i) => (
-            <div key={i} className="flex items-center gap-3 bg-luxury-black/80 backdrop-blur-md p-3 rounded-xl border border-white/10">
+            <div key={i} className="flex items-center gap-3 bg-luxury-black/80 backdrop-blur-md p-3 rounded-xl border border-border-main">
               <div className="p-2 bg-gold/10 text-gold rounded-xl">
                 {asset.type === 'AIRCRAFT' ? <Plane size={14} /> : asset.type === 'VESSEL' ? <Ship size={14} /> : <Car size={14} />}
               </div>
               <div>
-                <span className="text-[11px] font-sans font-semibold block">{asset.name}</span>
-                <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{asset.location} • {t.inTransit}</span>
+                <span className="text-[11px] font-sans font-semibold block text-text-main">{asset.name}</span>
+                <span className="text-[10px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">{asset.location} • {t.inTransit}</span>
               </div>
             </div>
           ))}

@@ -341,75 +341,75 @@ Please let me know the availability and next steps.`;
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full h-full md:h-auto md:max-w-2xl bg-[#0d0d0b] border border-white/[0.07] rounded-none md:rounded-2xl p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
+        className="relative w-full h-full md:h-auto md:max-w-2xl bg-luxury-black border border-border-main rounded-none md:rounded-2xl p-6 md:p-10 shadow-2xl overflow-y-auto custom-scrollbar"
       >
-        <div className="absolute top-0 right-0 p-10 opacity-5 text-white">
+        <div className="absolute top-0 right-0 p-10 opacity-5 text-text-main">
           <Shield size={160} />
         </div>
 
         {bookingStep === 1 && (
           <div className="space-y-8">
             <div>
-              <h3 className="text-3xl font-sans font-medium text-white mb-2">{t.guestInfo}</h3>
-              <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Step 1 of 2: Personal Details</p>
+              <h3 className="text-3xl font-sans font-medium text-text-main mb-2">{t.guestInfo}</h3>
+              <p className="text-[11px] text-text-main/40 font-sans uppercase tracking-tight">Step 1 of 2: Personal Details</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.fullName}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40">{t.fullName}</label>
                 <input 
                   type="text"
                   value={bookingData.guestName}
                   onChange={(e) => setBookingData({...bookingData, guestName: e.target.value})}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-text-main font-light"
                   placeholder="John Doe"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.email}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40">{t.email}</label>
                 <input 
                   type="email"
                   value={bookingData.guestEmail}
                   onChange={(e) => setBookingData({...bookingData, guestEmail: e.target.value})}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-text-main font-light"
                   placeholder="john@example.com"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.pax}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40">{t.pax}</label>
                 <input 
                   type="number"
                   value={bookingData.pax}
                   onChange={(e) => setBookingData({...bookingData, pax: parseInt(e.target.value)})}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light"
+                  className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-text-main font-light"
                   min="1"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.dates}</label>
+                <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40">{t.dates}</label>
                 <div className="grid grid-cols-2 gap-2">
                   <input 
                     type="date"
                     value={bookingData.startDate}
                     onChange={(e) => setBookingData({...bookingData, startDate: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
+                    className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-text-main font-light"
                   />
                   <input 
                     type="date"
                     value={bookingData.endDate}
                     onChange={(e) => setBookingData({...bookingData, endDate: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-white font-light"
+                    className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-4 focus:outline-none focus:border-gold/50 transition-all text-[10px] text-text-main font-light"
                   />
                 </div>
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">{t.requests}</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40">{t.requests}</label>
               <textarea 
                 value={bookingData.specialRequests}
                 onChange={(e) => setBookingData({...bookingData, specialRequests: e.target.value})}
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-white font-light h-32 resize-none"
+                className="w-full bg-luxury-slate/50 border border-border-main rounded-xl py-4 px-6 focus:outline-none focus:border-gold/50 transition-all text-sm text-text-main font-light h-32 resize-none"
                 placeholder="Any special preferences or security requirements..."
               />
             </div>
@@ -417,14 +417,14 @@ Please let me know the availability and next steps.`;
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setIsBookingModalOpen(false)}
-                className="flex-1 py-5 border border-white/10 rounded-xl font-medium text-xs tracking-wide text-white/40 hover:bg-white/5 transition-all"
+                className="flex-1 py-5 border border-border-main rounded-xl font-medium text-xs tracking-wide text-text-main/40 hover:bg-luxury-slate/50 transition-all"
               >
                 {t.back}
               </button>
               <button 
                 onClick={() => setBookingStep(2)}
                 disabled={!bookingData.guestName || !bookingData.guestEmail}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all disabled:opacity-50 disabled:hover:bg-gold"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-text-main transition-all disabled:opacity-50 disabled:hover:bg-gold"
               >
                 {t.next}
               </button>
@@ -435,55 +435,55 @@ Please let me know the availability and next steps.`;
         {bookingStep === 2 && (
           <div className="space-y-8">
             <div>
-              <h3 className="text-3xl font-sans font-medium text-white mb-2">{t.confirmBooking}</h3>
-              <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Step 2 of 2: Review Journey</p>
+              <h3 className="text-3xl font-sans font-medium text-text-main mb-2">{t.confirmBooking}</h3>
+              <p className="text-[11px] text-text-main/40 font-sans uppercase tracking-tight">Step 2 of 2: Review Journey</p>
             </div>
 
-            <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 space-y-4">
-              <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Guest</span>
-                <span className="text-sm text-white font-medium">{bookingData.guestName}</span>
+            <div className="bg-luxury-slate border border-border-main rounded-xl p-6 space-y-4">
+              <div className="flex justify-between items-center border-b border-border-main pb-4">
+                <span className="text-[11px] font-sans text-text-main/40 uppercase tracking-tight">Guest</span>
+                <span className="text-sm text-text-main font-medium">{bookingData.guestName}</span>
               </div>
-              <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Journey</span>
-                <span className="text-sm text-white font-medium">{cart.length} {t.items}</span>
+              <div className="flex justify-between items-center border-b border-border-main pb-4">
+                <span className="text-[11px] font-sans text-text-main/40 uppercase tracking-tight">Journey</span>
+                <span className="text-sm text-text-main font-medium">{cart.length} {t.items}</span>
               </div>
-              <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">Investment</span>
+              <div className="flex justify-between items-center border-b border-border-main pb-4">
+                <span className="text-[11px] font-sans text-text-main/40 uppercase tracking-tight">Investment</span>
                 <span className="text-xl text-gold font-light">{calculateTotal()}</span>
               </div>
             </div>
 
             <div className="space-y-4">
-              <label className="text-[11px] font-sans uppercase tracking-tight text-white/40">Payment Method</label>
+              <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40">Payment Method</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                   onClick={() => setPaymentMethod('card')}
                   className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
-                    paymentMethod === 'card' ? 'border-gold bg-gold/10' : 'border-white/10 bg-white/5 hover:bg-white/10'
+                    paymentMethod === 'card' ? 'border-gold bg-gold/10' : 'border-border-main bg-luxury-slate/50 hover:bg-luxury-slate'
                   }`}
                 >
-                  <div className={`p-2 rounded-lg ${paymentMethod === 'card' ? 'bg-gold text-luxury-black' : 'bg-white/10 text-white'}`}>
+                  <div className={`p-2 rounded-lg ${paymentMethod === 'card' ? 'bg-gold text-luxury-black' : 'bg-luxury-slate text-text-main'}`}>
                     <CreditCard size={20} />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">Pay by card</p>
-                    <p className="text-[10px] text-white/40 uppercase tracking-tight">Visa, Mastercard, Amex</p>
+                    <p className="text-sm font-medium text-text-main">Pay by card</p>
+                    <p className="text-[10px] text-text-main/40 uppercase tracking-tight">Visa, Mastercard, Amex</p>
                   </div>
                 </button>
 
                 <button
                   onClick={() => setPaymentMethod('usdc')}
                   className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
-                    paymentMethod === 'usdc' ? 'border-gold bg-gold/10' : 'border-white/10 bg-white/5 hover:bg-white/10'
+                    paymentMethod === 'usdc' ? 'border-gold bg-gold/10' : 'border-border-main bg-luxury-slate/50 hover:bg-luxury-slate'
                   }`}
                 >
-                  <div className={`p-2 rounded-lg ${paymentMethod === 'usdc' ? 'bg-gold text-luxury-black' : 'bg-white/10 text-white'}`}>
+                  <div className={`p-2 rounded-lg ${paymentMethod === 'usdc' ? 'bg-gold text-luxury-black' : 'bg-luxury-slate text-text-main'}`}>
                     <Hexagon size={20} />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">Pay with USDC</p>
-                    <p className="text-[10px] text-white/40 uppercase tracking-tight">Digital dollar · instant settlement</p>
+                    <p className="text-sm font-medium text-text-main">Pay with USDC</p>
+                    <p className="text-[10px] text-text-main/40 uppercase tracking-tight">Digital dollar · instant settlement</p>
                   </div>
                 </button>
               </div>
@@ -492,14 +492,14 @@ Please let me know the availability and next steps.`;
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setBookingStep(1)}
-                className="flex-1 py-5 border border-white/10 rounded-xl font-medium text-xs tracking-wide text-white/40 hover:bg-white/5 transition-all"
+                className="flex-1 py-5 border border-border-main rounded-xl font-medium text-xs tracking-wide text-text-main/40 hover:bg-luxury-slate/50 transition-all"
               >
                 {t.prev}
               </button>
               <button 
                 onClick={handleConfirmBooking}
                 disabled={isProcessing}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-text-main transition-all flex items-center justify-center gap-2"
               >
                 {isProcessing ? <Loader2 className="animate-spin" size={16} /> : t.confirmBooking}
               </button>
@@ -513,13 +513,13 @@ Please let me know the availability and next steps.`;
               <Shield size={48} />
             </div>
             <div>
-              <h3 className="text-4xl font-serif italic tracking-wide text-white mb-4">{t.success}</h3>
-              <p className="text-sm text-white/60 font-light max-w-md mx-auto">{t.successSub}</p>
+              <h3 className="text-4xl font-serif italic tracking-wide text-text-main mb-4">{t.success}</h3>
+              <p className="text-sm text-text-main/60 font-light max-w-md mx-auto">{t.successSub}</p>
             </div>
             <div className="flex gap-4 pt-4">
               <button 
                 onClick={() => setIsBookingModalOpen(false)}
-                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all"
+                className="flex-1 py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-text-main transition-all"
               >
                 Return to Marketplace
               </button>
@@ -551,41 +551,41 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
         exit={{ x: '100%' }}
         className="fixed top-0 right-0 h-full w-full md:max-w-md bg-luxury-black z-[150] shadow-2xl flex flex-col border-l border-white/10"
       >
-      <div className="p-8 border-b border-white/10 flex items-center justify-between">
+      <div className="p-8 border-b border-border-main flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-gold rounded-xl flex items-center justify-center text-luxury-black">
             <ShoppingBag size={24} />
           </div>
           <div>
-            <h2 className="text-2xl font-sans font-medium text-white">{t.cart}</h2>
+            <h2 className="text-2xl font-sans font-medium text-text-main">{t.cart}</h2>
             <p className="text-[11px] text-gold font-sans uppercase tracking-tight font-semibold">{cart.length} {t.items}</p>
           </div>
         </div>
-        <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
-          <X size={24} className="text-white/40" />
+        <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-luxury-slate/50 rounded-full transition-colors">
+          <X size={24} className="text-text-main/40" />
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
         {cart.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center opacity-40 text-white">
+          <div className="h-full flex flex-col items-center justify-center text-center opacity-40 text-text-main">
             <ShoppingBag size={64} className="mb-6" />
             <p className="text-sm font-light">{t.emptyCart}</p>
           </div>
         ) : (
           cart.map((item) => (
-            <div key={item.id} className="bg-white/[0.04] border border-white/[0.07] rounded-lg p-4 flex gap-4 group">
+            <div key={item.id} className="bg-luxury-slate/50 border border-border-main rounded-lg p-4 flex gap-4 group">
               <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
                 <img src={`https://picsum.photos/seed/${item.id}/200/200`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-sans font-medium text-white truncate">{item.name}</h4>
-                <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight mb-2">{item.location}</p>
+                <h4 className="text-sm font-sans font-medium text-text-main truncate">{item.name}</h4>
+                <p className="text-[11px] text-text-main/40 font-sans uppercase tracking-tight mb-2">{item.location}</p>
                 <span className="text-xs font-bold text-gold">{item.pricePerUnit}</span>
               </div>
               <button 
                 onClick={() => removeFromCart(item.id)}
-                className="p-2 self-start text-white/20 hover:text-gold transition-colors"
+                className="p-2 self-start text-text-main/20 hover:text-gold transition-colors"
               >
                 <Trash2 size={16} />
               </button>
@@ -595,14 +595,14 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
       </div>
 
       {cart.length > 0 && (
-        <div className="p-8 border-t border-white/10 bg-white/5">
+        <div className="p-8 border-t border-border-main bg-luxury-slate/50">
           <div className="flex justify-between items-end mb-8">
-            <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight">{t.total}</span>
+            <span className="text-[11px] font-sans text-text-main/40 uppercase tracking-tight">{t.total}</span>
             <span className="text-2xl font-light text-gold">{calculateTotal()}</span>
           </div>
           <button 
             onClick={handleCheckout}
-            className="w-full py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-white transition-all flex items-center justify-center gap-3"
+            className="w-full py-5 bg-gold text-luxury-black rounded-full font-medium text-xs tracking-wide hover:bg-text-main transition-all flex items-center justify-center gap-3"
           >
             {t.checkout} <ArrowRight size={16} />
           </button>
@@ -645,19 +645,19 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 text-center">
+              <div className="bg-luxury-slate border border-border-main rounded-xl p-6 text-center">
                 <MapPin size={20} className="text-gold mx-auto mb-2" />
-                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.location}</span>
-                <span className="text-sm font-medium text-white">{asset.location}</span>
+                <span className="text-[11px] font-sans text-text-main/40 uppercase tracking-tight block mb-1">{t.location}</span>
+                <span className="text-sm font-medium text-text-main">{asset.location}</span>
               </div>
-              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 text-center">
+              <div className="bg-luxury-slate border border-border-main rounded-xl p-6 text-center">
                 <Users size={20} className="text-gold mx-auto mb-2" />
-                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.capacity}</span>
-                <span className="text-sm font-medium text-white">{asset.capacity} PAX</span>
+                <span className="text-[11px] font-sans text-text-main/40 uppercase tracking-tight block mb-1">{t.capacity}</span>
+                <span className="text-sm font-medium text-text-main">{asset.capacity} PAX</span>
               </div>
-              <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-6 text-center">
+              <div className="bg-luxury-slate border border-border-main rounded-xl p-6 text-center">
                 <DollarSign size={20} className="text-gold mx-auto mb-2" />
-                <span className="text-[11px] font-sans text-white/40 uppercase tracking-tight block mb-1">{t.rate}</span>
+                <span className="text-[11px] font-sans text-text-main/40 uppercase tracking-tight block mb-1">{t.rate}</span>
                 <span className="text-sm font-bold text-gold">{asset.pricePerUnit}</span>
               </div>
             </div>
@@ -743,8 +743,8 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
           </div>
 
           <div className="space-y-8">
-            <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
-              <h3 className="text-2xl font-sans font-medium mb-6 flex items-center gap-3 text-white">
+            <div className="bg-luxury-slate border border-border-main rounded-xl p-8">
+              <h3 className="text-2xl font-sans font-medium mb-6 flex items-center gap-3 text-text-main">
                 <Calendar size={24} className="text-gold" /> {t.availability}
               </h3>
               <MiniCalendar bookedDates={assetAvailability.length > 0 ? assetAvailability : (asset.bookedDates || [])} lang={lang} />
@@ -773,14 +773,14 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
               </div>
             </div>
 
-            <div className="bg-[#111109] border border-white/[0.07] rounded-xl p-8">
+            <div className="bg-luxury-slate border border-border-main rounded-xl p-8">
                 <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-gold/10 text-gold rounded-xl">
                   <Users size={24} />
                 </div>
                 <div>
-                  <h4 className="font-sans font-medium text-lg text-white">{t.managedBy}</h4>
-                  <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">{asset.contactName || 'Elite Operations Team'}</p>
+                  <h4 className="font-sans font-medium text-lg text-text-main">{t.managedBy}</h4>
+                  <p className="text-[11px] text-text-main/40 font-sans uppercase tracking-tight">{asset.contactName || 'Elite Operations Team'}</p>
                 </div>
               </div>
 
@@ -789,11 +789,11 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   <Shield size={24} />
                 </div>
                 <div>
-                  <h4 className="font-sans font-medium text-lg text-white">Elite Protection</h4>
-                  <p className="text-[11px] text-white/40 font-sans uppercase tracking-tight">Standard Protocol Active</p>
+                  <h4 className="font-sans font-medium text-lg text-text-main">Elite Protection</h4>
+                  <p className="text-[11px] text-text-main/40 font-sans uppercase tracking-tight">Standard Protocol Active</p>
                 </div>
               </div>
-              <p className="text-sm text-white/60 leading-relaxed">
+              <p className="text-sm text-text-main/60 leading-relaxed">
                 All marketplace transactions are secured via agential middleware. Real-time background checks and insurance verification are performed automatically for every request.
               </p>
             </div>
@@ -940,7 +940,7 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={asset.id}
-                  className="bg-[#111109] border border-white/[0.07] rounded-xl overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
+                  className="bg-luxury-slate border border-border-main rounded-xl overflow-hidden group cursor-pointer hover:border-gold/30 transition-all"
                   onClick={() => setSelectedAsset(asset)}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">

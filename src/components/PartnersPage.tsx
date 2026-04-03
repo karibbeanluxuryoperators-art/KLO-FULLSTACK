@@ -160,7 +160,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
   }[lang];
 
   return (
-    <div className="min-h-screen bg-luxury-black text-white font-sans">
+    <div className="min-h-screen bg-luxury-black text-text-main font-sans">
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">
         <div className="max-w-5xl mx-auto">
@@ -183,7 +183,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-white/60 font-light leading-relaxed max-w-2xl mb-12"
+            className="text-lg text-text-main/60 font-light leading-relaxed max-w-2xl mb-12"
           >
             {t.hero.sub}
           </motion.p>
@@ -195,13 +195,13 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
           >
             <button 
               onClick={onApply}
-              className="px-8 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-white transition-all duration-300"
+              className="px-8 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-text-main transition-all duration-300"
             >
               {t.hero.apply}
             </button>
             <button 
               onClick={() => window.open('https://wa.me/573243132500', '_blank')}
-              className="px-8 py-4 border border-white/20 text-white rounded-xl font-medium text-xs tracking-wide hover:bg-white/5 transition-all duration-300"
+              className="px-8 py-4 border border-border-main text-text-main rounded-xl font-medium text-xs tracking-wide hover:bg-luxury-slate/50 transition-all duration-300"
             >
               {t.hero.whatsapp}
             </button>
@@ -210,13 +210,13 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
       </section>
 
       {/* Asset Categories Section */}
-      <section className="py-20 px-6 bg-luxury-paper text-luxury-black">
+      <section className="py-20 px-6 bg-luxury-slate text-text-main">
         <div className="max-w-5xl mx-auto">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-luxury-black/40 mb-4 font-bold">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-text-main/40 mb-4 font-bold">
             {t.categories.eyebrow}
           </p>
           <h2 className="text-4xl font-serif italic mb-4">{t.categories.title}</h2>
-          <p className="text-sm text-luxury-black/60 font-light mb-12 max-w-xl">
+          <p className="text-sm text-text-main/60 font-light mb-12 max-w-xl">
             {t.categories.sub}
           </p>
 
@@ -228,13 +228,13 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
               { icon: Car, ...t.categories.ground, badge: true },
               { icon: Users, ...t.categories.staff }
             ].map((cat, i) => (
-              <div key={i} className="p-6 bg-white border border-luxury-black/[0.07] rounded-xl relative group hover:border-gold/30 transition-all">
+              <div key={i} className="p-6 bg-luxury-black border border-border-main rounded-xl relative group hover:border-gold/30 transition-all">
                 {cat.badge && (
                   <span className="absolute top-4 right-4 px-2 py-0.5 bg-gold text-[8px] uppercase font-bold rounded-md">New</span>
                 )}
                 <cat.icon size={24} className="text-gold mb-4" />
                 <h3 className="text-sm font-serif italic mb-1">{cat.name}</h3>
-                <p className="text-[10px] text-luxury-black/40 leading-tight">{cat.desc}</p>
+                <p className="text-[10px] text-text-main/40 leading-tight">{cat.desc}</p>
               </div>
             ))}
           </div>
@@ -248,7 +248,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
             {t.howItWorks.eyebrow}
           </p>
           <h2 className="text-4xl font-serif italic mb-4">{t.howItWorks.title}</h2>
-          <p className="text-sm text-white/40 font-light mb-16 max-w-xl">
+          <p className="text-sm text-text-main/40 font-light mb-16 max-w-xl">
             {t.howItWorks.sub}
           </p>
 
@@ -257,7 +257,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
               <div key={i} className="relative">
                 <span className="text-5xl font-serif italic font-light text-gold/20 block mb-6">0{i+1}</span>
                 <h3 className="text-lg font-serif italic mb-3">{step.title}</h3>
-                <p className="text-xs text-white/40 leading-relaxed font-light">{step.body}</p>
+                <p className="text-xs text-text-main/40 leading-relaxed font-light">{step.body}</p>
               </div>
             ))}
           </div>
@@ -265,24 +265,24 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
       </section>
 
       {/* Commercial Terms Section */}
-      <section className="py-20 px-6 bg-luxury-paper text-luxury-black">
+      <section className="py-20 px-6 bg-luxury-slate text-text-main">
         <div className="max-w-5xl mx-auto">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-luxury-black/40 mb-4 font-bold">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-text-main/40 mb-4 font-bold">
             {t.commercial.eyebrow}
           </p>
           <h2 className="text-4xl font-serif italic mb-4">{t.commercial.title}</h2>
-          <p className="text-sm text-luxury-black/60 font-light mb-16 max-w-xl">
+          <p className="text-sm text-text-main/60 font-light mb-16 max-w-xl">
             {t.commercial.sub}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[t.commercial.card1, t.commercial.card2, t.commercial.card3, t.commercial.card4].map((card, i) => (
-              <div key={i} className="p-8 bg-white border border-luxury-black/[0.07] rounded-xl">
+              <div key={i} className="p-8 bg-luxury-black border border-border-main rounded-xl">
                 <div className="flex justify-between items-end mb-6">
-                  <span className="text-[10px] uppercase tracking-widest text-luxury-black/40 font-bold">{card.label}</span>
+                  <span className="text-[10px] uppercase tracking-widest text-text-main/40 font-bold">{card.label}</span>
                   <span className="text-4xl font-serif italic text-gold">{card.value}</span>
                 </div>
-                <p className="text-xs text-luxury-black/60 leading-relaxed font-light">{card.body}</p>
+                <p className="text-xs text-text-main/60 leading-relaxed font-light">{card.body}</p>
               </div>
             ))}
           </div>
@@ -297,7 +297,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
           </p>
           <h2 className="text-4xl font-serif italic mb-12">{t.vianco.title}</h2>
 
-          <div className="p-10 bg-white/5 border border-white/[0.07] rounded-xl relative overflow-hidden group">
+          <div className="p-10 bg-luxury-slate/50 border border-border-main rounded-xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
               <Shield size={120} className="text-gold" />
             </div>
@@ -306,7 +306,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
                 <Shield size={24} className="text-gold" />
                 <h3 className="text-xl font-serif italic text-gold">{t.vianco.panelTitle}</h3>
               </div>
-              <p className="text-sm text-white/60 leading-relaxed font-light max-w-2xl">
+              <p className="text-sm text-text-main/60 leading-relaxed font-light max-w-2xl">
                 {t.vianco.panelBody}
               </p>
             </div>
@@ -315,22 +315,22 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-32 px-6 bg-luxury-black text-center border-t border-white/5">
+      <section className="py-32 px-6 bg-luxury-black text-center border-t border-border-main">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-5xl font-serif italic font-light mb-6">{t.cta.title}</h2>
-          <p className="text-white/40 font-light mb-12">
+          <p className="text-text-main/40 font-light mb-12">
             {t.cta.sub}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <button 
               onClick={onApply}
-              className="px-12 py-5 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-white transition-all duration-300"
+              className="px-12 py-5 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-text-main transition-all duration-300"
             >
               {t.hero.apply}
             </button>
             <button 
               onClick={() => window.open('https://wa.me/573243132500', '_blank')}
-              className="px-12 py-5 border border-white/20 text-white rounded-xl font-medium text-xs tracking-wide hover:bg-white/5 transition-all duration-300"
+              className="px-12 py-5 border border-border-main text-text-main rounded-xl font-medium text-xs tracking-wide hover:bg-luxury-slate/50 transition-all duration-300"
             >
               {t.hero.whatsapp}
             </button>
@@ -339,14 +339,14 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
       </section>
 
       {/* Footer Bar */}
-      <footer className="py-8 px-6 border-t border-white/5 bg-luxury-black">
+      <footer className="py-8 px-6 border-t border-border-main bg-luxury-black">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
-          <p className="text-[10px] text-white/20 uppercase tracking-widest">
+          <p className="text-[10px] text-text-main/20 uppercase tracking-widest">
             © 2026 KLO · Karibbean Luxury Operators
           </p>
           <button 
             onClick={onBack}
-            className="text-[10px] text-gold uppercase tracking-widest hover:text-white transition-colors"
+            className="text-[10px] text-gold uppercase tracking-widest hover:text-text-main transition-colors"
           >
             {t.back}
           </button>

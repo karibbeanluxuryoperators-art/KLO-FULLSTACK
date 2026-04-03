@@ -166,15 +166,15 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
     switch (severity) {
       case 'CRITICAL': return 'text-red-500 bg-red-500/10 border-red-500/20';
       case 'HIGH': return 'text-gold bg-gold/10 border-gold/20';
-      case 'MEDIUM': return 'text-white/60 bg-white/5 border-white/10';
-      default: return 'text-white/40 bg-white/5 border-white/10';
+      case 'MEDIUM': return 'text-text-main/60 bg-luxury-slate/50 border-border-main';
+      default: return 'text-text-main/40 bg-luxury-slate/50 border-border-main';
     }
   };
 
   return (
     <div className="space-y-8">
       {/* Command Header: Clocks & Status */}
-      <div className="flex flex-col lg:flex-row justify-between items-center gap-6 admin-card p-6 rounded-2xl border-white/5">
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-6 admin-card p-6 rounded-2xl border-border-main">
         <div className="flex flex-wrap justify-center lg:justify-start gap-8">
           {[
             { label: 'Cartagena', tz: 'America/Bogota', code: 'COT', offset: 'UTC-5' },
@@ -183,15 +183,15 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             { label: 'Dubai', tz: 'Asia/Dubai', code: 'GST', offset: '' },
           ].map((city) => (
             <div key={city.code} className="text-center lg:text-left">
-              <span className="text-[8px] text-luxury-cream/40 uppercase tracking-wide block mb-1">
+              <span className="text-[8px] text-text-main/40 uppercase tracking-wide block mb-1">
                 {city.label} ({city.code}{city.offset ? `, ${city.offset}` : ''})
               </span>
-              <span className="text-xl font-mono text-white tracking-tight">{formatTime(city.tz)}</span>
+              <span className="text-xl font-mono text-text-main tracking-tight">{formatTime(city.tz)}</span>
             </div>
           ))}
         </div>
 
-        <div className="flex items-center gap-6 border-l border-white/10 pl-6">
+        <div className="flex items-center gap-6 border-l border-border-main pl-6">
           <div className="flex items-center gap-3">
             <div className={`w-2 h-2 rounded-full animate-pulse ${serverStatus === 'OPERATIONAL' ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' : 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]'}`} />
             <span className={`text-[10px] uppercase tracking-wide font-bold ${serverStatus === 'OPERATIONAL' ? 'text-emerald-400' : 'text-red-500'}`}>
@@ -211,13 +211,13 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
         </button>
         <button 
           onClick={() => window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`, '_blank')}
-          className="flex items-center justify-center gap-3 p-4 bg-white/5 text-white rounded-2xl border border-white/10 font-medium uppercase text-[10px] tracking-tight hover:bg-white/10 transition-all"
+          className="flex items-center justify-center gap-3 p-4 bg-luxury-slate/50 text-text-main rounded-2xl border border-border-main font-medium uppercase text-[10px] tracking-tight hover:bg-luxury-slate transition-all"
         >
           <MessageSquare size={16} /> WhatsApp
         </button>
         <button 
           onClick={() => setShowAssetMgmt(true)}
-          className="flex items-center justify-center gap-3 p-4 bg-white/5 text-white rounded-2xl border border-white/10 font-medium uppercase text-[10px] tracking-tight hover:bg-white/10 transition-all"
+          className="flex items-center justify-center gap-3 p-4 bg-luxury-slate/50 text-text-main rounded-2xl border border-border-main font-medium uppercase text-[10px] tracking-tight hover:bg-luxury-slate transition-all"
         >
           <Plus size={16} /> Add Asset
         </button>
@@ -225,15 +225,15 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
 
       {/* Top Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="admin-card p-6 rounded-3xl border-white/5">
+        <div className="admin-card p-6 rounded-3xl border-border-main">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 rounded-2xl bg-white/5 text-gold">
+            <div className="p-3 rounded-2xl bg-luxury-slate/50 text-gold">
               <Activity size={20} />
             </div>
             <span className="text-[10px] text-gold font-mono animate-pulse">LIVE</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.globalHealth}</span>
-          <span className="text-3xl font-serif italic">98.4%</span>
+          <span className="text-text-main/40 text-[10px] uppercase tracking-tight block mb-1">{t.globalHealth}</span>
+          <span className="text-3xl font-serif italic text-text-main">98.4%</span>
         </div>
 
         <div className="admin-card p-6 rounded-3xl border-gold/20">
@@ -243,30 +243,30 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
             </div>
             <span className="text-[10px] text-gold font-mono">AVG MARGIN</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.unitEconomics}</span>
-          <span className="text-3xl font-serif italic">$12,450</span>
+          <span className="text-text-main/40 text-[10px] uppercase tracking-tight block mb-1">{t.unitEconomics}</span>
+          <span className="text-3xl font-serif italic text-text-main">$12,450</span>
         </div>
 
-        <div className="admin-card p-6 rounded-3xl border-white/5">
+        <div className="admin-card p-6 rounded-3xl border-border-main">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 rounded-2xl bg-white/5 text-gold">
+            <div className="p-3 rounded-2xl bg-luxury-slate/50 text-gold">
               <Shield size={20} />
             </div>
             <span className="text-[10px] text-gold font-mono">{t.secured}</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.securityStatus}</span>
-          <span className="text-3xl font-serif italic">ELITE</span>
+          <span className="text-text-main/40 text-[10px] uppercase tracking-tight block mb-1">{t.securityStatus}</span>
+          <span className="text-3xl font-serif italic text-text-main">ELITE</span>
         </div>
 
-        <div className="admin-card p-6 rounded-3xl border-white/5">
+        <div className="admin-card p-6 rounded-3xl border-border-main">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 rounded-2xl bg-white/5 text-gold">
+            <div className="p-3 rounded-2xl bg-luxury-slate/50 text-gold">
               <Zap size={20} />
             </div>
             <span className="text-[10px] text-gold font-mono">AGENTIAL</span>
           </div>
-          <span className="text-luxury-cream/40 text-[10px] uppercase tracking-tight block mb-1">{t.autoResolutions}</span>
-          <span className="text-3xl font-serif italic">14</span>
+          <span className="text-text-main/40 text-[10px] uppercase tracking-tight block mb-1">{t.autoResolutions}</span>
+          <span className="text-3xl font-serif italic text-text-main">14</span>
         </div>
       </div>
 
@@ -275,7 +275,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
         <div className="lg:col-span-2 space-y-8">
           <div className="admin-card p-8 rounded-2xl">
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-serif italic">{t.activeMissions}</h3>
+              <h3 className="text-2xl font-serif italic text-text-main">{t.activeMissions}</h3>
               <div className="flex gap-2">
                 <span className="px-3 py-1 bg-emerald-400/10 text-emerald-400 text-[10px] uppercase tracking-tight rounded-full border border-emerald-400/20">
                   {bookings.length} {t.executing}
@@ -285,12 +285,12 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
 
             <div className="space-y-6">
               {bookings.map((booking) => (
-                <div key={booking.id} className="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-gold/30 transition-all group">
+                <div key={booking.id} className="p-6 bg-luxury-slate/50 rounded-2xl border border-border-main hover:border-gold/30 transition-all group">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h4 className="text-lg font-sans font-medium group-hover:text-gold transition-colors">{booking.title}</h4>
+                      <h4 className="text-lg font-sans font-medium group-hover:text-gold transition-colors text-text-main">{booking.title}</h4>
                       <div className="flex items-center gap-3 mt-1">
-                        <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tight flex items-center gap-1">
+                        <span className="text-[10px] text-text-main/40 uppercase tracking-tight flex items-center gap-1">
                           <MapPin size={10} /> {booking.itinerary[0]?.location || 'N/A'}
                         </span>
                         <span className="text-[10px] text-gold uppercase tracking-tight flex items-center gap-1">
@@ -299,7 +299,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-luxury-cream/40 uppercase block mb-1">{t.timeToExecute}</span>
+                      <span className="text-[10px] text-text-main/40 uppercase block mb-1">{t.timeToExecute}</span>
                       <span className="text-sm font-mono text-emerald-400">{booking.tte}</span>
                     </div>
                   </div>
@@ -309,9 +309,9 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                       <div key={i} className="relative">
                         <div className={`h-1 rounded-full mb-2 ${
                           step.status === 'COMPLETED' ? 'bg-emerald-400' : 
-                          step.status === 'EXECUTING' ? 'bg-gold animate-pulse' : 'bg-white/10'
+                          step.status === 'EXECUTING' ? 'bg-gold animate-pulse' : 'bg-luxury-slate'
                         }`} />
-                        <div className="flex items-center gap-1 text-[8px] uppercase tracking-tighter text-luxury-cream/40">
+                        <div className="flex items-center gap-1 text-[8px] uppercase tracking-tighter text-text-main/40">
                           {getPillarIcon(step.pillar)}
                           <span className="truncate">{step.activity}</span>
                         </div>
@@ -324,16 +324,16 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           </div>
 
           {/* Asset Status Monitor */}
-          <div className="admin-card p-8 rounded-2xl">
+          <div className="admin-card p-8 rounded-2xl border-border-main">
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-serif italic">Asset Status Monitor</h3>
-              <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tight">{Array.isArray(assets) ? assets.length : 0} Total Assets</span>
+              <h3 className="text-2xl font-serif italic text-text-main">Asset Status Monitor</h3>
+              <span className="text-[10px] text-text-main/40 uppercase tracking-tight">{Array.isArray(assets) ? assets.length : 0} Total Assets</span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Array.isArray(assets) && assets.slice(0, 8).map((asset) => (
-                <div key={asset.id} className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                <div key={asset.id} className="p-4 bg-luxury-slate/50 rounded-2xl border border-border-main">
                   <div className="flex justify-between items-start mb-2">
-                    <div className="p-1.5 rounded-lg bg-white/5 text-gold">
+                    <div className="p-1.5 rounded-lg bg-luxury-slate/50 text-gold">
                       {getPillarIcon(asset.type === 'VESSEL' ? 'SEA' : asset.type === 'AIRCRAFT' ? 'AIR' : asset.type === 'VEHICLE' ? 'LAND' : 'STAY')}
                     </div>
                     <div className={`w-1.5 h-1.5 rounded-full ${
@@ -341,57 +341,57 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                       asset.status === 'BOOKED' ? 'bg-gold' : 'bg-red-400'
                     }`} />
                   </div>
-                  <span className="text-[10px] font-medium block truncate">{asset.name}</span>
-                  <span className="text-[8px] text-luxury-cream/40 uppercase tracking-tight">{asset.status}</span>
+                  <span className="text-[10px] font-medium block truncate text-text-main">{asset.name}</span>
+                  <span className="text-[8px] text-text-main/40 uppercase tracking-tight">{asset.status}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Environmental Intel */}
-          <div className="admin-card p-8 rounded-2xl">
-            <h3 className="text-2xl font-serif italic mb-8">{t.environmentalIntel}</h3>
+          <div className="admin-card p-8 rounded-2xl border-border-main">
+            <h3 className="text-2xl font-serif italic mb-8 text-text-main">{t.environmentalIntel}</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
+              <div className="p-6 bg-luxury-slate/50 rounded-2xl border border-border-main">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-white/5 text-gold rounded-xl">
+                  <div className="p-2 bg-luxury-slate/50 text-gold rounded-xl">
                     <Wind size={18} />
                   </div>
-                  <span className="text-[10px] uppercase tracking-tight text-luxury-cream/40">{t.weather}</span>
+                  <span className="text-[10px] uppercase tracking-tight text-text-main/40">{t.weather}</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl font-serif italic">28°C</span>
+                  <span className="text-2xl font-serif italic text-text-main">28°C</span>
                   <span className="text-[10px] text-gold mb-1">Optimal</span>
                 </div>
-                <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Wind: 12kts NE</p>
+                <p className="text-[10px] text-text-main/30 mt-2 uppercase tracking-tighter">Wind: 12kts NE</p>
               </div>
 
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
+              <div className="p-6 bg-luxury-slate/50 rounded-2xl border border-border-main">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-white/5 text-gold rounded-xl">
+                  <div className="p-2 bg-luxury-slate/50 text-gold rounded-xl">
                     <Droplets size={18} />
                   </div>
-                  <span className="text-[10px] uppercase tracking-tight text-luxury-cream/40">{t.tides}</span>
+                  <span className="text-[10px] uppercase tracking-tight text-text-main/40">{t.tides}</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl font-serif italic">HIGH</span>
+                  <span className="text-2xl font-serif italic text-text-main">HIGH</span>
                   <span className="text-[10px] text-gold mb-1">+1.2m</span>
                 </div>
-                <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Next Low: 18:45</p>
+                <p className="text-[10px] text-text-main/30 mt-2 uppercase tracking-tighter">Next Low: 18:45</p>
               </div>
 
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
+              <div className="p-6 bg-luxury-slate/50 rounded-2xl border border-border-main">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-white/5 text-gold rounded-xl">
+                  <div className="p-2 bg-luxury-slate/50 text-gold rounded-xl">
                     <Car size={18} />
                   </div>
-                  <span className="text-[10px] uppercase tracking-tight text-luxury-cream/40">{t.traffic}</span>
+                  <span className="text-[10px] uppercase tracking-tight text-text-main/40">{t.traffic}</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl font-serif italic">LIGHT</span>
+                  <span className="text-2xl font-serif italic text-text-main">LIGHT</span>
                   <span className="text-[10px] text-gold mb-1">Optimal</span>
                 </div>
-                <p className="text-[10px] text-luxury-cream/30 mt-2 uppercase tracking-tighter">Route: CTG {'->'} Villa</p>
+                <p className="text-[10px] text-text-main/30 mt-2 uppercase tracking-tighter">Route: CTG {'->'} Villa</p>
               </div>
             </div>
           </div>
@@ -400,12 +400,12 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
         {/* Incident Feed & Security Monitor */}
         <div className="space-y-8">
           <div className="admin-card p-8 rounded-2xl border-red-500/20">
-            <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3">
+            <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3 text-text-main">
               <AlertCircle size={20} className="text-red-400" /> {t.incidentFeed}
             </h3>
             <div className="space-y-6">
               {incidents.map((incident) => (
-                <div key={incident.id} className="p-4 bg-white/5 rounded-2xl border border-white/10 relative overflow-hidden">
+                <div key={incident.id} className="p-4 bg-luxury-slate/50 rounded-2xl border border-border-main relative overflow-hidden">
                   <div className={`absolute left-0 top-0 bottom-0 w-1 ${
                     incident.severity === 'CRITICAL' ? 'bg-red-500' : 
                     incident.severity === 'HIGH' ? 'bg-orange-500' : 'bg-amber-500'
@@ -414,10 +414,10 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                     <span className={`text-[8px] px-2 py-0.5 rounded-full border uppercase tracking-tight font-bold ${getSeverityColor(incident.severity)}`}>
                       {incident.severity}
                     </span>
-                    <span className="text-[8px] text-luxury-cream/30">{incident.timestamp}</span>
+                    <span className="text-[8px] text-text-main/30">{incident.timestamp}</span>
                   </div>
-                  <h4 className="text-xs font-medium mb-1">{incident.type}: {incident.description}</h4>
-                  <p className="text-[10px] text-luxury-cream/50 leading-relaxed">
+                  <h4 className="text-xs font-medium mb-1 text-text-main">{incident.type}: {incident.description}</h4>
+                  <p className="text-[10px] text-text-main/50 leading-relaxed">
                     {incident.status === 'RESOLVING' ? (
                       <span className="flex items-center gap-1 text-cyan-400">
                         <Loader2 size={10} className="animate-spin" /> {t.agentialCore}
@@ -430,7 +430,7 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
           </div>
 
           <div className="admin-card p-8 rounded-2xl border-gold/20">
-            <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3">
+            <h3 className="text-xl font-serif italic mb-6 flex items-center gap-3 text-text-main">
               <DollarSign size={20} className="text-gold" /> {t.unitEconomics}
             </h3>
             <div className="space-y-6">
@@ -443,20 +443,20 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
                     { name: 'Land', value: 1200 },
                     { name: 'Margin', value: 12450 },
                   ]}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
-                    <XAxis dataKey="name" stroke="#ffffff30" fontSize={8} />
-                    <YAxis stroke="#ffffff30" fontSize={8} />
-                    <Tooltip contentStyle={{ backgroundColor: '#1C1C1C', border: '1px solid #ffffff10' }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                    <XAxis dataKey="name" stroke="var(--color-text-main)" fontSize={8} opacity={0.3} />
+                    <YAxis stroke="var(--color-text-main)" fontSize={8} opacity={0.3} />
+                    <Tooltip contentStyle={{ backgroundColor: 'var(--color-luxury-slate)', border: '1px solid var(--color-border-main)', color: 'var(--color-text-main)' }} />
                     <Bar dataKey="value" fill="#D4AF37" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              <div className="pt-4 border-t border-white/5">
+              <div className="pt-4 border-t border-border-main">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-[10px] text-luxury-cream/40 uppercase tracking-tight">{t.marginProtection}</span>
+                  <span className="text-[10px] text-text-main/40 uppercase tracking-tight">{t.marginProtection}</span>
                   <span className="text-xs font-medium text-emerald-400">{t.optimized}</span>
                 </div>
-                <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-luxury-slate/50 rounded-full overflow-hidden">
                   <div className="h-full bg-emerald-400 w-[92%]" />
                 </div>
               </div>
@@ -480,12 +480,12 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-2xl bg-luxury-paper rounded-3xl overflow-hidden border border-white/10"
+              className="relative w-full max-w-2xl bg-luxury-slate rounded-3xl overflow-hidden border border-border-main"
             >
-              <div className="p-8 border-b border-white/5 flex justify-between items-center">
-                <h3 className="text-2xl font-sans font-medium text-white">New Lead Capture</h3>
-                <button onClick={() => setShowLeadForm(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
-                  <Plus size={24} className="rotate-45 text-white" />
+              <div className="p-8 border-b border-border-main flex justify-between items-center">
+                <h3 className="text-2xl font-sans font-medium text-text-main">New Lead Capture</h3>
+                <button onClick={() => setShowLeadForm(false)} className="p-2 hover:bg-luxury-slate/50 rounded-full transition-colors">
+                  <Plus size={24} className="rotate-45 text-text-main" />
                 </button>
               </div>
               <div className="p-8 max-h-[70vh] overflow-y-auto">
@@ -508,12 +508,12 @@ export const OperationalCommandCenter: React.FC<OCCProps> = ({ bookings, inciden
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-5xl bg-luxury-paper rounded-3xl overflow-hidden border border-white/10"
+              className="relative w-full max-w-5xl bg-luxury-slate rounded-3xl overflow-hidden border border-border-main"
             >
-              <div className="p-8 border-b border-white/5 flex justify-between items-center">
-                <h3 className="text-2xl font-sans font-medium text-white">Asset Management</h3>
-                <button onClick={() => setShowAssetMgmt(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
-                  <Plus size={24} className="rotate-45 text-white" />
+              <div className="p-8 border-b border-border-main flex justify-between items-center">
+                <h3 className="text-2xl font-sans font-medium text-text-main">Asset Management</h3>
+                <button onClick={() => setShowAssetMgmt(false)} className="p-2 hover:bg-luxury-slate/50 rounded-full transition-colors">
+                  <Plus size={24} className="rotate-45 text-text-main" />
                 </button>
               </div>
               <div className="p-8 max-h-[80vh] overflow-y-auto">

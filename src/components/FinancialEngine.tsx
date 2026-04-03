@@ -89,7 +89,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
     }
   }[lang];
 
-  const COLORS = ['#D4AF37', '#ffffff20', '#ffffff10', '#ffffff05'];
+  const COLORS = ['#D4AF37', 'var(--color-text-main/10)', 'var(--color-text-main/5)', 'var(--color-text-main/2)'];
   const REVENUE_COLORS = ['#D4AF37', '#C5A028', '#B69119', '#A7820A'];
 
   const revenueBreakdownData = [
@@ -120,31 +120,31 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
         {[
           { label: t.gmv, value: `$${(gmvValue / 1000000).toFixed(1)}M`, icon: Wallet, color: 'text-gold' },
           { label: t.commission, value: `$${(commissionValue / 1000).toFixed(0)}K`, icon: CreditCard, color: 'text-gold' },
-          { label: t.avgBooking, value: `$${(avgBookingValue / 1000).toFixed(1)}K`, icon: TrendingUp, color: 'text-white' },
-          { label: t.totalBookings, value: totalBookingsCount, icon: Target, color: 'text-white' },
+          { label: t.avgBooking, value: `$${(avgBookingValue / 1000).toFixed(1)}K`, icon: TrendingUp, color: 'text-text-main' },
+          { label: t.totalBookings, value: totalBookingsCount, icon: Target, color: 'text-text-main' },
         ].map((stat, i) => (
-          <div key={i} className="admin-card p-6 rounded-2xl border-white/5">
+          <div key={i} className="admin-card p-6 rounded-2xl border-border-main">
             <div className="flex justify-between items-start mb-4">
-              <div className={`p-3 rounded-xl bg-white/5 ${stat.color}`}>
+              <div className={`p-3 rounded-xl bg-luxury-slate/50 ${stat.color}`}>
                 <stat.icon size={20} />
               </div>
             </div>
-            <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/40 block mb-1">{stat.label}</span>
+            <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40 block mb-1">{stat.label}</span>
             <span className={`text-2xl font-serif italic tracking-wide ${stat.color}`}>{stat.value}</span>
           </div>
         ))}
       </div>
 
       {/* Progress Bar */}
-      <div className="admin-card p-8 rounded-2xl border-white/5">
+      <div className="admin-card p-8 rounded-2xl border-border-main">
         <div className="flex justify-between items-end mb-4">
           <div>
-            <h4 className="text-xl font-serif italic mb-1">{t.clientProgress}</h4>
-            <p className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">Target: 20 High-Net-Worth Clients Acquired</p>
+            <h4 className="text-xl font-serif italic mb-1 text-text-main">{t.clientProgress}</h4>
+            <p className="text-[11px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">Target: 20 High-Net-Worth Clients Acquired</p>
           </div>
           <span className="text-2xl font-serif italic text-gold">{leadsCount} / 20</span>
         </div>
-        <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden border border-white/10">
+        <div className="w-full h-4 bg-luxury-slate/50 rounded-full overflow-hidden border border-border-main">
           <motion.div 
             initial={{ width: 0 }}
             animate={{ width: `${Math.min((leadsCount / 20) * 100, 100)}%` }}
@@ -155,11 +155,11 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
       </div>
 
       {/* Monthly Revenue Performance */}
-      <div className="admin-card p-8 rounded-2xl border-white/5">
+      <div className="admin-card p-8 rounded-2xl border-border-main">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h3 className="text-xl font-serif italic tracking-wide">Monthly Revenue Performance</h3>
-            <p className="text-[11px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">Real-time GMV Tracking</p>
+            <h3 className="text-xl font-serif italic tracking-wide text-text-main">Monthly Revenue Performance</h3>
+            <p className="text-[11px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">Real-time GMV Tracking</p>
           </div>
           <div className="flex items-center gap-2 text-gold text-xs font-sans font-semibold">
             <TrendingUp size={16} />
@@ -169,27 +169,28 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={adminStats?.revenueData || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-main)" vertical={false} />
               <XAxis 
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#ffffff40', fontSize: 10 }}
+                tick={{ fill: 'var(--color-text-main)', fontSize: 10, opacity: 0.4 }}
                 dy={10}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#ffffff40', fontSize: 10 }}
+                tick={{ fill: 'var(--color-text-main)', fontSize: 10, opacity: 0.4 }}
                 tickFormatter={(value) => `$${value / 1000}k`}
               />
               <Tooltip 
-                cursor={{ fill: '#ffffff05' }}
+                cursor={{ fill: 'var(--color-text-main/5)' }}
                 contentStyle={{ 
-                  backgroundColor: '#1C1C1C', 
-                  border: '1px solid #ffffff10',
+                  backgroundColor: 'var(--color-luxury-slate)', 
+                  border: '1px solid var(--color-border-main)',
                   borderRadius: '12px',
-                  fontSize: '12px'
+                  fontSize: '12px',
+                  color: 'var(--color-text-main)'
                 }}
               />
               <Bar 
@@ -208,8 +209,8 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
         <div className="lg:col-span-2 admin-card p-8 rounded-2xl border-gold/20">
           <div className="flex justify-between items-center mb-12">
             <div>
-              <h3 className="text-3xl font-serif italic tracking-wide">{t.title}</h3>
-              <p className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
+              <h3 className="text-3xl font-serif italic tracking-wide text-text-main">{t.title}</h3>
+              <p className="text-text-main/40 text-[11px] font-sans font-semibold uppercase tracking-tight">{t.subtitle}</p>
             </div>
             <div className="p-4 bg-gold/10 text-gold rounded-2xl">
               <DollarSign size={24} />
@@ -218,7 +219,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <div>
-              <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.netMargin}</span>
+              <span className="text-text-main/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.netMargin}</span>
               <div className="flex items-end gap-2">
                 <span className="text-4xl font-serif italic text-gold">${financials.netMargin.toLocaleString()}</span>
                 <span className="text-[10px] font-sans font-semibold text-gold mb-1 flex items-center gap-1">
@@ -227,13 +228,13 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
               </div>
             </div>
             <div>
-              <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.partnerPayouts}</span>
+              <span className="text-text-main/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.partnerPayouts}</span>
               <div className="flex items-end gap-2">
-                <span className="text-4xl font-serif italic">${financials.partnerPayouts.toLocaleString()}</span>
+                <span className="text-4xl font-serif italic text-text-main">${financials.partnerPayouts.toLocaleString()}</span>
               </div>
             </div>
             <div>
-              <span className="text-luxury-cream/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.opLeakage}</span>
+              <span className="text-text-main/40 text-[11px] font-sans font-semibold uppercase tracking-tight block mb-2">{t.opLeakage}</span>
               <div className="flex items-end gap-2">
                 <span className="text-4xl font-serif italic text-red-500">${financials.operationalLeakage.toLocaleString()}</span>
                 <span className="text-[10px] font-sans font-semibold text-red-500 mb-1 flex items-center gap-1">
@@ -244,24 +245,24 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
           </div>
 
           <div className="space-y-6">
-            <h4 className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/40">{t.automatedSettlements}</h4>
+            <h4 className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/40">{t.automatedSettlements}</h4>
             <div className="space-y-4">
               {[
                 { name: 'Jettly Aviation', amount: '$45,000', status: t.settled, icon: ShieldCheck },
                 { name: 'Vianco Ground', amount: '$12,400', status: t.pending, icon: Wallet },
                 { name: 'ZentrumHub', amount: '$8,900', status: t.settled, icon: ShieldCheck },
               ].map((partner, i) => (
-                <div key={i} className="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                <div key={i} className="flex justify-between items-center p-4 bg-luxury-slate/50 rounded-xl border border-border-main">
                   <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-xl bg-white/5 ${partner.status === t.settled ? 'text-gold' : 'text-white/40'}`}>
+                    <div className={`p-2 rounded-xl bg-luxury-slate/50 ${partner.status === t.settled ? 'text-gold' : 'text-text-main/40'}`}>
                       <partner.icon size={16} />
                     </div>
                     <div>
-                      <span className="text-sm font-sans font-medium block">{partner.name}</span>
-                      <span className="text-[10px] font-sans font-semibold text-luxury-cream/40 uppercase tracking-tight">{partner.status}</span>
+                      <span className="text-sm font-sans font-medium block text-text-main">{partner.name}</span>
+                      <span className="text-[10px] font-sans font-semibold text-text-main/40 uppercase tracking-tight">{partner.status}</span>
                     </div>
                   </div>
-                  <span className="text-sm font-mono font-medium">{partner.amount}</span>
+                  <span className="text-sm font-mono font-medium text-text-main">{partner.amount}</span>
                 </div>
               ))}
             </div>
@@ -270,8 +271,8 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
 
         {/* Cost Breakdown & Revenue Breakdown */}
         <div className="space-y-8">
-          <div className="admin-card p-8 rounded-2xl border-white/10">
-            <h3 className="text-xl font-serif mb-8">{t.costDistribution}</h3>
+          <div className="admin-card p-8 rounded-2xl border-border-main">
+            <h3 className="text-xl font-serif mb-8 text-text-main">{t.costDistribution}</h3>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <RePieChart>
@@ -288,7 +289,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#1C1C1C', border: '1px solid #ffffff10' }} />
+                  <Tooltip contentStyle={{ backgroundColor: 'var(--color-luxury-slate)', border: '1px solid var(--color-border-main)', color: 'var(--color-text-main)' }} />
                 </RePieChart>
               </ResponsiveContainer>
             </div>
@@ -297,16 +298,16 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
                 <div key={i} className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
-                    <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-luxury-cream/60">{item.category}</span>
+                    <span className="text-[11px] font-sans font-semibold uppercase tracking-tight text-text-main/60">{item.category}</span>
                   </div>
-                  <span className="text-xs font-sans font-medium">${item.value.toLocaleString()}</span>
+                  <span className="text-xs font-sans font-medium text-text-main">${item.value.toLocaleString()}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="admin-card p-8 rounded-2xl border-white/10">
-            <h3 className="text-xl font-serif mb-8">{t.revenueBreakdown}</h3>
+          <div className="admin-card p-8 rounded-2xl border-border-main">
+            <h3 className="text-xl font-serif mb-8 text-text-main">{t.revenueBreakdown}</h3>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <RePieChart>
@@ -323,8 +324,8 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
                       <Cell key={`cell-${index}`} fill={REVENUE_COLORS[index % REVENUE_COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#1C1C1C', border: '1px solid #ffffff10' }} />
-                  <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em' }} />
+                  <Tooltip contentStyle={{ backgroundColor: 'var(--color-luxury-slate)', border: '1px solid var(--color-border-main)', color: 'var(--color-text-main)' }} />
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-main)' }} />
                 </RePieChart>
               </ResponsiveContainer>
             </div>
