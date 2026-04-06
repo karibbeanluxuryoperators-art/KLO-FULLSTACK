@@ -450,7 +450,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Destinations — images only, no prices */}
+      {/* Destinations — images only, no prices - UPDATED WITH LOCAL IMAGES */}
       <section className="py-20 px-6 bg-luxury-black">
         <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
@@ -459,10 +459,10 @@ export default function App() {
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { name: 'Cartagena', img: 'https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?w=600', tag: lang === 'EN' ? 'Hub' : 'Base' },
-              { name: 'Santa Marta', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600', tag: lang === 'EN' ? 'Emerging' : 'Emergente' },
-              { name: 'San Andrés', img: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600', tag: lang === 'EN' ? 'Island' : 'Isla' },
-              { name: lang === 'EN' ? 'Greater Caribbean' : 'Gran Caribe', img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600', tag: lang === 'EN' ? 'Expanding' : 'Expandiendo' },
+              { name: 'Cartagena', img: '/images/pirata.jpg', tag: lang === 'EN' ? 'Hub' : 'Base' },
+              { name: 'Santa Marta', img: '/images/Ciudad-Perdida.jpg', tag: lang === 'EN' ? 'Emerging' : 'Emergente' },
+              { name: 'San Andrés', img: '/images/Mar-de-Siete-Colores.webp', tag: lang === 'EN' ? 'Island' : 'Isla' },
+              { name: lang === 'EN' ? 'Greater Caribbean' : 'Gran Caribe', img: '/images/guajira2.jpg', tag: lang === 'EN' ? 'Expanding' : 'Expandiendo' },
             ].map((dest, i) => (
               <motion.div key={dest.name}
                 initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
