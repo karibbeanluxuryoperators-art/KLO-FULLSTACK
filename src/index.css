@@ -4,230 +4,360 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Cormorant Garamond", serif;
-  
-  --color-gold: #C5A028;
+
+  /* ── Brighter, more luminous gold ── */
+  --color-gold: #D4AF37;
+
   --color-luxury-black: var(--luxury-black-val, #050505);
   --color-luxury-cream: var(--luxury-cream-val, #FDFCFB);
   --color-luxury-paper: var(--luxury-paper-val, #F8F7F4);
-  --color-luxury-slate: var(--luxury-slate-val, #121212);
-  --color-text-main: var(--text-main-val, #ffffff);
-  --color-border-main: var(--border-main-val, rgba(255, 255, 255, 0.07));
-  --color-panel-bg: var(--panel-bg-val, rgba(17, 17, 9, 0.95));
+  --color-luxury-slate: var(--luxury-slate-val, #111111);
+  --color-text-main: var(--text-main-val, #F5F0E8);
+  --color-border-main: var(--border-main-val, rgba(255, 255, 255, 0.10));
+  --color-panel-bg: var(--panel-bg-val, rgba(14, 14, 14, 0.97));
 }
 
+/* ── Dark Mode (default) ── */
 :root {
   --luxury-black-val: #050505;
   --luxury-cream-val: #FDFCFB;
   --luxury-paper-val: #F8F7F4;
-  --luxury-slate-val: #121212;
-  --text-main-val: #ffffff;
-  --border-main-val: rgba(255, 255, 255, 0.07);
-  --panel-bg-val: rgba(17, 17, 9, 0.95);
+  --luxury-slate-val: #111111;
+  --text-main-val: #F5F0E8;
+  --border-main-val: rgba(255, 255, 255, 0.10);
+  --panel-bg-val: rgba(14, 14, 14, 0.97);
 }
 
+/* ── Light Mode ── */
 .light {
   --luxury-black-val: #F8F7F4;
   --luxury-cream-val: #050505;
   --luxury-paper-val: #ffffff;
-  --luxury-slate-val: #f3f4f6;
-  --text-main-val: #050505;
-  --border-main-val: rgba(0, 0, 0, 0.1);
-  --panel-bg-val: rgba(255, 255, 255, 0.95);
+  --luxury-slate-val: #EFEFEF;
+  --text-main-val: #0A0A0A;
+  --border-main-val: rgba(0, 0, 0, 0.10);
+  --panel-bg-val: rgba(255, 255, 255, 0.97);
 }
 
+/* ── Base ── */
 @layer base {
   body {
     @apply bg-luxury-black text-text-main font-sans font-light leading-relaxed antialiased transition-colors duration-300;
   }
-  
+
   h1, h2 {
-    @apply font-serif italic tracking-wide;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.02em;
   }
 
   h3, h4, h5, h6 {
     @apply font-sans font-medium;
   }
+
+  /* Globally readable body text — no more near-invisible dimming */
+  p {
+    color: rgba(245, 240, 232, 0.80);
+  }
+
+  .light p {
+    color: rgba(10, 10, 10, 0.75);
+  }
 }
 
+/* ── Utility ── */
 .glass-panel {
-  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+  background: var(--color-panel-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-main);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+}
+
+.light .glass-panel {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0,0,0,0.08);
 }
 
 .admin-card {
-  @apply bg-luxury-slate border-[0.5px] border-white/10 shadow-lg;
+  background: var(--luxury-slate-val);
+  border: 1px solid var(--border-main-val);
 }
 
 .gold-gradient {
   background: linear-gradient(135deg, #D4AF37 0%, #F9E29C 50%, #B8860B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .luxury-shadow {
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-transparent;
+/* ════════════════════════════════════════
+   KLO UNIFIED DESIGN SYSTEM
+   ════════════════════════════════════════ */
+
+/* 1. TYPOGRAPHY SCALE
+   Hero text is always near-white, not dimmed */
+.hero-title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #F5F0E8;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-gold/30 rounded-full;
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: rgba(245, 240, 232, 0.80);
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 580px;
 }
 
-/* ─── KLO UNIFIED DESIGN SYSTEM ─── */
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #D4AF37;
+}
 
-/* 1. TAME EXTREME ROUNDED CORNERS
-   Target all the rounded-[40px] and rounded-[2rem] 
-   Tailwind classes that appear on cards and panels */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: #F5F0E8;
+  line-height: 1.1;
+}
+
+.light .section-title {
+  color: #0A0A0A;
+}
+
+/* Body text — always readable */
+.body-text {
+  color: rgba(245, 240, 232, 0.78);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+.light .body-text {
+  color: rgba(10, 10, 10, 0.72);
+}
+
+/* Metadata / labels — not dimmed into invisibility */
+.meta-text {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.55);
+}
+
+.light .meta-text {
+  color: rgba(10, 10, 10, 0.45);
+}
+
+/* 2. TAME EXTREME ROUNDED CORNERS */
 .rounded-\[40px\] { border-radius: 12px !important; }
 .rounded-\[2rem\]  { border-radius: 12px !important; }
 .rounded-\[32px\]  { border-radius: 12px !important; }
 .rounded-\[48px\]  { border-radius: 16px !important; }
 .rounded-\[3rem\]  { border-radius: 16px !important; }
 
-/* 2. REPLACE GLASS-PANEL ON DATA CARDS
-   glass-panel gets a flat dark surface treatment 
-   everywhere except nav and overlays */
-.glass-panel {
-  background: var(--color-panel-bg) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--color-border-main) !important;
-  color: var(--color-text-main) !important;
-}
-
-.light .glass-panel {
-  background: rgba(255, 255, 255, 0.8) !important;
-  backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(0, 0, 0, 0.05) !important;
-}
-
-/* Keep glass on nav, drawer, and hero overlays */
-nav .glass-panel,
-.glass-panel.nav-glass,
-[class*="z-[6"] .glass-panel,
-[class*="z-[7"] .glass-panel {
-  background: var(--color-panel-bg) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-}
-
-.light nav .glass-panel,
-.light .glass-panel.nav-glass {
-  background: rgba(255, 255, 255, 0.7) !important;
-}
-
-/* 3. TYPOGRAPHY HIERARCHY
-   Enforce sentence case and weight discipline */
-.font-serif {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-weight: 300;
-}
-
-/* Reduce tracking on small text — 
-   tracking-widest on text smaller than 12px is 
-   hard to read and looks cheap */
-.text-\[8px\]  { letter-spacing: 0.06em !important; }
-.text-\[9px\]  { letter-spacing: 0.06em !important; }
-.text-\[10px\] { letter-spacing: 0.08em !important; }
-
-/* 4. ADMIN SIDEBAR REFINEMENT */
-aside {
-  background: var(--color-luxury-black) !important;
-  border-right: 1px solid var(--color-border-main) !important;
-}
-
-.light aside {
-  background: #ffffff !important;
-}
-
-/* Active sidebar nav item — gold left border 
-   instead of gold background fill */
-aside button.bg-gold {
-  background: var(--color-border-main) !important;
-  color: var(--color-text-main) !important;
-  border-left: 2px solid #D4AF37 !important;
-  border-radius: 0 6px 6px 0 !important;
-  font-weight: 400 !important;
-}
-
-/* 5. BUTTON REFINEMENT 
-   Primary buttons keep rounded-full.
-   Secondary/ghost buttons get sharp rectangle. */
+/* 3. BUTTONS */
+/* Primary CTA */
 button.bg-gold {
-  border-radius: 4px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-size: 11px;
+  transition: all 0.25s ease;
 }
 
-/* Keep rounded-full only where it's a primary CTA */
-button.rounded-full.bg-gold {
+/* Keep pill shape on rounded-full buttons */
+button.rounded-full {
   border-radius: 9999px !important;
 }
 
-/* 6. TABLE AND LIST REFINEMENT */
-table {
-  border-collapse: collapse;
-}
-table th {
+/* Ghost / border buttons */
+button.border.border-border-main,
+button.border.border-gold\/40 {
+  border-radius: 6px;
   font-weight: 500;
-  font-size: 11px;
-  text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.3);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  padding: 10px 12px;
+  font-size: 11px;
 }
+
+/* 4. CARD SURFACES — consistent flat dark */
+.bg-luxury-slate {
+  background: #111111;
+}
+
+.light .bg-luxury-slate {
+  background: #EFEFEF;
+}
+
+/* Card hover — subtle gold border glow */
+.hover\:border-gold\/30:hover {
+  border-color: rgba(212,175,55,0.35) !important;
+  box-shadow: 0 0 20px rgba(212,175,55,0.06);
+}
+
+/* 5. ADMIN SIDEBAR */
+aside {
+  background: #080808 !important;
+  border-right: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+.light aside {
+  background: #F5F5F5 !important;
+  border-right: 1px solid rgba(0,0,0,0.08) !important;
+}
+
+aside button {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* 6. TABLES */
+table { border-collapse: collapse; width: 100%; }
+
+table th {
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(212,175,55,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 12px 16px;
+  text-align: left;
+}
+
 table td {
-  padding: 12px;
+  padding: 14px 16px;
   border-bottom: 1px solid rgba(255,255,255,0.04);
   font-size: 13px;
+  color: rgba(245,240,232,0.80);
 }
 
-/* 7. MODAL OVERLAY BACKDROP */
-[class*="fixed inset-0"][class*="backdrop-blur"] {
-  background: rgba(0,0,0,0.75) !important;
-  backdrop-filter: blur(8px) !important;
+.light table th {
+  color: rgba(212,175,55,0.7);
+  border-bottom-color: rgba(0,0,0,0.08);
 }
 
-/* 8. INPUT FIELDS — consistent across all panels */
+.light table td {
+  color: rgba(10,10,10,0.75);
+  border-bottom-color: rgba(0,0,0,0.05);
+}
+
+/* 7. FORM INPUTS — unified */
 input[type="text"],
-input[type="email"], 
+input[type="email"],
 input[type="number"],
 input[type="tel"],
 input[type="date"],
 input[type="password"],
 select,
 textarea {
-  background: var(--color-border-main) !important;
-  border: 1px solid var(--color-border-main) !important;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
   border-radius: 6px !important;
-  color: var(--color-text-main) !important;
+  color: #F5F0E8 !important;
   font-size: 14px !important;
-  font-family: 'Jost', sans-serif !important;
+  padding: 12px 16px !important;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: rgba(212,175,55,0.5) !important;
+  border-color: rgba(212,175,55,0.55) !important;
   outline: none !important;
-  background: rgba(255,255,255,0.06) !important;
+  background: rgba(255,255,255,0.07) !important;
 }
 
-/* 9. SCROLLBAR — luxury thin style */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { 
-  background: rgba(212,175,55,0.2); 
-  border-radius: 2px; 
-}
-::-webkit-scrollbar-thumb:hover { 
-  background: rgba(212,175,55,0.4); 
+.light input[type="text"],
+.light input[type="email"],
+.light input[type="number"],
+.light input[type="tel"],
+.light input[type="date"],
+.light input[type="password"],
+.light select,
+.light textarea {
+  background: rgba(0,0,0,0.04) !important;
+  border: 1px solid rgba(0,0,0,0.12) !important;
+  color: #0A0A0A !important;
 }
 
-/* ─── END KLO UNIFIED DESIGN SYSTEM ─── */
+.light input:focus,
+.light select:focus,
+.light textarea:focus {
+  border-color: rgba(212,175,55,0.6) !important;
+  background: rgba(0,0,0,0.06) !important;
+}
+
+/* 8. STATUS BADGES */
+.badge-active   { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+.badge-pending  { background: rgba(212,175,55,0.12); color: #D4AF37; border: 1px solid rgba(212,175,55,0.2); }
+.badge-rejected { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.2);  }
+.badge-info     { background: rgba(99,102,241,0.12); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.2); }
+
+/* 9. GOLD ACCENT LINE — reusable decorative element */
+.gold-line {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, #D4AF37, transparent);
+  border-radius: 1px;
+}
+
+/* 10. PORTAL CARDS — the role-based section cards */
+.portal-card {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portal-card:hover {
+  border-color: rgba(212,175,55,0.30);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.light .portal-card {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.08);
+}
+
+/* ── Small text legibility fix ──
+   Tailwind's tracking-widest on tiny text is illegible */
+.text-\[8px\]  { letter-spacing: 0.05em !important; }
+.text-\[9px\]  { letter-spacing: 0.06em !important; }
+.text-\[10px\] { letter-spacing: 0.09em !important; }
+
+/* ── Opacity floors — nothing below 50% on dark bg ── */
+.opacity-20 { opacity: 0.35 !important; }
+.opacity-30 { opacity: 0.45 !important; }
+
+/* Exception: decorative blobs can stay very dim */
+.blur-\[120px\].opacity-20 { opacity: 0.20 !important; }
