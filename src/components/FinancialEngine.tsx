@@ -249,7 +249,7 @@ export const FinancialEngine: React.FC<FinancialEngineProps> = ({ financials, la
             <div className="space-y-4">
               {[
                 { name: 'Jettly Aviation', amount: '$45,000', status: t.settled, icon: ShieldCheck },
-                { name: 'Vianco Ground', amount: '$12,400', status: t.pending, icon: Wallet },
+                { name: 'KLO Ground Services', amount: '$12,400', status: t.pending, icon: Wallet },
                 { name: 'ZentrumHub', amount: '$8,900', status: t.settled, icon: ShieldCheck },
               ].map((partner, i) => (
                 <div key={i} className="flex justify-between items-center p-4 bg-luxury-slate/50 rounded-xl border border-border-main">

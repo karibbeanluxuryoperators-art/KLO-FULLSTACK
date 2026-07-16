@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { 
-  Home, Ship, Plane, Car, Users, Shield, ArrowLeft, Send
+  Home, Ship, Plane, Car, Users, ArrowLeft, Send
 } from 'lucide-react';
 import { Language } from '../types';
 
@@ -49,12 +49,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
         card3: { label: "Upfront cost", value: "Zero", body: "No listing fees, no subscription, no setup cost. We only earn when you earn." },
         card4: { label: "Contract commitment", value: "None", body: "Pause or remove your listing at any time. We keep partners because we're good, not because they're locked in." }
       },
-      vianco: {
-        eyebrow: "Ground transport partners",
-        title: "The Vianco Protocol.",
-        panelTitle: "Vianco Security Standard",
-        panelBody: "All ground transport partners must provide bilingual drivers, carry valid commercial insurance, and operate vehicles meeting our presentation standards. Armored vehicle partners undergo additional background verification. The Vianco Protocol ensures every ground movement meets the same security standard — for your clients and ours."
-      },
+
       cta: {
         title: "Ready to join?",
         sub: "Applications take less than 10 minutes. Our team responds within 24 hours."
@@ -97,12 +92,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
         card3: { label: "Costo inicial", value: "Cero", body: "Sin tarifas de listado, sin suscripción, sin costo de configuración. Solo ganamos cuando usted gana." },
         card4: { label: "Compromiso contractual", value: "Ninguno", body: "Pause o elimine su listado en cualquier momento. Mantenemos a nuestros socios porque somos buenos, no porque estén atrapados." }
       },
-      vianco: {
-        eyebrow: "Socios de transporte terrestre",
-        title: "El Protocolo Vianco.",
-        panelTitle: "Estándar de Seguridad Vianco",
-        panelBody: "Todos los socios de transporte terrestre deben proporcionar conductores bilingües, contar con un seguro comercial vigente y operar vehículos que cumplan con nuestros estándares de presentación. Los socios de vehículos blindados se someten a una verificación de antecedentes adicional. El Protocolo Vianco garantiza que cada movimiento terrestre cumpla con el mismo estándar de seguridad, tanto para sus clientes como para los nuestros."
-      },
+
       cta: {
         title: "¿Listo para unirse?",
         sub: "Las solicitudes tardan menos de 10 minutos. Nuestro equipo responde en 24 horas."
@@ -145,12 +135,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
         card3: { label: "Custo inicial", value: "Zero", body: "Sem taxas de listagem, sem assinatura, sem custo de configuração. Só ganhamos quando você ganha." },
         card4: { label: "Compromisso contratual", value: "Nenhum", body: "Pause ou remova sua listagem a qualquer momento. Mantemos parceiros porque somos bons, não porque eles estão presos." }
       },
-      vianco: {
-        eyebrow: "Parceiros de transporte terrestre",
-        title: "O Protocolo Vianco.",
-        panelTitle: "Padrão de Segurança Vianco",
-        panelBody: "Todos os parceiros de transporte terrestre devem fornecer motoristas bilíngues, possuir seguro comercial válido e operar veículos que atendam aos nossos padrões de apresentação. Parceiros de veículos blindados passam por verificação adicional de antecedentes. O Protocolo Vianco garante que cada movimento terrestre atenda ao mesmo padrão de segurança — para seus clientes e os nossos."
-      },
+
       cta: {
         title: "Pronto para se juntar?",
         sub: "As candidaturas levam menos de 10 minutos. Nossa equipe responde em 24 horas."
@@ -285,31 +270,6 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
                 <p className="text-xs text-text-main/60 leading-relaxed font-light">{card.body}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Vianco Protocol Section */}
-      <section className="py-20 px-6 bg-luxury-black">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4 font-bold">
-            {t.vianco.eyebrow}
-          </p>
-          <h2 className="text-4xl font-serif italic mb-12">{t.vianco.title}</h2>
-
-          <div className="p-10 bg-luxury-slate/50 border border-border-main rounded-xl relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:opacity-10 transition-opacity">
-              <Shield size={120} className="text-gold" />
-            </div>
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
-                <Shield size={24} className="text-gold" />
-                <h3 className="text-xl font-serif italic text-gold">{t.vianco.panelTitle}</h3>
-              </div>
-              <p className="text-sm text-text-main/60 leading-relaxed font-light max-w-2xl">
-                {t.vianco.panelBody}
-              </p>
-            </div>
           </div>
         </div>
       </section>

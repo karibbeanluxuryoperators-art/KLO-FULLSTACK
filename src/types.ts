@@ -127,7 +127,7 @@ export interface AgentialRule {
   id: string;
   trigger: 'DELAY' | 'SECURITY' | 'WEATHER' | 'TTE_CRITICAL';
   condition: string; // e.g., "delay > 20m"
-  action: string; // e.g., "re-route Vianco ground team"
+  action: string; // e.g., "re-route ground team"
   status: 'ACTIVE' | 'PAUSED';
   lastTriggered?: string;
 }

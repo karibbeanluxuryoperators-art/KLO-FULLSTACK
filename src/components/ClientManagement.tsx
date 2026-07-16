@@ -283,7 +283,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({ clients, lan
                       value={newClient.name || ''}
                       onChange={e => setNewClient({...newClient, name: e.target.value})}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-gold/50 transition-all text-sm font-sans"
-                      placeholder="e.g. Alexander Vianco"
+                      placeholder="e.g. Client Name"
                     />
                   </div>
                   <div className="space-y-2">

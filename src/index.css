@@ -28,17 +28,6 @@
   --panel-bg-val: rgba(14, 14, 14, 0.97);
 }
 
-/* ── Light Mode ── */
-.light {
-  --luxury-black-val: #F8F7F4;
-  --luxury-cream-val: #050505;
-  --luxury-paper-val: #ffffff;
-  --luxury-slate-val: #EFEFEF;
-  --text-main-val: #0A0A0A;
-  --border-main-val: rgba(0, 0, 0, 0.10);
-  --panel-bg-val: rgba(255, 255, 255, 0.97);
-}
-
 /* ── Base ── */
 @layer base {
   body {
@@ -61,9 +50,7 @@
     color: rgba(245, 240, 232, 0.80);
   }
 
-  .light p {
-    color: rgba(10, 10, 10, 0.75);
-  }
+
 }
 
 /* ── Utility ── */
@@ -73,12 +60,6 @@
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--color-border-main);
   box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-}
-
-.light .glass-panel {
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0,0,0,0.08);
 }
 
 .admin-card {
@@ -149,9 +130,6 @@
   line-height: 1.1;
 }
 
-.light .section-title {
-  color: #0A0A0A;
-}
 
 /* Body text — always readable */
 .body-text {
@@ -161,9 +139,6 @@
   line-height: 1.75;
 }
 
-.light .body-text {
-  color: rgba(10, 10, 10, 0.72);
-}
 
 /* Metadata / labels — not dimmed into invisibility */
 .meta-text {
@@ -174,9 +149,6 @@
   color: rgba(245, 240, 232, 0.55);
 }
 
-.light .meta-text {
-  color: rgba(10, 10, 10, 0.45);
-}
 
 /* 2. TAME EXTREME ROUNDED CORNERS */
 .rounded-\[40px\] { border-radius: 12px !important; }
@@ -215,9 +187,6 @@ button.border.border-gold\/40 {
   background: #111111;
 }
 
-.light .bg-luxury-slate {
-  background: #EFEFEF;
-}
 
 /* Card hover — subtle gold border glow */
 .hover\:border-gold\/30:hover {
@@ -231,10 +200,6 @@ aside {
   border-right: 1px solid rgba(255,255,255,0.08) !important;
 }
 
-.light aside {
-  background: #F5F5F5 !important;
-  border-right: 1px solid rgba(0,0,0,0.08) !important;
-}
 
 aside button {
   font-size: 12px;
@@ -263,15 +228,6 @@ table td {
   color: rgba(245,240,232,0.80);
 }
 
-.light table th {
-  color: rgba(212,175,55,0.7);
-  border-bottom-color: rgba(0,0,0,0.08);
-}
-
-.light table td {
-  color: rgba(10,10,10,0.75);
-  border-bottom-color: rgba(0,0,0,0.05);
-}
 
 /* 7. FORM INPUTS — unified */
 input[type="text"],
@@ -297,25 +253,6 @@ input:focus, select:focus, textarea:focus {
   background: rgba(255,255,255,0.07) !important;
 }
 
-.light input[type="text"],
-.light input[type="email"],
-.light input[type="number"],
-.light input[type="tel"],
-.light input[type="date"],
-.light input[type="password"],
-.light select,
-.light textarea {
-  background: rgba(0,0,0,0.04) !important;
-  border: 1px solid rgba(0,0,0,0.12) !important;
-  color: #0A0A0A !important;
-}
-
-.light input:focus,
-.light select:focus,
-.light textarea:focus {
-  border-color: rgba(212,175,55,0.6) !important;
-  background: rgba(0,0,0,0.06) !important;
-}
 
 /* 8. STATUS BADGES */
 .badge-active   { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
@@ -344,10 +281,6 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
-.light .portal-card {
-  background: #FFFFFF;
-  border-color: rgba(0,0,0,0.08);
-}
 
 /* ── Small text legibility fix ──
    Tailwind's tracking-widest on tiny text is illegible */

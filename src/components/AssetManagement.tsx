@@ -76,7 +76,6 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       revenueShare: 'Revenue Share',
       providerPortal: 'Provider Portal',
       myAssets: 'My Assets',
-      viancoArmor: 'Vianco Armor Protocol',
       edit: 'Edit Asset'
     },
     ES: {
@@ -119,7 +118,6 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       revenueShare: 'Participación en Ingresos',
       providerPortal: 'Portal del Proveedor',
       myAssets: 'Mis Activos',
-      viancoArmor: 'Protocolo Vianco Armor',
       edit: 'Editar Activo'
     },
     PT: {
@@ -162,7 +160,6 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
       revenueShare: 'Participação nos Lucros',
       providerPortal: 'Portal do Fornecedor',
       myAssets: 'Meus Ativos',
-      viancoArmor: 'Protocolo Vianco Armor',
       edit: 'Editar Ativo'
     }
   }[lang];
@@ -240,7 +237,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
     setDispatchingId(id);
     setTimeout(() => {
       setDispatchingId(null);
-      alert(lang === 'EN' ? 'Vianco Autonomous Dispatch Initiated' : 'Despacho Autónomo Vianco Iniciado');
+      alert(lang === 'EN' ? 'Autonomous Dispatch Initiated' : lang === 'ES' ? 'Despacho Autónomo Iniciado' : 'Despacho Autônomo Iniciado');
     }, 2000);
   };
 
@@ -769,7 +766,7 @@ export const AssetManagement: React.FC<AssetManagementProps> = ({ assets, lang, 
                   {[
                     { id: 'CS1', name: 'Private Jet Empty Leg', price: '$4,500', type: 'AIRCRAFT', img: 'https://picsum.photos/seed/jet/400/300' },
                     { id: 'CS2', name: 'Luxury Yacht Day Trip', price: '$2,800', type: 'VESSEL', img: 'https://picsum.photos/seed/yacht/400/300' },
-                    { id: 'CS3', name: 'Vianco Armor Transfer', price: '$850', type: 'VEHICLE', img: 'https://picsum.photos/seed/car/400/300' },
+                    { id: 'CS3', name: 'Luxury Ground Transfer', price: '$850', type: 'VEHICLE', img: 'https://picsum.photos/seed/car/400/300' },
                     { id: 'CS4', name: 'Bespoke Villa Stay', price: '$3,200', type: 'LODGING', img: 'https://picsum.photos/seed/villa/400/300' },
                   ].map(item => (
                     <div key={item.id} className="bg-luxury-slate border border-border-main rounded-xl p-4 flex gap-4 group hover:border-gold/30 transition-all">

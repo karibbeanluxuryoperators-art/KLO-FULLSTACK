@@ -6,7 +6,7 @@ import {
   Loader2, Menu, X, Star, Lock,
   Users, Briefcase, CreditCard,
   TrendingUp, Activity, Package,
-  Zap, DollarSign, CheckCircle2, Sun, Moon,
+  Zap, DollarSign, CheckCircle2,
   LogOut, ChevronDown
 } from 'lucide-react';
 import { KLOExperience } from './services/kloBrain';
@@ -96,7 +96,6 @@ export default function App() {
   const [authError, setAuthError] = useState('');
 
   const [lang, setLang] = useState<Language>('EN');
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHeroNav, setIsHeroNav] = useState(true);
 
@@ -124,11 +123,6 @@ export default function App() {
     const unsub = onKLOAuthChange((u) => { setUser(u); setAuthLoading(false); });
     return unsub;
   }, []);
-
-  // ── Theme ──
-  useEffect(() => {
-    document.documentElement.classList.toggle('light', theme === 'light');
-  }, [theme]);
 
   // ── Scroll nav ──
   useEffect(() => {
@@ -235,14 +229,9 @@ export default function App() {
 
           <div className="w-px h-4 bg-border-main" />
 
-          <button onClick={() => setLang(l => l === 'EN' ? 'ES' : 'EN')}
+          <button onClick={() => setLang(l => l === 'EN' ? 'ES' : l === 'ES' ? 'PT' : 'EN')}
             className="text-[9px] uppercase tracking-widest text-text-main/40 hover:text-text-main border border-border-main px-2 py-1 rounded">
             {lang}
-          </button>
-
-          <button onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
-            className="text-text-main/40 hover:text-gold transition-colors">
-            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
           {authLoading ? (
@@ -314,11 +303,8 @@ export default function App() {
                 </button>
               )}
               <div className="flex gap-4 items-center">
-                <button onClick={() => setLang(l => l === 'EN' ? 'ES' : 'EN')}
+                <button onClick={() => setLang(l => l === 'EN' ? 'ES' : l === 'ES' ? 'PT' : 'EN')}
                   className="border border-border-main px-4 py-2 rounded text-text-main text-xs">{lang}</button>
-                <button onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} className="text-text-main/50">
-                  {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                </button>
               </div>
             </div>
           </motion.div>

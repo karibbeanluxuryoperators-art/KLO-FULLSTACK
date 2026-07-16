@@ -555,9 +555,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack, lang = '
                   <div className="flex items-center gap-2">
                     <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40 font-semibold">Is this vehicle armored?</label>
                     {formData.is_armored && (
-                      <span className="px-2 py-0.5 bg-gold/10 text-gold rounded text-[10px] font-sans font-semibold uppercase tracking-tight border border-gold/20">
-                        Vianco Protocol Eligible
-                      </span>
+
                     )}
                   </div>
                   <p className="text-xs text-text-main/40 font-light">Does the vehicle have ballistic protection?</p>
@@ -839,7 +837,7 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack, lang = '
                   <span className="text-[11px] font-sans uppercase tracking-tight text-text-main/40 font-semibold">Armored</span>
                   <span className="text-sm font-medium flex items-center gap-2 text-text-main">
                     {formData.is_armored ? 'YES' : 'NO'}
-                    {formData.is_armored && <span className="text-[9px] text-gold font-sans font-semibold uppercase tracking-tight">Vianco Protocol Eligible</span>}
+
                   </span>
                 </div>
                 {formData.driver_included === 'yes' && (
