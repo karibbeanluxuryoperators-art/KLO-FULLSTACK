@@ -15,6 +15,11 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Express app — created at module level so Vercel can export it as the handler.
+// Routes are registered inside startServer(); only app.listen() is skipped on Vercel.
+const app = express();
+app.use(express.json());
+
 // Supabase Setup
 let _supabase: any = null;
 
@@ -227,7 +232,6 @@ async function notifyApproval(supplierId: string, kind: string, payload: Record<
 }
 
 async function startServer() {
-  const app = express();
   const PORT = 3000;
   const APP_URL = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}`);
 
@@ -1554,14 +1558,11 @@ ${assetContext}`;
   return app;
 }
 
-// On Vercel, the @vercel/node runtime imports this module and calls the
-// default export as a per-request handler. We must NOT run startServer() at
-// import time on Vercel — that triggers all the long-running setup, the
-// static dist mount, and the async work that crashes the serverless function.
-if (!process.env.VERCEL) {
-  startServer();
-}
-export default startServer;
+// Register all routes by calling startServer(). app.listen() is guarded by
+// !process.env.VERCEL inside startServer(), so it only runs locally.
+startServer();
+
+export default app;
 
 /*
 # AI PROVIDER SELECTION
