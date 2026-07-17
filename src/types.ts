@@ -189,3 +189,57 @@ export interface Lead {
   timestamp: string;
   source: 'WHATSAPP' | 'MARKETPLACE' | 'CONCIERGE';
 }
+
+// ── Bundles (multi-supplier packages owned by a partner) ──────────────────
+export type BundleStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export interface Bundle {
+  id: string;
+  owner_supplier_id: string;
+  name: string;
+  description: string | null;
+  total_price: string;
+  status: BundleStatus;
+  created_at: string;
+  approved_at?: string | null;
+  approved_by?: string | null;
+  // Hydrated on list endpoints
+  items?: BundleItem[];
+  items_count?: number;
+}
+
+export interface BundleItem {
+  id: string;
+  bundle_id: string;
+  asset_id: string;
+  qty: number;
+  // Hydrated on list endpoints
+  asset_name?: string;
+  asset_type?: string;
+  asset_price_per_unit?: string;
+  asset_location?: string;
+  supplier_business_name?: string;
+}
+
+export interface AvailableAsset {
+  id: string;
+  name: string;
+  type: string;
+  location: string;
+  description: string;
+  price_per_unit: string;
+  price_type: string;
+  capacity: number;
+  supplier_id: string;
+  business_name: string;
+}
+
+export interface ApprovalNotification {
+  id: string;
+  recipient_supplier_id: string;
+  kind: 'SUPPLIER_APPROVED' | 'BUNDLE_APPROVED' | string;
+  payload: Record<string, unknown> | null;
+  sent_telegram: boolean;
+  sent_email: boolean;
+  created_at: string;
+}
