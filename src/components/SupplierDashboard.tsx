@@ -80,6 +80,8 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingBookings, setLoadingBookings] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const [editingAsset, setEditingAsset] = useState<Partial<Asset> | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -92,10 +94,14 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang
   useEffect(() => {
     const init = async () => {
       setLoading(true);
+      setLoadError(null);
       try {
         // Try to find supplier by Firebase UID or email
         const res = await fetch(`/api/suppliers/lookup?uid=${user.uid}&email=${encodeURIComponent(user.email)}`);
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(data?.error || `HTTP ${res.status}`);
+        }
 
         if (data.supplier) {
           setSupplierId(data.supplier.id);
@@ -104,20 +110,24 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang
 
           // Load assets for this supplier
           const assetsRes = await fetch(`/api/suppliers/${data.supplier.id}/assets`);
-          const assetsData = await assetsRes.json();
+          const assetsData = await assetsRes.json().catch(() => []);
+          if (!assetsRes.ok) {
+            throw new Error(assetsData?.error || `HTTP ${assetsRes.status}`);
+          }
           setAssets(Array.isArray(assetsData) ? assetsData : []);
         } else {
           // No supplier record yet
           setSupplierId(null);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to load supplier data', err);
+        setLoadError(err?.message || 'Could not load your dashboard');
       } finally {
         setLoading(false);
       }
     };
     init();
-  }, [user.uid, user.email]);
+  }, [user.uid, user.email, reloadKey]);
 
   // Load bookings for this supplier's assets
   useEffect(() => {
@@ -371,6 +381,29 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang
           </div>
         </div>
       </div>
+
+      {loadError && (
+        <div className="bg-red-500/10 border-b border-red-500/20">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <AlertCircle size={18} className="text-red-400 shrink-0" />
+              <p className="text-sm text-red-300 truncate">
+                {lang === 'EN'
+                  ? `We couldn’t load your dashboard. (${loadError})`
+                  : lang === 'ES'
+                  ? `No pudimos cargar tu panel. (${loadError})`
+                  : `Não foi possível carregar seu painel. (${loadError})`}
+              </p>
+            </div>
+            <button
+              onClick={() => setReloadKey(k => k + 1)}
+              className="px-5 py-2 border border-red-400/40 text-red-300 text-[10px] uppercase tracking-widest font-semibold rounded hover:bg-red-500/20 transition-all shrink-0"
+            >
+              {lang === 'EN' ? 'Retry' : lang === 'ES' ? 'Reintentar' : 'Tentar novamente'}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* ── DASHBOARD TAB ── */}
