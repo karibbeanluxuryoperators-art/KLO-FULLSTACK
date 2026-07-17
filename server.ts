@@ -15,6 +15,11 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Express app — created at module level so Vercel can export it as the handler.
+// startServer() registers routes on this app; only app.listen() runs locally.
+const app = express();
+app.use(express.json());
+
 // Supabase Setup
 let _supabase: any = null;
 
@@ -227,11 +232,8 @@ async function notifyApproval(supplierId: string, kind: string, payload: Record<
 }
 
 async function startServer() {
-  const app = express();
   const PORT = 3000;
   const APP_URL = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}`);
-
-  app.use(express.json());
 
   // ── Health check (must be first so we can diagnose serverless cold-start issues) ──
   app.get('/api/health', (_req, res) => {
@@ -1153,11 +1155,6 @@ async function startServer() {
     }
   });
 
-  // API Routes
-  app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", timestamp: new Date().toISOString() });
-  });
-
   // Simulated Admin Data
   app.get("/api/admin/stats", (req, res) => {
     res.json({
@@ -1545,10 +1542,6 @@ ${assetContext}`;
       });
       app.use(vite.middlewares);
     }
-
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`KLO Ecosystem Server running on http://localhost:${PORT}`);
-    });
   }
 
   return app;
@@ -1560,8 +1553,11 @@ ${assetContext}`;
 // static dist mount, and the async work that crashes the serverless function.
 if (!process.env.VERCEL) {
   startServer();
+  app.listen(3000, "0.0.0.0", () => {
+    console.log(`KLO Ecosystem Server running on http://localhost:3000`);
+  });
 }
-export default startServer;
+export default app;
 
 /*
 # AI PROVIDER SELECTION
