@@ -208,12 +208,10 @@ export default function App() {
             {lang === 'EN' ? 'Concierge' : 'Conserje'}
           </button>
 
-          {!user && (
-            <button onClick={() => setShowPartners(true)}
-              className="px-5 py-2 border border-gold/40 rounded-full text-[10px] uppercase tracking-widest text-gold hover:bg-gold hover:text-luxury-black transition-all duration-300">
-              {lang === 'EN' ? 'List with KLO' : 'Unirse a KLO'}
-            </button>
-          )}
+          <button onClick={() => { setShowMarketplace(false); setShowPartners(true); }}
+            className="px-5 py-2 border border-gold/40 rounded-full text-[10px] uppercase tracking-widest text-gold hover:bg-gold hover:text-luxury-black transition-all duration-300">
+            {lang === 'EN' ? 'List with KLO' : 'Unirse a KLO'}
+          </button>
 
           {user?.role === 'ADMIN' && (
             <button onClick={() => { setShowMarketplace(false); window.history.pushState({}, '', '/admin'); window.location.reload(); }}
