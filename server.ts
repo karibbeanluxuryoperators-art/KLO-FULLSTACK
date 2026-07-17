@@ -130,6 +130,23 @@ async function startServer() {
 
   app.use(express.json());
 
+  // ── Health check (must be first so we can diagnose serverless cold-start issues) ──
+  app.get('/api/health', (_req, res) => {
+    const integrations = {
+      supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY),
+      telegram: Boolean(process.env.TELEGRAM_BOT_TOKEN),
+      stripe: Boolean(process.env.STRIPE_SECRET_KEY),
+      ai: Boolean(process.env.GEMINI_API_KEY || process.env.ANTHROPIC_API_KEY || process.env.OPENROUTER_API_KEY),
+      googleCalendar: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+    };
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      runtime: process.env.VERCEL ? 'vercel-serverless' : 'node',
+      integrations,
+    });
+  });
+
   // ── Telegram Webhook (uses raw body — registered after express.json is fine since Telegram sends JSON) ──
   app.post('/api/telegram/webhook', express.json(), async (req, res) => {
     res.sendStatus(200);
@@ -1166,41 +1183,63 @@ ${assetContext}`;
     }
   });
 
-  // Periodic Calendar Sync
-  setInterval(async () => {
-    console.log('Starting periodic calendar sync...');
-    const { data: suppliers } = await supabase.from('suppliers').select('id').not('google_refresh_token', 'is', null);
-    if (suppliers) {
-      for (const supplier of suppliers) {
-        try {
-          await syncSupplierCalendar(supplier.id);
-        } catch (error: any) {
-          console.error(`Periodic sync failed for supplier ${supplier.id}:`, error.message);
+  // SPA static fallback — wrapped in try/catch so serverless (where dist/
+  // may live in a different location) doesn't crash the import.
+  // API routes registered above take precedence; this only matches what falls through.
+  try {
+    const distPath = path.join(__dirname, "dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+  } catch (e) {
+    console.warn('Static dist fallback not available:', (e as Error)?.message);
+  }
+
+  // ── Long-running process only: periodic sync, dev middleware, listener.
+  //    Vercel sets VERCEL=1 in serverless; we skip all of this on Vercel and
+  //    instead export the app as a per-request handler.
+  if (!process.env.VERCEL) {
+    // Periodic Calendar Sync (long-running processes only)
+    setInterval(async () => {
+      console.log('Starting periodic calendar sync...');
+      const { data: suppliers } = await supabase.from('suppliers').select('id').not('google_refresh_token', 'is', null);
+      if (suppliers) {
+        for (const supplier of suppliers) {
+          try {
+            await syncSupplierCalendar(supplier.id);
+          } catch (error: any) {
+            console.error(`Periodic sync failed for supplier ${supplier.id}:`, error.message);
+          }
         }
       }
-    }
-  }, 6 * 60 * 60 * 1000);
+    }, 6 * 60 * 60 * 1000);
 
-  // Vite middleware
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    app.use(express.static(path.join(__dirname, "dist")));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "dist", "index.html"));
+    // Vite dev middleware (development only)
+    if (process.env.NODE_ENV !== "production") {
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+    }
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`KLO Ecosystem Server running on http://localhost:${PORT}`);
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`KLO Ecosystem Server running on http://localhost:${PORT}`);
-  });
+  return app;
 }
 
-startServer();
+// On Vercel, the @vercel/node runtime imports this module and calls the
+// default export as a per-request handler. We must NOT run startServer() at
+// import time on Vercel — that triggers all the long-running setup, the
+// static dist mount, and the async work that crashes the serverless function.
+if (!process.env.VERCEL) {
+  startServer();
+}
+export default startServer;
 
 /*
 # AI PROVIDER SELECTION
