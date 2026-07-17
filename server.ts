@@ -130,6 +130,23 @@ async function startServer() {
 
   app.use(express.json());
 
+  // ── Health check (must be first so we can diagnose serverless cold-start issues) ──
+  app.get('/api/health', (_req, res) => {
+    const integrations = {
+      supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY),
+      telegram: Boolean(process.env.TELEGRAM_BOT_TOKEN),
+      stripe: Boolean(process.env.STRIPE_SECRET_KEY),
+      ai: Boolean(process.env.GEMINI_API_KEY || process.env.ANTHROPIC_API_KEY || process.env.OPENROUTER_API_KEY),
+      googleCalendar: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+    };
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      runtime: process.env.VERCEL ? 'vercel-serverless' : 'node',
+      integrations,
+    });
+  });
+
   // ── Telegram Webhook (uses raw body — registered after express.json is fine since Telegram sends JSON) ──
   app.post('/api/telegram/webhook', express.json(), async (req, res) => {
     res.sendStatus(200);
@@ -1166,38 +1183,46 @@ ${assetContext}`;
     }
   });
 
-  // Periodic Calendar Sync
-  setInterval(async () => {
-    console.log('Starting periodic calendar sync...');
-    const { data: suppliers } = await supabase.from('suppliers').select('id').not('google_refresh_token', 'is', null);
-    if (suppliers) {
-      for (const supplier of suppliers) {
-        try {
-          await syncSupplierCalendar(supplier.id);
-        } catch (error: any) {
-          console.error(`Periodic sync failed for supplier ${supplier.id}:`, error.message);
+  // SPA static fallback — works in BOTH local production builds and Vercel serverless.
+  // Vercel uses this to serve the React app; local `npm run build` + `npm start` uses it too.
+  app.use(express.static(path.join(__dirname, "dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
+  });
+
+  // ── Long-running process only: periodic sync, dev middleware, listener.
+  //    Vercel sets VERCEL=1 on every serverless invocation. Skipping these here is
+  //    what stops the FUNCTION_INVOCATION_FAILED crash on the marketplace endpoint.
+  const isVercel = Boolean(process.env.VERCEL);
+  if (!isVercel) {
+    // Periodic Calendar Sync (long-running processes only)
+    setInterval(async () => {
+      console.log('Starting periodic calendar sync...');
+      const { data: suppliers } = await supabase.from('suppliers').select('id').not('google_refresh_token', 'is', null);
+      if (suppliers) {
+        for (const supplier of suppliers) {
+          try {
+            await syncSupplierCalendar(supplier.id);
+          } catch (error: any) {
+            console.error(`Periodic sync failed for supplier ${supplier.id}:`, error.message);
+          }
         }
       }
-    }
-  }, 6 * 60 * 60 * 1000);
+    }, 6 * 60 * 60 * 1000);
 
-  // Vite middleware
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    app.use(express.static(path.join(__dirname, "dist")));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "dist", "index.html"));
+    // Vite dev middleware (development only)
+    if (process.env.NODE_ENV !== "production") {
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+    }
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`KLO Ecosystem Server running on http://localhost:${PORT}`);
     });
   }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`KLO Ecosystem Server running on http://localhost:${PORT}`);
-  });
 }
 
 startServer();
