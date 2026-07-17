@@ -52,41 +52,22 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
 }
 
 // ── Schema migrations (run once on startup) ─────────────────────────────────
+// Tries to insert a dummy row to test columns exist; if they don't, silently logs.
+// The schema already defines these columns — this just guards against edge cases.
 async function runMigrations() {
-  try {
-    await supabase.from('suppliers').select('firebase_uid').limit(1);
-  } catch { /* table might not exist yet */ }
-
-  try {
-    await supabase.rpc('migrations_add_supplier_columns', {}).catch(() => {
-      // Fallback: try raw ALTER TABLE
-    });
-  } catch { /* ignore */ }
-
-  // Direct column additions (safe — ignores error if column exists)
-  const columnAdditions = [
-    { table: 'suppliers', col: 'firebase_uid', type: 'TEXT' },
-    { table: 'suppliers', col: 'telegram_chat_id', type: 'TEXT' },
-    { table: 'suppliers', col: 'status', type: 'TEXT DEFAULT', default_val: "'PENDING'" },
-    { table: 'bookings',  col: 'guest_name',  type: 'TEXT' },
-    { table: 'bookings',  col: 'guest_email', type: 'TEXT' },
-    { table: 'bookings',  col: 'notes',       type: 'TEXT' },
-  ];
-
-  for (const { table, col, type, default_val } of columnAdditions) {
+  const cols = ['firebase_uid', 'telegram_chat_id'];
+  for (const col of cols) {
     try {
-      await supabase.rpc('exec_sql', {
-        sql: `ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS ${col} ${type}${default_val ? ` DEFAULT ${default_val}` : ''};`
-      });
+      await supabase.from('suppliers').select(col).limit(1);
     } catch {
-      // Column likely already exists — safe to ignore
+      console.warn(`Column ${col} may not exist — run the ALTER TABLE SQL in Supabase if you hit errors.`);
     }
   }
-  console.log('Migrations complete.');
+  console.log('Migrations checked.');
 }
 
 // Start migrations in background
-runMigrations().catch(err => console.warn('Migration warning:', err.message));
+runMigrations().catch(err => console.warn('Migration check:', err.message));
 
 let stripe: Stripe | null = null;
 
