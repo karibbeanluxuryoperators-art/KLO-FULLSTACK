@@ -31,6 +31,8 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
 }) => {
   const [assets, setAssets] = useState<Asset[]>(initialAssets);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const [activeTab, setActiveTab] = useState<AssetType | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
@@ -53,8 +55,16 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
 
   React.useEffect(() => {
     setLoading(true);
+    setLoadError(null);
     fetch('/api/assets?status=ACTIVE')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          return res.json().catch(() => ({})).then((body: { error?: string }) => {
+            throw new Error(body?.error || `HTTP ${res.status}`);
+          });
+        }
+        return res.json();
+      })
       .then(data => {
         if (data && Array.isArray(data) && data.length > 0) {
           const parsedAssets = data.map(a => ({
@@ -74,11 +84,12 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
       .catch(err => {
         console.error('Failed to fetch active assets', err);
         setAssets(initialAssets);
+        setLoadError(err?.message || 'Could not load inventory');
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [initialAssets]);
+  }, [initialAssets, reloadKey]);
 
   React.useEffect(() => {
     if (selectedAsset) {
@@ -909,9 +920,22 @@ ${bookingData.endDate}\nAssets: ${cart.map(a => a.name).join(', ')}
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
-            <div className="col-span-full py-20 flex flex-col items-center justify-center gap-3">
+            <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
               <Loader2 className="animate-spin text-gold/50" size={32} />
               <p className="text-[10px] uppercase tracking-[0.3em] text-white/20 font-bold">Refining Inventory...</p>
+              {loadError && (
+                <>
+                  <p className="text-sm text-white/60 font-light max-w-md text-center mt-3">
+                    We couldn’t load the inventory. ({loadError})
+                  </p>
+                  <button
+                    onClick={() => setReloadKey(k => k + 1)}
+                    className="mt-2 px-6 py-2 border border-gold/40 text-gold text-[10px] uppercase tracking-widest font-semibold rounded hover:bg-gold hover:text-luxury-black transition-all"
+                  >
+                    Retry
+                  </button>
+                </>
+              )}
             </div>
           ) : filteredAssets.length === 0 ? (
             <div className="col-span-full py-20 flex flex-col items-center justify-center text-center gap-6">
