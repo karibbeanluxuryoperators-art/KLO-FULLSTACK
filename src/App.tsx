@@ -488,7 +488,6 @@ export default function App() {
 
   // ─── CLIENT PORTAL (logged in) ────────────────────────────────────────────
   const renderClientPortal = () => {
-    if (showPartners) return <PartnersPage lang={lang} onApply={() => setShowPartners(false)} onBack={() => setShowPartners(false)} />;
     if (showMarketplace) return (
       <Marketplace
         assets={assets.map(a => ({ ...a, pricePerUnit: applyKLOMarkup(a.pricePerUnit) }))}
@@ -775,6 +774,7 @@ export default function App() {
         {portal === 'supplier_dashboard' && user && (
           <SupplierDashboard user={user} lang={lang} onBack={() => window.history.pushState({}, '', '/')} />
         )}
+        {showPartners && <PartnersPage lang={lang} onApply={() => setShowPartners(false)} onBack={() => setShowPartners(false)} />}
       </main>
 
       <LeadCaptureForm lang={lang} />
