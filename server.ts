@@ -1183,18 +1183,23 @@ ${assetContext}`;
     }
   });
 
-  // SPA static fallback — works in BOTH local production builds and Vercel serverless.
-  // Vercel uses this to serve the React app; local `npm run build` + `npm start` uses it too.
-  app.use(express.static(path.join(__dirname, "dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
-  });
+  // SPA static fallback — wrapped in try/catch so serverless (where dist/
+  // may live in a different location) doesn't crash the import.
+  // API routes registered above take precedence; this only matches what falls through.
+  try {
+    const distPath = path.join(__dirname, "dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+  } catch (e) {
+    console.warn('Static dist fallback not available:', (e as Error)?.message);
+  }
 
   // ── Long-running process only: periodic sync, dev middleware, listener.
-  //    Vercel sets VERCEL=1 on every serverless invocation. Skipping these here is
-  //    what stops the FUNCTION_INVOCATION_FAILED crash on the marketplace endpoint.
-  const isVercel = Boolean(process.env.VERCEL);
-  if (!isVercel) {
+  //    Vercel sets VERCEL=1 in serverless; we skip all of this on Vercel and
+  //    instead export the app as a per-request handler.
+  if (!process.env.VERCEL) {
     // Periodic Calendar Sync (long-running processes only)
     setInterval(async () => {
       console.log('Starting periodic calendar sync...');
@@ -1223,9 +1228,18 @@ ${assetContext}`;
       console.log(`KLO Ecosystem Server running on http://localhost:${PORT}`);
     });
   }
+
+  return app;
 }
 
-startServer();
+// On Vercel, the @vercel/node runtime imports this module and calls the
+// default export as a per-request handler. We must NOT run startServer() at
+// import time on Vercel — that triggers all the long-running setup, the
+// static dist mount, and the async work that crashes the serverless function.
+if (!process.env.VERCEL) {
+  startServer();
+}
+export default startServer;
 
 /*
 # AI PROVIDER SELECTION
