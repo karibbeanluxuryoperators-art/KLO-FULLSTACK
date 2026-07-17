@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Language } from '../types';
+import { auth } from '../firebase';
 import { 
   Home, Ship, Plane, Users, Car, ChevronLeft, ChevronRight, 
   Check, Calendar, Globe, Shield, DollarSign, Camera, 
@@ -158,11 +159,19 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack, lang = '
       const sid_to_use = supplierId;
 
       // STEP 1: POST to /api/suppliers/register
+      // Capture Firebase UID if user is logged in
+      let firebase_uid = null;
+      try {
+        const currentUser = auth?.currentUser;
+        if (currentUser) firebase_uid = currentUser.uid;
+      } catch { /* Firebase may not be initialized */ }
+
       const supplierRes = await fetch('/api/suppliers/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           id: sid_to_use,
+          firebase_uid,
           business_name: formData.business_name,
           contact_name: formData.contact_name,
           email: formData.email,

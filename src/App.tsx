@@ -24,6 +24,7 @@ import { LeadCaptureForm } from './components/LeadCaptureForm';
 import { LeadsManagement } from './components/LeadsManagement';
 import { SuppliersManagement } from './components/SuppliersManagement';
 import { SupplierPortal } from './components/SupplierPortal';
+import { SupplierDashboard } from './components/SupplierDashboard';
 import { ChatDrawer } from './components/ChatDrawer';
 import { PartnersPage } from './components/PartnersPage';
 import {
@@ -221,10 +222,16 @@ export default function App() {
             </button>
           )}
           {(user?.role === 'PARTNER' || user?.role === 'ADMIN') && (
-            <button onClick={() => { window.history.pushState({}, '', '/partner'); window.location.reload(); }}
-              className="px-4 py-2 border border-border-main rounded-full text-[10px] uppercase tracking-widest text-text-main/60 hover:text-gold hover:border-gold/40 transition-all">
-              {lang === 'EN' ? 'Partner Portal' : 'Portal Socio'}
-            </button>
+            <>
+              <button onClick={() => window.history.pushState({}, '', '/supplier/dashboard')}
+                className="px-4 py-2 bg-gold/10 border border-gold/30 rounded-full text-[10px] uppercase tracking-widest text-gold hover:bg-gold hover:text-luxury-black transition-all">
+                {lang === 'EN' ? 'My Dashboard' : 'Mi Panel'}
+              </button>
+              <button onClick={() => { window.history.pushState({}, '', '/partner'); window.location.reload(); }}
+                className="px-4 py-2 border border-border-main rounded-full text-[10px] uppercase tracking-widest text-text-main/60 hover:text-gold hover:border-gold/40 transition-all">
+                {lang === 'EN' ? 'Partner Portal' : 'Portal Socio'}
+              </button>
+            </>
           )}
 
           <div className="w-px h-4 bg-border-main" />
@@ -742,6 +749,7 @@ export default function App() {
     if (!user) return 'teaser';
     const path = window.location.pathname;
     if (path === '/admin' && user.role === 'ADMIN') return 'admin';
+    if (path === '/supplier/dashboard') return 'supplier_dashboard';
     if (path === '/partner' && (user.role === 'PARTNER' || user.role === 'ADMIN')) return 'partner';
     return 'client';
   };
@@ -766,6 +774,9 @@ export default function App() {
         {portal === 'client'  && renderClientPortal()}
         {portal === 'admin'   && renderAdminPortal()}
         {portal === 'partner' && renderPartnerPortal()}
+        {portal === 'supplier_dashboard' && user && (
+          <SupplierDashboard user={user} lang={lang} onBack={() => window.history.pushState({}, '', '/')} />
+        )}
       </main>
 
       <LeadCaptureForm lang={lang} />

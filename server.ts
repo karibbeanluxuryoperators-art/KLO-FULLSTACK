@@ -51,6 +51,43 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
   console.warn("SUPABASE_URL or SUPABASE_SERVICE_KEY is missing. Supabase features will be disabled.");
 }
 
+// ── Schema migrations (run once on startup) ─────────────────────────────────
+async function runMigrations() {
+  try {
+    await supabase.from('suppliers').select('firebase_uid').limit(1);
+  } catch { /* table might not exist yet */ }
+
+  try {
+    await supabase.rpc('migrations_add_supplier_columns', {}).catch(() => {
+      // Fallback: try raw ALTER TABLE
+    });
+  } catch { /* ignore */ }
+
+  // Direct column additions (safe — ignores error if column exists)
+  const columnAdditions = [
+    { table: 'suppliers', col: 'firebase_uid', type: 'TEXT' },
+    { table: 'suppliers', col: 'telegram_chat_id', type: 'TEXT' },
+    { table: 'suppliers', col: 'status', type: 'TEXT DEFAULT', default_val: "'PENDING'" },
+    { table: 'bookings',  col: 'guest_name',  type: 'TEXT' },
+    { table: 'bookings',  col: 'guest_email', type: 'TEXT' },
+    { table: 'bookings',  col: 'notes',       type: 'TEXT' },
+  ];
+
+  for (const { table, col, type, default_val } of columnAdditions) {
+    try {
+      await supabase.rpc('exec_sql', {
+        sql: `ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS ${col} ${type}${default_val ? ` DEFAULT ${default_val}` : ''};`
+      });
+    } catch {
+      // Column likely already exists — safe to ignore
+    }
+  }
+  console.log('Migrations complete.');
+}
+
+// Start migrations in background
+runMigrations().catch(err => console.warn('Migration warning:', err.message));
+
 let stripe: Stripe | null = null;
 
 const getStripe = () => {
@@ -148,27 +185,45 @@ async function startServer() {
 
   // Bookings API
   app.get("/api/bookings", async (req, res) => {
+    const { supplier_id } = req.query;
     try {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select(`
-          *,
-          assets (
-            name,
-            type
-          )
-        `)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
+      let bookings;
+
+      if (supplier_id) {
+        // Get asset IDs for this supplier first
+        const { data: assets } = await supabase
+          .from('assets').select('id').eq('supplier_id', supplier_id);
+        const assetIds = assets?.map(a => a.id) || [];
+
+        if (assetIds.length === 0) {
+          return res.json([]);
+        }
+
+        const { data, error } = await supabase
+          .from('bookings')
+          .select(`*, assets(name, type)`)
+          .in('asset_id', assetIds)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        bookings = data;
+      } else {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select(`*, assets(name, type)`)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        bookings = data;
+      }
+
       // Transform to match previous response format
-      const transformed = data.map((b: any) => ({
+      const transformed = (bookings || []).map((b: any) => ({
         ...b,
         asset_name: b.assets?.name,
         asset_type: b.assets?.type
       }));
-      
+
       res.json(transformed);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -212,14 +267,14 @@ async function startServer() {
 
   // Supplier API
   app.post("/api/suppliers/register", async (req, res) => {
-    const { id: providedId, business_name, contact_name, email, whatsapp, location, asset_type, description, google_calendar_id } = req.body;
+    const { id: providedId, firebase_uid, business_name, contact_name, email, whatsapp, location, asset_type, description, google_calendar_id } = req.body;
     const id = providedId || crypto.randomUUID();
     
     try {
       const { error } = await supabase
         .from('suppliers')
         .upsert({
-          id, business_name, contact_name, email, whatsapp, location, asset_type, description, 
+          id, firebase_uid, business_name, contact_name, email, whatsapp, location, asset_type, description, 
           google_calendar_id: google_calendar_id || null
         });
       
@@ -293,6 +348,66 @@ async function startServer() {
     }
   });
 
+  // Supplier lookup (by Firebase UID or email)
+  app.get("/api/suppliers/lookup", async (req, res) => {
+    const { uid, email } = req.query;
+    try {
+      // Try firebase_uid first
+      if (uid) {
+        const { data, error } = await supabase
+          .from('suppliers')
+          .select('*')
+          .eq('firebase_uid', uid)
+          .maybeSingle();
+        if (data) return res.json({ supplier: data });
+      }
+      // Fall back to email
+      if (email) {
+        const { data, error } = await supabase
+          .from('suppliers')
+          .select('*')
+          .eq('email', email)
+          .maybeSingle();
+        if (data) return res.json({ supplier: data });
+      }
+      res.json({ supplier: null });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Get assets for a specific supplier
+  app.get("/api/suppliers/:id/assets", async (req, res) => {
+    const { id } = req.params;
+    try {
+      const { data, error } = await supabase
+        .from('assets')
+        .select('*')
+        .eq('supplier_id', id)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      res.json(data);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Update supplier Telegram chat ID
+  app.patch("/api/suppliers/:id/telegram", async (req, res) => {
+    const { id } = req.params;
+    const { telegram_chat_id } = req.body;
+    try {
+      const { error } = await supabase
+        .from('suppliers')
+        .update({ telegram_chat_id })
+        .eq('id', id);
+      if (error) throw error;
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Assets API
   app.post("/api/assets", async (req, res) => {
     const asset = req.body;
@@ -318,6 +433,35 @@ async function startServer() {
       
       if (error) throw error;
       res.json({ success: true, asset_id: id });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.patch("/api/assets/:id", async (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+    // Remove id from updates to avoid conflicts
+    delete updates.id;
+    delete updates.created_at;
+    try {
+      const { error } = await supabase
+        .from('assets')
+        .update(updates)
+        .eq('id', id);
+      if (error) throw error;
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/assets/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      const { error } = await supabase.from('assets').delete().eq('id', id);
+      if (error) throw error;
+      res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
