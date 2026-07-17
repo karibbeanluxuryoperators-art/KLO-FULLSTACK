@@ -123,6 +123,109 @@ async function sendTelegramNotification(supplierId: string, booking: any) {
   }
 }
 
+// ── Approval notifications (Telegram + email, with audit row) ─────────────
+// Wrapped in try/catch — never let it break the approval mutation.
+async function notifyApproval(supplierId: string, kind: string, payload: Record<string, any> = {}) {
+  const logId = `N${Date.now()}${Math.floor(Math.random() * 1000)}`;
+  try {
+    const { data: supplier, error: sError } = await supabase
+      .from('suppliers')
+      .select('telegram_chat_id, email, business_name')
+      .eq('id', supplierId)
+      .maybeSingle();
+
+    if (sError) console.warn(`[notifyApproval] supplier lookup error: ${sError.message}`);
+
+    const displayName = supplier?.business_name || 'Partner';
+    const displayKind = kind === 'BUNDLE_APPROVED' ? 'bundle' : 'supplier application';
+    const subjectName = (payload as any)?.name || (kind === 'BUNDLE_APPROVED' ? '' : displayName);
+
+    let sentTelegram = false;
+    let sentEmail = false;
+
+    // ── Telegram ──
+    if (supplier?.telegram_chat_id && process.env.TELEGRAM_BOT_TOKEN) {
+      try {
+        const telegramText = [
+          `\u2705 <b>KLO Approval</b>`,
+          `Your ${displayKind} was approved.`,
+          subjectName ? `<b>${subjectName}</b>` : '',
+        ].filter(Boolean).join('\n');
+
+        const resp = await fetch(
+          `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: supplier.telegram_chat_id,
+              text: telegramText,
+              parse_mode: 'HTML',
+            }),
+          }
+        );
+        const tgResult = (await resp.json()) as { ok?: boolean };
+        sentTelegram = tgResult.ok === true;
+      } catch (tgErr: any) {
+        console.warn(`[notifyApproval] telegram send failed: ${tgErr?.message || tgErr}`);
+      }
+    }
+
+    // ── SendGrid email ──
+    if (supplier?.email && process.env.SENDGRID_API_KEY) {
+      try {
+        const body = [
+          `Hello ${displayName},`,
+          ``,
+          `Your ${displayKind} has been approved by the KLO team.`,
+          subjectName ? `Reference: ${subjectName}` : '',
+          ``,
+          `Welcome aboard,`,
+          `— KLO Operations`,
+        ].filter(Boolean).join('\n');
+
+        const emailResp = await fetch('https://api.sendgrid.com/v3/mail/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.SENDGRID_API_KEY}`,
+          },
+          body: JSON.stringify({
+            personalizations: [{ to: [{ email: supplier.email }] }],
+            from: { email: 'hola@karibbeanluxuryoperators.lat', name: 'KLO Operations' },
+            subject: 'KLO \u2014 Approved',
+            content: [{ type: 'text/plain', value: body }],
+          }),
+        });
+        sentEmail = emailResp.status >= 200 && emailResp.status < 300;
+      } catch (mailErr: any) {
+        console.warn(`[notifyApproval] sendgrid send failed: ${mailErr?.message || mailErr}`);
+      }
+    } else if (supplier?.email) {
+      // Stub log when no email provider configured
+      const stubBody = `Your ${displayKind} has been approved.${subjectName ? ` Reference: ${subjectName}` : ''}`;
+      console.log(`[email-stub] would send to ${supplier.email}: KLO \u2014 Approved ${stubBody}`);
+    }
+
+    // ── Audit row (best-effort, never throws) ──
+    try {
+      await supabase.from('approval_notifications').insert([{
+        id: logId,
+        recipient_supplier_id: supplierId,
+        kind,
+        payload: payload ?? {},
+        sent_telegram: sentTelegram,
+        sent_email: sentEmail,
+      }]);
+    } catch (auditErr: any) {
+      console.warn(`[notifyApproval] audit insert failed: ${auditErr?.message || auditErr}`);
+    }
+  } catch (err: any) {
+    // Top-level safety net — must never break the approval flow
+    console.error(`[notifyApproval] unhandled error for ${supplierId}:`, err?.message || err);
+  }
+}
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -401,22 +504,24 @@ async function startServer() {
 
   app.patch("/api/suppliers/:id/status", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, approved_by } = req.body;
     try {
       const { error: sError } = await supabase
         .from('suppliers')
         .update({ status })
         .eq('id', id);
-      
+
       if (sError) throw sError;
-      
+
       if (status === 'APPROVED') {
         await supabase.from('assets').update({ status: 'ACTIVE' }).eq('supplier_id', id);
         console.log(`Supplier ${id} APPROVED. Assets activated.`);
+        // Fire-and-forget: notify partner (Telegram + email) — never breaks the response
+        notifyApproval(id, 'SUPPLIER_APPROVED', { supplier_id: id, approved_by: approved_by || null });
       } else if (status === 'REJECTED') {
         await supabase.from('assets').update({ status: 'REJECTED' }).eq('supplier_id', id);
       }
-      
+
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -478,6 +583,223 @@ async function startServer() {
         .eq('id', id);
       if (error) throw error;
       res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // ═════════════════════════════════════════════════════════════════════
+  // BUNDLES API — multi-supplier packages owned by a partner
+  // ═════════════════════════════════════════════════════════════════════
+
+  // GET /api/bundles/available-assets
+  // Returns ACTIVE assets from APPROVED suppliers, with parent business_name
+  // (Mounted BEFORE /api/bundles/:id so it wins the static path match.)
+  app.get("/api/bundles/available-assets", async (_req, res) => {
+    try {
+      const { data, error } = await supabase
+        .from('assets')
+        .select(`
+          id, name, type, location, description,
+          price_per_unit, price_type, capacity, status,
+          supplier_id,
+          suppliers:supplier_id ( business_name, status )
+        `)
+        .eq('status', 'ACTIVE');
+
+      if (error) throw error;
+
+      // Filter to only APPROVED suppliers (Supabase JS doesn't filter
+      // nested relationship .eq() — do it client-side).
+      const rows = (data || [])
+        .filter((row: any) => row.suppliers?.status === 'APPROVED')
+        .map((row: any) => ({
+          id: row.id,
+          name: row.name,
+          type: row.type,
+          location: row.location,
+          description: row.description,
+          price_per_unit: row.price_per_unit,
+          price_type: row.price_type,
+          capacity: row.capacity,
+          status: row.status,
+          supplier_id: row.supplier_id,
+          business_name: row.suppliers?.business_name ?? 'Unknown',
+        }));
+
+      res.json(rows);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // POST /api/bundles — create a new bundle
+  app.post("/api/bundles", async (req, res) => {
+    const { owner_supplier_id, name, description, items } = req.body || {};
+
+    if (!owner_supplier_id || !name || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        error: 'owner_supplier_id, name, and a non-empty items[] are required',
+      });
+    }
+
+    try {
+      // 1. Validate every asset_id exists AND its parent supplier is APPROVED
+      const assetIds = items.map((i: any) => i?.asset_id).filter(Boolean);
+      if (assetIds.length !== items.length) {
+        return res.status(400).json({ error: 'Each item must include asset_id' });
+      }
+
+      const { data: assetRows, error: aErr } = await supabase
+        .from('assets')
+        .select(`id, name, type, price_per_unit, supplier_id, suppliers:supplier_id ( status )`)
+        .in('id', assetIds);
+
+      if (aErr) throw aErr;
+
+      const found = new Map((assetRows || []).map((a: any) => [a.id, a]));
+      for (const id of assetIds) {
+        const a: any = found.get(id);
+        if (!a) {
+          return res.status(400).json({ error: `Asset ${id} not found` });
+        }
+        if (a.suppliers?.status !== 'APPROVED') {
+          return res.status(400).json({
+            error: `Asset ${a.name || id} belongs to a non-approved supplier`,
+          });
+        }
+      }
+
+      // 2. Compute total price from assets.price_per_unit * qty (ignore NaN)
+      const total = items.reduce((sum: number, item: any) => {
+        const a: any = found.get(item.asset_id);
+        const raw = (a?.price_per_unit || '').toString();
+        const num = parseFloat(raw.replace(/[^0-9.]/g, ''));
+        const qty = Math.max(1, parseInt(item.qty) || 1);
+        if (isNaN(num)) return sum;
+        return sum + num * qty;
+      }, 0);
+
+      // 3. Insert bundle (status forced to PENDING — client cannot set APPROVED)
+      const bundleId = crypto.randomUUID();
+      const { error: bErr } = await supabase.from('bundles').insert([{
+        id: bundleId,
+        owner_supplier_id,
+        name,
+        description: description ?? null,
+        total_price: `$${total.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+        status: 'PENDING',
+      }]);
+      if (bErr) throw bErr;
+
+      // 4. Insert bundle_items
+      const itemRows = items.map((it: any) => ({
+        id: crypto.randomUUID(),
+        bundle_id: bundleId,
+        asset_id: it.asset_id,
+        qty: Math.max(1, parseInt(it.qty) || 1),
+      }));
+      const { error: biErr } = await supabase.from('bundle_items').insert(itemRows);
+      if (biErr) throw biErr;
+
+      res.json({ success: true, bundle_id: bundleId, total_price: total });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // GET /api/bundles?supplier_id=X — list bundles owned by supplier
+  app.get("/api/bundles", async (req, res) => {
+    const { supplier_id } = req.query;
+    if (!supplier_id) {
+      return res.status(400).json({ error: 'supplier_id query param is required' });
+    }
+    try {
+      const { data: bundles, error: bErr } = await supabase
+        .from('bundles')
+        .select('*')
+        .eq('owner_supplier_id', supplier_id as string)
+        .order('created_at', { ascending: false });
+
+      if (bErr) throw bErr;
+      if (!bundles || bundles.length === 0) return res.json([]);
+
+      const bundleIds = bundles.map((b: any) => b.id);
+      const { data: items, error: iErr } = await supabase
+        .from('bundle_items')
+        .select(`
+          id, bundle_id, asset_id, qty,
+          assets:asset_id ( name, type, location, supplier_id,
+            suppliers:supplier_id ( business_name ) )
+        `)
+        .in('bundle_id', bundleIds);
+
+      if (iErr) throw iErr;
+
+      const itemsByBundle: Record<string, any[]> = {};
+      for (const it of items || []) {
+        const a: any = (it as any).assets;
+        itemsByBundle[it.bundle_id] = itemsByBundle[it.bundle_id] || [];
+        itemsByBundle[it.bundle_id].push({
+          id: it.id,
+          bundle_id: it.bundle_id,
+          asset_id: it.asset_id,
+          qty: it.qty,
+          asset_name: a?.name,
+          asset_type: a?.type,
+          asset_location: a?.location,
+          supplier_business_name: a?.suppliers?.business_name ?? null,
+        });
+      }
+
+      const result = bundles.map((b: any) => {
+        const bundleItems = itemsByBundle[b.id] || [];
+        return {
+          ...b,
+          items: bundleItems,
+          items_count: bundleItems.length,
+        };
+      });
+
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // PATCH /api/bundles/:id/status — admin sets APPROVED or REJECTED
+  app.patch("/api/bundles/:id/status", async (req, res) => {
+    const { id } = req.params;
+    const { status, approved_by } = req.body || {};
+    if (!['APPROVED', 'REJECTED'].includes(status)) {
+      return res.status(400).json({ error: 'status must be APPROVED or REJECTED' });
+    }
+    try {
+      const updates: Record<string, any> = { status };
+      if (status === 'APPROVED') {
+        updates.approved_at = new Date().toISOString();
+        updates.approved_by = approved_by || null;
+      }
+
+      const { data: bundle, error: bErr } = await supabase
+        .from('bundles')
+        .update(updates)
+        .eq('id', id)
+        .select('id, name, owner_supplier_id')
+        .maybeSingle();
+
+      if (bErr) throw bErr;
+      if (!bundle) return res.status(404).json({ error: 'Bundle not found' });
+
+      if (status === 'APPROVED' && bundle.owner_supplier_id) {
+        notifyApproval(bundle.owner_supplier_id, 'BUNDLE_APPROVED', {
+          bundle_id: bundle.id,
+          name: bundle.name,
+          approved_by: approved_by || null,
+        });
+      }
+
+      res.json({ success: true, status });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

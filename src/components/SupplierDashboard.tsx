@@ -6,11 +6,12 @@ import {
   Plus, Search, Edit2, Trash2, Eye, EyeOff,
   X, Check, Loader2, TrendingUp, MessageSquare,
   ChevronRight, BarChart3, Settings, AlertCircle,
-  ExternalLink, RefreshCw, Send
+  ExternalLink, RefreshCw, Send, Layers
 } from 'lucide-react';
 import { Language, AssetType } from '../types';
 import { KLOUser } from '../firebase';
 import { MiniCalendar } from './MiniCalendar';
+import { PartnerBundles } from './PartnerBundles';
 
 interface Asset {
   id: string;
@@ -48,6 +49,7 @@ interface SupplierDashboardProps {
   user: KLOUser;
   lang: Language;
   onBack: () => void;
+  initialTab?: 'dashboard' | 'assets' | 'bookings' | 'settings' | 'bundles';
 }
 
 const ASSET_TYPE_ICONS: Record<string, React.ElementType> = {
@@ -72,8 +74,8 @@ const BOOKING_STATUS_COLORS: Record<string, string> = {
   CANCELLED: 'bg-red-500/10 text-red-400 border-red-500/20',
 };
 
-export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang, onBack }) => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'assets' | 'bookings' | 'settings'>('dashboard');
+export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang, onBack, initialTab }) => {
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'assets' | 'bookings' | 'settings' | 'bundles'>(initialTab ?? 'dashboard');
   const [supplierId, setSupplierId] = useState<string | null>(null);
   const [supplierData, setSupplierData] = useState<any>(null);
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -166,9 +168,25 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang
     if (asset) {
       setEditingAsset(asset);
     } else {
+      // Derive a sensible default type from the supplier's pillar
+      // (was hard-coded to LODGING — broadened to cover all 5 pillars).
+      const SUPPLIER_TYPE_TO_ASSET: Record<string, string> = {
+        VILLA:    'LODGING',
+        YACHT:    'VESSEL',
+        AVIATION: 'AIRCRAFT',
+        GROUND:   'VEHICLE',
+        STAFF:    'STAFF',
+      };
+      const defaultType =
+        SUPPLIER_TYPE_TO_ASSET[supplierData?.asset_type as string] ?? 'LODGING';
+      const defaultPriceType =
+        defaultType === 'LODGING' ? 'PER_NIGHT'
+        : defaultType === 'AIRCRAFT' ? 'PER_HOUR'
+        : 'PER_DAY';
+
       setEditingAsset({
-        name: '', type: 'LODGING', location: supplierData?.location || 'Cartagena',
-        description: '', price_per_unit: '', price_type: 'PER_DAY', capacity: 1,
+        name: '', type: defaultType, location: supplierData?.location || 'Cartagena',
+        description: '', price_per_unit: '', price_type: defaultPriceType, capacity: 1,
         amenities: [], images: [], status: 'ACTIVE',
       });
     }
@@ -290,6 +308,7 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang
   const TABS = [
     { id: 'dashboard', label: { EN: 'Overview', ES: 'Resumen', PT: 'Visão' }, icon: BarChart3 },
     { id: 'assets',    label: { EN: 'Assets', ES: 'Activos', PT: 'Ativos' }, icon: Package },
+    { id: 'bundles',   label: { EN: 'Bundles', ES: 'Paquetes', PT: 'Pacotes' }, icon: Layers },
     { id: 'bookings',  label: { EN: 'Bookings', ES: 'Reservas', PT: 'Reservas' }, icon: Calendar },
     { id: 'settings',  label: { EN: 'Settings', ES: 'Ajustes', PT: 'Config' }, icon: Settings },
   ];
@@ -661,6 +680,13 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({ user, lang
                   </table>
                 </div>
               )}
+            </motion.div>
+          )}
+
+          {/* ── BUNDLES TAB ── */}
+          {activeTab === 'bundles' && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+              <PartnerBundles supplierId={supplierId} lang={lang} />
             </motion.div>
           )}
 

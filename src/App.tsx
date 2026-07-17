@@ -746,6 +746,12 @@ export default function App() {
     if (!user) return 'teaser';
     const path = window.location.pathname;
     if (path === '/admin' && user.role === 'ADMIN') return 'admin';
+    // /supplier/dashboard/bundles → render dashboard with the bundles tab open.
+    // /partner/bundles is also accepted as a friendlier alias for the same view.
+    if ((path === '/supplier/dashboard/bundles' || path === '/partner/bundles')
+        && (user.role === 'PARTNER' || user.role === 'ADMIN')) {
+      return 'supplier_dashboard_bundles';
+    }
     if (path === '/supplier/dashboard') return 'supplier_dashboard';
     if (path === '/partner' && (user.role === 'PARTNER' || user.role === 'ADMIN')) return 'partner';
     return 'client';
@@ -774,7 +780,10 @@ export default function App() {
         {portal === 'supplier_dashboard' && user && (
           <SupplierDashboard user={user} lang={lang} onBack={() => window.history.pushState({}, '', '/')} />
         )}
-        {showPartners && <PartnersPage lang={lang} onApply={() => setShowPartners(false)} onBack={() => setShowPartners(false)} />}
+        {portal === 'supplier_dashboard_bundles' && user && (
+          <SupplierDashboard user={user} lang={lang} onBack={() => window.history.pushState({}, '', '/')} initialTab="bundles" />
+        )}
+        {showPartners && <PartnersPage lang={lang} onApply={() => setShowPartners(false)} onBack={() => setShowPartners(false)} user={user} />}
       </main>
 
       <LeadCaptureForm lang={lang} />

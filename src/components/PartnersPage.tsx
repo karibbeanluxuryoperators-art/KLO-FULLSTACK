@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { 
-  Home, Ship, Plane, Car, Users, ArrowLeft, Send
+import {
+  Home, Ship, Plane, Car, Users, ArrowLeft, Send,
+  Loader2, CheckCircle2, AlertCircle
 } from 'lucide-react';
 import { Language } from '../types';
+import { KLOUser } from '../firebase';
 
 interface PartnersPageProps {
   lang: Language;
   onApply: () => void;
   onBack: () => void;
+  user?: KLOUser | null;
 }
 
-export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBack }) => {
+export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBack, user }) => {
   const t = {
     EN: {
       hero: {
@@ -35,7 +38,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
         eyebrow: "How it works",
         title: "Simple. Transparent. Fair.",
         sub: "From application to first booking in as little as 48 hours.",
-        step1: { title: "Apply", body: "Submit your asset details. Our team reviews every application personally — no automated approvals." },
+        step1: { title: "Apply", body: "Submit your asset details. Our team reviews every application personally - no automated approvals." },
         step2: { title: "Verification", body: "A KLO representative visits or video-calls to verify your asset. We confirm quality, safety, and presentation standards." },
         step3: { title: "Listing", body: "Your asset goes live on the KLO platform. Manage availability through our partner portal or Google Calendar sync." },
         step4: { title: "Payout", body: "You receive 80% of every booking within 48 hours of guest check-in, processed automatically via Stripe." }
@@ -121,7 +124,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
         eyebrow: "Como funciona",
         title: "Simples. Transparente. Justo.",
         sub: "Da candidatura à primeira reserva em apenas 48 horas.",
-        step1: { title: "Candidatar-se", body: "Envie os detalhes do seu ativo. Nossa equipe revisa cada candidatura pessoalmente — sem aprovações automáticas." },
+        step1: { title: "Candidatar-se", body: "Envie os detalhes do seu ativo. Nossa equipe revisa cada candidatura pessoalmente - sem aprovações automáticas." },
         step2: { title: "Verificação", body: "Um representante da KLO visita ou faz uma chamada de vídeo para verificar seu ativo. Confirmamos os padrões de qualidade, segurança e apresentação." },
         step3: { title: "Listagem", body: "Seu ativo entra no ar na plataforma KLO. Gerencie a disponibilidade através do nosso portal de parceiros ou sincronização com o Google Calendar." },
         step4: { title: "Pagamento", body: "Você recebe 80% de cada reserva em até 48 horas após o check-in do hóspede, processado automaticamente via Stripe." }
@@ -144,47 +147,140 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
     }
   }[lang];
 
+  // ── Partner detection: if a signed-in PARTNER/ADMIN lands here, look up
+  //    whether they already have a supplier record and route accordingly.
+  const isPartner = user?.role === 'PARTNER' || user?.role === 'ADMIN';
+  const [supplierExists, setSupplierExists] = useState<boolean | null>(null); // null = loading
+  const [supplierData, setSupplierData] = useState<{ id: string; business_name?: string; status?: string } | null>(null);
+
+  useEffect(() => {
+    if (!isPartner || !user) {
+      setSupplierExists(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/suppliers/lookup?uid=${encodeURIComponent(user.uid)}&email=${encodeURIComponent(user.email)}`
+        );
+        const data = await res.json().catch(() => ({}));
+        if (cancelled) return;
+        if (data?.supplier) {
+          setSupplierExists(true);
+          setSupplierData({
+            id: data.supplier.id,
+            business_name: data.supplier.business_name,
+            status: data.supplier.status,
+          });
+        } else {
+          setSupplierExists(false);
+        }
+      } catch {
+        if (!cancelled) setSupplierExists(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [isPartner, user?.uid, user?.email]);
+
+  // Override the "Apply" CTA for partners based on lookup state
+  const partnerCta = {
+    EN: {
+      welcome: 'Welcome back, partner.',
+      loading: 'Checking your application...',
+      noRecord: 'No partner profile yet - apply below to get started.',
+      hasRecord: 'You are already a KLO partner.',
+      goDashboard: 'Go to My Dashboard',
+      apply: 'Apply to join',
+    },
+    ES: {
+      welcome: 'Bienvenido, socio.',
+      loading: 'Verificando tu solicitud...',
+      noRecord: 'Aún no tienes perfil de socio - solicita a continuación.',
+      hasRecord: 'Ya eres socio de KLO.',
+      goDashboard: 'Ir a Mi Panel',
+      apply: 'Solicitar unirse',
+    },
+    PT: {
+      welcome: 'Bem-vindo, parceiro.',
+      loading: 'Verificando sua candidatura...',
+      noRecord: 'Sem perfil de parceiro ainda - candidate-se abaixo.',
+      hasRecord: 'Você já é parceiro KLO.',
+      goDashboard: 'Ir para Meu Painel',
+      apply: 'Candidatar-se',
+    },
+  }[lang];
+
+  const handleApplyClick = () => {
+    if (isPartner && supplierExists === false) {
+      // Route to the supplier portal — match existing app navigation pattern
+      window.history.pushState({}, '', '/partner');
+      window.location.reload();
+      return;
+    }
+    onApply();
+  };
+
+  const handleGoDashboard = () => {
+    window.history.pushState({}, '', '/supplier/dashboard');
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen bg-luxury-black text-text-main font-sans">
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">
         <div className="max-w-5xl mx-auto">
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-[10px] uppercase tracking-[0.3em] text-gold mb-6 font-semibold"
           >
             {t.hero.eyebrow}
           </motion.p>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl font-serif italic font-light leading-tight mb-8"
           >
-            {t.hero.title}
+            {isPartner ? partnerCta.welcome : t.hero.title}
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="text-lg text-text-main/60 font-light leading-relaxed max-w-2xl mb-12"
           >
-            {t.hero.sub}
+            {isPartner
+              ? (supplierExists === null ? partnerCta.loading
+                 : supplierExists ? partnerCta.hasRecord
+                 : partnerCta.noRecord)
+              : t.hero.sub}
           </motion.p>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="flex flex-wrap gap-4"
           >
-            <button 
-              onClick={onApply}
-              className="px-8 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-text-main transition-all duration-300"
-            >
-              {t.hero.apply}
-            </button>
-            <button 
+            {isPartner && supplierExists === true ? (
+              <button
+                onClick={handleGoDashboard}
+                className="px-8 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-text-main transition-all duration-300 flex items-center gap-2"
+              >
+                <CheckCircle2 size={14} /> {partnerCta.goDashboard}
+              </button>
+            ) : (
+              <button
+                onClick={handleApplyClick}
+                className="px-8 py-4 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-text-main transition-all duration-300 flex items-center gap-2"
+              >
+                {supplierExists === null && isPartner ? <Loader2 size={14} className="animate-spin" /> : null}
+                {isPartner ? partnerCta.apply : t.hero.apply}
+              </button>
+            )}
+            <button
               onClick={() => window.open('https://wa.me/573243132500', '_blank')}
               className="px-8 py-4 border border-border-main text-text-main rounded-xl font-medium text-xs tracking-wide hover:bg-luxury-slate/50 transition-all duration-300"
             >
@@ -282,13 +378,13 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
             {t.cta.sub}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button 
+            <button
               onClick={onApply}
               className="px-12 py-5 bg-gold text-luxury-black rounded-xl font-medium text-xs tracking-wide hover:bg-text-main transition-all duration-300"
             >
               {t.hero.apply}
             </button>
-            <button 
+            <button
               onClick={() => window.open('https://wa.me/573243132500', '_blank')}
               className="px-12 py-5 border border-border-main text-text-main rounded-xl font-medium text-xs tracking-wide hover:bg-luxury-slate/50 transition-all duration-300"
             >
@@ -304,7 +400,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
           <p className="text-[10px] text-text-main/20 uppercase tracking-widest">
             © 2026 KLO · Karibbean Luxury Operators
           </p>
-          <button 
+          <button
             onClick={onBack}
             className="text-[10px] text-gold uppercase tracking-widest hover:text-text-main transition-colors"
           >
