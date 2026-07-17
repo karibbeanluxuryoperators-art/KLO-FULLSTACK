@@ -563,9 +563,6 @@ export const SupplierPortal: React.FC<SupplierPortalProps> = ({ onBack, lang = '
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <label className="text-[11px] font-sans uppercase tracking-tight text-text-main/40 font-semibold">Is this vehicle armored?</label>
-                    {formData.is_armored && (
-
-                    )}
                   </div>
                   <p className="text-xs text-text-main/40 font-light">Does the vehicle have ballistic protection?</p>
                 </div>
