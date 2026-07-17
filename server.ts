@@ -85,11 +85,79 @@ const MOCK_USERS = {
   'client@klo.com': { id: 'client_1', email: 'client@klo.com', role: 'CLIENT', name: 'UHNWI Client' },
 };
 
+// ── Telegram notification helper (module-level so it can be called from webhook) ──
+async function sendTelegramNotification(supplierId: string, booking: any) {
+  try {
+    const { data: supplier } = await supabase
+      .from('suppliers')
+      .select('telegram_chat_id, business_name')
+      .eq('id', supplierId)
+      .maybeSingle();
+
+    if (!supplier?.telegram_chat_id) return;
+
+    const { data: asset } = await supabase
+      .from('assets')
+      .select('name')
+      .eq('id', booking.asset_id)
+      .maybeSingle();
+
+    const lines = [
+      `🔔 <b>New Booking — KLO</b>`,
+      `━━━━━━━━━━━━━━━━━━━━`,
+      `👤 Guest: ${booking.guest_name || '—'}`,
+      booking.guest_email ? `📧 ${booking.guest_email}` : '',
+      `🏷️ Asset: ${asset?.name || '—'}`,
+      `📅 ${booking.start_date} → ${booking.end_date}`,
+      `💰 Price: ${booking.total_price || '—'}`,
+      booking.notes ? `📝 ${booking.notes}` : '',
+    ].filter(Boolean);
+
+    await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: supplier.telegram_chat_id, text: lines.join('\n'), parse_mode: 'HTML' })
+    });
+  } catch (err) {
+    console.error('Telegram notification failed:', err);
+  }
+}
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
+  const APP_URL = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}`);
 
   app.use(express.json());
+
+  // ── Telegram Webhook (uses raw body — registered after express.json is fine since Telegram sends JSON) ──
+  app.post('/api/telegram/webhook', express.json(), async (req, res) => {
+    res.sendStatus(200);
+    try {
+      const { message } = req.body as any;
+      if (!message?.chat?.id) return;
+      const chatId = message.chat.id;
+      const text = message.text || '';
+      if (text === '/start' || text === '/id') {
+        await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: `🆔 Your KLO Chat ID:\n\n${chatId}\n\nPaste this number in your Supplier Dashboard → Settings → Telegram Chat ID field.`,
+          })
+        });
+      }
+    } catch { /* non-fatal */ }
+  });
+
+  // Register webhook with Telegram on startup
+  if (process.env.TELEGRAM_BOT_TOKEN) {
+    fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=${APP_URL}/api/telegram/webhook`)
+      .then(r => r.json() as Promise<{ ok: boolean; description?: string }>)
+      .then(d => { if (d.ok) console.log('✅ Telegram webhook set'); else console.warn('⚠️ Telegram:', d.description); })
+      .catch(() => {});
+  }
 
   // Auth API
   app.post("/api/auth/login", (req, res) => {
@@ -220,6 +288,15 @@ async function startServer() {
         .insert([{ id, asset_id, guest_name, guest_email, start_date, end_date, total_price, notes }]);
       
       if (error) throw error;
+
+      // Fire Telegram notification asynchronously (non-blocking)
+      if (asset_id) {
+        const { data: asset } = await supabase.from('assets').select('supplier_id').eq('id', asset_id).maybeSingle();
+        if (asset?.supplier_id) {
+          sendTelegramNotification(asset.supplier_id, { asset_id, guest_name, guest_email, start_date, end_date, total_price, notes });
+        }
+      }
+
       res.json({ success: true, booking_id: id });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -512,7 +589,6 @@ async function startServer() {
   // Google Calendar Sync
   const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
   const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-  const APP_URL = process.env.APP_URL || `http://localhost:${PORT}`;
   const GOOGLE_REDIRECT_URI = `${APP_URL}/api/calendar/callback`;
 
   const oauth2Client = new google.auth.OAuth2(
