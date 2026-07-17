@@ -211,14 +211,44 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ lang, onApply, onBac
     },
   }[lang];
 
-  const handleApplyClick = () => {
-    if (isPartner && supplierExists === false) {
-      // Route to the supplier portal — match existing app navigation pattern
-      window.history.pushState({}, '', '/partner');
+  const handleApplyClick = async () => {
+    if (!user) {
+      // Not logged in → trigger sign-in (parent closes overlay and signs in)
+      onApply();
+      return;
+    }
+    if (user.role !== 'PARTNER' && user.role !== 'ADMIN') {
+      // Logged in but not a partner → fall back to parent's onApply
+      onApply();
+      return;
+    }
+    // PARTNER / ADMIN: check if a supplier record already exists
+    if (supplierExists === null) {
+      // Lookup still in flight — wait for it
+      try {
+        const res = await fetch(`/api/suppliers/lookup?uid=${user.uid}&email=${encodeURIComponent(user.email)}`);
+        const data = await res.json().catch(() => ({}));
+        if (data?.supplier?.id) {
+          window.history.pushState({}, '', '/supplier/dashboard');
+          window.location.reload();
+        } else {
+          window.history.pushState({}, '', '/partner');
+          window.location.reload();
+        }
+      } catch {
+        window.history.pushState({}, '', '/partner');
+        window.location.reload();
+      }
+      return;
+    }
+    if (supplierExists === true) {
+      window.history.pushState({}, '', '/supplier/dashboard');
       window.location.reload();
       return;
     }
-    onApply();
+    // supplierExists === false: route to onboarding
+    window.history.pushState({}, '', '/partner');
+    window.location.reload();
   };
 
   const handleGoDashboard = () => {

@@ -103,6 +103,7 @@ export default function App() {
   const [showMarketplace, setShowMarketplace] = useState(false);
   const [showPartners, setShowPartners] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [partnerLookup, setPartnerLookup] = useState<{ hasRecord: boolean | null; loading: boolean }>({ hasRecord: null, loading: false });
   const [activePillar, setActivePillar] = useState(0);
 
   const [chatOpen, setChatOpen] = useState(false);
@@ -783,7 +784,47 @@ export default function App() {
         {portal === 'supplier_dashboard_bundles' && user && (
           <SupplierDashboard user={user} lang={lang} onBack={() => window.history.pushState({}, '', '/')} initialTab="bundles" />
         )}
-        {showPartners && <PartnersPage lang={lang} onApply={() => setShowPartners(false)} onBack={() => setShowPartners(false)} user={user} />}
+        {showPartners && (
+          <PartnersPage
+            lang={lang}
+            user={user}
+            onBack={() => setShowPartners(false)}
+            onApply={async () => {
+              setShowPartners(false);
+              if (!user) {
+                // Not logged in → trigger Google sign-in
+                await handleSignIn();
+                return;
+              }
+              if (user.role !== 'PARTNER' && user.role !== 'ADMIN') {
+                // Logged in but not a partner → still sign-in flow (or alert)
+                await handleSignIn();
+                return;
+              }
+              // PARTNER / ADMIN: look up existing supplier record
+              setPartnerLookup({ hasRecord: null, loading: true });
+              try {
+                const res = await fetch(`/api/suppliers/lookup?uid=${user.uid}&email=${encodeURIComponent(user.email)}`);
+                const data = await res.json().catch(() => ({}));
+                if (data?.supplier?.id) {
+                  // Existing supplier record → go to dashboard
+                  window.history.pushState({}, '', '/supplier/dashboard');
+                  window.location.reload();
+                } else {
+                  // No record → onboarding wizard
+                  window.history.pushState({}, '', '/partner');
+                  window.location.reload();
+                }
+              } catch {
+                // Lookup failed → fall through to onboarding
+                window.history.pushState({}, '', '/partner');
+                window.location.reload();
+              } finally {
+                setPartnerLookup({ hasRecord: null, loading: false });
+              }
+            }}
+          />
+        )}
       </main>
 
       <LeadCaptureForm lang={lang} />
