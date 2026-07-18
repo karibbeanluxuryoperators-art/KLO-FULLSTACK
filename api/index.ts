@@ -1,8 +1,18 @@
 // Vercel serverless entry point.
 // @vercel/node compiles this TypeScript file and its imports (server.ts).
-// The exported handler is the Express app from server.ts.
+//
+// Why a wrapper at all? Vercel cold-starts can race: the first request arrives
+// before `import('../server.js')` has resolved. We keep a shared `app` reference
+// and lazily wait for it on every request. Once loaded, subsequent requests are
+// a single microtask (the cached promise).
+//
+// Why pass through instead of re-routing? Express's `app.all('/api/(.*)')` and
+// similar wildcard routes *strip* the matched prefix from `req.url` before the
+// inner app sees it — so `app(req, res)` would receive `/assets` and try to
+// match a route registered as `/api/assets`. By using a non-capturing
+// `'/api/*'` (or just `*` with a manual guard) we keep the original URL intact.
 
-import express from 'express';
+import type { IncomingMessage, ServerResponse } from 'http';
 
 let app: any = null;
 let loadError: any = null;
@@ -13,6 +23,12 @@ function loadServer(): Promise<void> {
   loadingPromise = import('../server.js')
     .then((mod: any) => {
       app = mod.default || mod;
+      if (typeof app !== 'function') {
+        throw new Error(
+          `server.js did not export a callable Express app (got ${typeof app}). ` +
+          'Check that server.ts still has `export default app` at the bottom.'
+        );
+      }
       console.log('[klo-api] server.ts loaded OK');
     })
     .catch((err: any) => {
@@ -22,22 +38,37 @@ function loadServer(): Promise<void> {
   return loadingPromise;
 }
 
-// Kick off loading on first request
-const handler = express();
-handler.get('/api/health', async (_req: any, res: any) => {
+// Top-level handler passed to Vercel. NOT a VercelRequest/VercelResponse
+// because importing those types is a build-time concern only.
+export default async function handler(req: IncomingMessage, res: ServerResponse) {
+  // Lazy-load on first request. After that, loadingPromise resolves instantly.
   if (!app && !loadError) await loadServer();
-  res.json({
-    status: loadError ? 'error' : 'ok',
-    timestamp: new Date().toISOString(),
-    runtime: 'vercel-serverless',
-    serverLoaded: !!app,
-    error: loadError ? { message: loadError.message } : undefined,
-  });
-});
-handler.all('/api/(.*)', async (req: any, res: any) => {
-  if (!app && !loadError) await loadServer();
-  if (app) return app(req, res);
-  res.status(500).json({ error: loadError?.message || 'server.ts not loaded' });
-});
 
-export default handler;
+  // Health probe — answered by the wrapper so it's always available even if
+  // server.ts crashed on import.
+  const url = req.url || '';
+  if (url === '/api/health' || url.startsWith('/api/health?')) {
+    res.statusCode = 200;
+    res.setHeader('content-type', 'application/json');
+    res.end(JSON.stringify({
+      status: loadError ? 'error' : 'ok',
+      timestamp: new Date().toISOString(),
+      runtime: 'vercel-serverless',
+      serverLoaded: !!app,
+      error: loadError ? { message: loadError.message } : undefined,
+    }));
+    return;
+  }
+
+  if (!app) {
+    res.statusCode = 500;
+    res.setHeader('content-type', 'application/json');
+    res.end(JSON.stringify({ error: loadError?.message || 'server.ts not loaded' }));
+    return;
+  }
+
+  // Pass-through. The inner Express app has routes registered with the `/api/`
+  // prefix — we must NOT strip it. Returning the result of app(req, res) makes
+  // Express handle the response lifecycle (writes headers, calls res.end()).
+  return (app as any)(req, res);
+}

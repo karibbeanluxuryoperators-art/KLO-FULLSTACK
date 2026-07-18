@@ -10,7 +10,9 @@
     "vercel-build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "smoke": "powershell -ExecutionPolicy Bypass -File scripts/smoke.ps1",
+    "smoke:sh": "bash scripts/smoke.sh"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
