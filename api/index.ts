@@ -13,36 +13,31 @@ function loadServer(): Promise<void> {
   loadingPromise = import('../server.js')
     .then((mod: any) => {
       app = mod.default || mod;
-      console.log('[klo-api] server.ts loaded OK, app type:', typeof app);
+      console.log('[klo-api] server.ts loaded OK');
     })
     .catch((err: any) => {
       loadError = err;
       console.error('[klo-api] server.ts LOAD FAILED:', err?.message || err);
-      console.error('[klo-api] stack:', err?.stack?.split('\n').slice(0, 8).join(' | '));
     });
   return loadingPromise;
 }
 
-// Kick off loading immediately (don't await — let the handler queue up)
-loadServer();
-
-const fallback = express();
-fallback.get('/api/health', (_req: any, res: any) => {
+// Kick off loading on first request
+const handler = express();
+handler.get('/api/health', async (_req: any, res: any) => {
+  if (!app && !loadError) await loadServer();
   res.json({
-    status: loadError ? 'error' : (app ? 'ok' : 'loading'),
+    status: loadError ? 'error' : 'ok',
     timestamp: new Date().toISOString(),
     runtime: 'vercel-serverless',
-    error: loadError ? {
-      message: loadError.message,
-      stack: loadError.stack?.split('\n').slice(0, 8).join('\n'),
-    } : undefined,
+    serverLoaded: !!app,
+    error: loadError ? { message: loadError.message } : undefined,
   });
 });
-fallback.all('/api/(.*)', async (req: any, res: any) => {
-  // Wait for the import to complete (cached after first call)
+handler.all('/api/(.*)', async (req: any, res: any) => {
   if (!app && !loadError) await loadServer();
   if (app) return app(req, res);
   res.status(500).json({ error: loadError?.message || 'server.ts not loaded' });
 });
 
-export default fallback;
+export default handler;
