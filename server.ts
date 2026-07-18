@@ -1,7 +1,6 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
-import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import crypto from "crypto";
@@ -12,8 +11,11 @@ import fetch from "node-fetch";
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// __dirname is a CommonJS global — available in both Vercel's serverless
+// runtime (where the file is compiled to CJS) and local tsx execution.
+// Replaces the previous fileURLToPath(import.meta.url) pattern that
+// broke Vercel's serverless compilation of this module.
+const dirname = (typeof __dirname !== 'undefined' ? __dirname : process.cwd());
 
 // Express app — created at module level so Vercel can export it as the handler.
 // Routes are registered inside startServer(); only app.listen() is skipped on Vercel.
@@ -1513,7 +1515,7 @@ ${assetContext}`;
   // may live in a different location) doesn't crash the import.
   // API routes registered above take precedence; this only matches what falls through.
   try {
-    const distPath = path.join(__dirname, "dist");
+    const distPath = path.join(dirname, "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
