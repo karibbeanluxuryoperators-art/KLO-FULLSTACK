@@ -1,20 +1,30 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import express from 'express';
+// Vercel serverless entry point.
+// @vercel/node compiles this TypeScript file and its imports (server.ts).
+// The exported handler is the Express app from server.ts.
 
-const app = express();
-app.use(express.json());
+let app: any;
 
-app.get('/api/health', (_req: any, res: any) => {
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    runtime: 'vercel-serverless-isolated',
-    note: 'minimal handler from api/index.ts'
+try {
+  const mod = require('../server');
+  app = mod.default || mod;
+  console.log('[api/index] server.ts loaded successfully, app type:', typeof app);
+} catch (err: any) {
+  console.error('[api/index] FAILED to load server.ts:', err.message);
+  console.error('[api/index] Stack:', err.stack);
+  // Fallback minimal handler so the function doesn't 500
+  const express = require('express');
+  app = express();
+  app.get('/api/health', (_req: any, res: any) => {
+    res.json({
+      status: 'error',
+      message: 'server.ts failed to load',
+      error: err.message,
+      stack: err.stack?.split('\n').slice(0, 5).join('\n')
+    });
   });
-});
-
-app.all('/api/(.*)', (req: any, res: any) => {
-  res.status(404).json({ error: 'Not Found', path: req.path });
-});
+  app.all('/api/(.*)', (_req: any, res: any) => {
+    res.status(500).json({ error: err.message });
+  });
+}
 
 export default app;
