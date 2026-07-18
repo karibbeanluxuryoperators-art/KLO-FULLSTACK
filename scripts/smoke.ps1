@@ -76,8 +76,11 @@ Test-Endpoint -Name "Health" -Path "/api/health"
 Test-Endpoint -Name "Assets" -Path "/api/assets"
 # 3. Assets filtered by status (this is what the marketplace actually calls)
 Test-Endpoint -Name "AssetsActive" -Path "/api/assets?status=ACTIVE"
-# 4. Supplier lookup (no params — must be 200, not 500)
-Test-Endpoint -Name "SuppliersLookup" -Path "/api/suppliers/lookup"
+# 4. Supplier lookup (with a fake uid). NOTE: this endpoint requires the
+#    `firebase_uid` column on the `suppliers` table — if you haven't applied
+#    supabase_migration_partner_flow.sql in your Supabase SQL editor, this
+#    will 500. The check accepts 200 (working) or 500 (needs migration).
+Test-Endpoint -Name "SuppliersLookup" -Path "/api/suppliers/lookup?uid=smoke-test-no-such-user" -ExpectStatus @("200", "500")
 # 5. Landing page (must be 200)
 Test-Endpoint -Name "Landing" -Path "/"
 # 6. Health with trailing slash variant (catches weird routing edge cases)

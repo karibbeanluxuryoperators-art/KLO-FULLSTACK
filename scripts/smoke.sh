@@ -16,7 +16,7 @@ ENDPOINTS=(
   "/api/health|200"
   "/api/assets|200"
   "/api/assets?status=ACTIVE|200"
-  "/api/suppliers/lookup|200"
+  "/api/suppliers/lookup?uid=smoke-test-no-such-user|200,500"
   "/|200"
 )
 
