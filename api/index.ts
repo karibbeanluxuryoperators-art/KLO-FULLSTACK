@@ -3,7 +3,6 @@
 // The exported handler is the Express app from server.ts.
 
 import express from 'express';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 let app: any = null;
 let loadError: any = null;
@@ -30,10 +29,9 @@ fallback.get('/api/health', (_req: any, res: any) => {
     } : undefined,
   });
 });
-fallback.all('/api/(.*)', (_req: any, res: any) => {
-  if (app) return app(_req, res);
+fallback.all('/api/(.*)', (req: any, res: any) => {
+  if (app) return app(req, res);
   res.status(500).json({ error: loadError?.message || 'server.ts not loaded' });
 });
 
-// Use the real app if it loaded, otherwise the diagnostic fallback
 export default app || fallback;
