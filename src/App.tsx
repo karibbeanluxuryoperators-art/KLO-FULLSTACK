@@ -27,6 +27,9 @@ import { SupplierPortal } from './components/SupplierPortal';
 import { SupplierDashboard } from './components/SupplierDashboard';
 import { ChatDrawer } from './components/ChatDrawer';
 import { PartnersPage } from './components/PartnersPage';
+import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
+import { TermsOfServicePage } from './components/TermsOfServicePage';
+import { GDPRCompliancePage } from './components/GDPRCompliancePage';
 import {
   Asset, Booking, Language,
   Incident, GuestProfile, AgentialRule, MaintenanceAlert,
@@ -102,6 +105,7 @@ export default function App() {
 
   const [showMarketplace, setShowMarketplace] = useState(false);
   const [showPartners, setShowPartners] = useState(false);
+  const [legalPage, setLegalPage] = useState<'privacy' | 'terms' | 'gdpr' | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [activePillar, setActivePillar] = useState(0);
 
@@ -731,7 +735,18 @@ export default function App() {
         <div>
           <h4 className="font-serif italic text-base mb-5 text-text-main">Legal</h4>
           <ul className="space-y-3">
-            {['Privacy Policy', 'Terms of Service', 'GDPR Compliance'].map(s => <li key={s}><a href="#" className="body-text text-sm hover:text-gold transition-colors">{s}</a></li>)}
+            {[
+              { label: 'Privacy Policy', key: 'privacy' as const },
+              { label: 'Terms of Service', key: 'terms' as const },
+              { label: 'GDPR Compliance', key: 'gdpr' as const },
+            ].map(s => (
+              <li key={s.key}>
+                <button onClick={() => setLegalPage(s.key)}
+                  className="body-text text-sm hover:text-gold transition-colors text-left">
+                  {s.label}
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -784,6 +799,9 @@ export default function App() {
           <SupplierDashboard user={user} lang={lang} onBack={() => window.history.pushState({}, '', '/')} initialTab="bundles" />
         )}
         {showPartners && <PartnersPage lang={lang} onApply={() => setShowPartners(false)} onBack={() => setShowPartners(false)} user={user} />}
+        {legalPage === 'privacy' && <PrivacyPolicyPage onBack={() => setLegalPage(null)} />}
+        {legalPage === 'terms' && <TermsOfServicePage onBack={() => setLegalPage(null)} />}
+        {legalPage === 'gdpr' && <GDPRCompliancePage onBack={() => setLegalPage(null)} />}
       </main>
 
       <LeadCaptureForm lang={lang} />
