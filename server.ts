@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import path from "path";
 import dotenv from "dotenv";
 import Stripe from "stripe";
@@ -8,6 +7,17 @@ import { google } from "googleapis";
 import { createClient } from "@supabase/supabase-js";
 import { GoogleGenAI } from "@google/genai";
 import fetch from "node-fetch";
+
+// Vite is only needed for local dev (it provides the SPA HMR server). On Vercel
+// the static dist/ folder is served directly, so we avoid importing Vite there
+// to prevent it from running dev-time module-level code in the serverless runtime.
+// Local dev still has Vite available via the `dev` npm script.
+const isLocal = !process.env.VERCEL;
+let createViteServer: typeof import("vite").createServer | undefined;
+if (isLocal) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  createViteServer = require("vite").createServer;
+}
 
 dotenv.config();
 
